@@ -148,36 +148,30 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   {
     abuff_swap_ptr_v3 = abuff_swap_ptr;
     reconstr_abuff_v4 = reconstr_abuffa;
-    reconstr_abuff = abuff_swap_ptr[0];
-    v5 = (reconstr_abuff >> 15) & 1;
+
+    v5 = (abuff_swap_ptr[0] >> 15) & 1;
     reconstr_abuffa[0] = v5;
     word_3D1264 = v5;
     reconstr_abuffa[1] = (abuff_swap_ptr[0] >> 10) & 0x1F;
-    abuff_swap_a2 = abuff_swap_ptr[0];
-    v6 = (abuff_swap_a2 >> 5) & 0x1F;
-    reconstr_abuffa[2] = v6;
-    reconstr_abuffa[3] = ((abuff_swap_ptr[0] & 0xff) >> 1) & 0xF;
-    v6 = abuff_swap_ptr[1];
-    v7 = ((v6 >> 13) & 7) + 8 * (abuff_swap_ptr[0] & 1);
-    reconstr_abuffa[4] = v7;
+    reconstr_abuffa[2] = (abuff_swap_ptr[0] >> 5) & 0x1F;
+    reconstr_abuffa[3] = (abuff_swap_ptr[0] >> 1) & 0xF;
+    reconstr_abuffa[4] = ((abuff_swap_ptr[1] >> 13) & 7)
+    		+ 8 * (abuff_swap_ptr[0] & 1);
+
     reconstr_abuffa[5] = (abuff_swap_ptr[1] >> 9) & 0xF;
-    v7 = abuff_swap_ptr[1];
-    reconstr_abuffa[6] = (v7 >> 5) & 0xF;
-    reconstr_abuffa[7] = ((abuff_swap_ptr[1] & 0xf) >> 1) & 0xF;
-    v8 = ((abuff_swap_ptr_v3[2] >> 13) & 7) + 8 * (*((_BYTE *)abuff_swap_ptr_v3[1] & 0xff) & 1);
-    reconstr_abuffa[8] = v8;
+    reconstr_abuffa[6] = (abuff_swap_ptr[1] >> 5) & 0xF;
+    reconstr_abuffa[7] = (abuff_swap_ptr[1] >> 1) & 0xF;
+    reconstr_abuffa[8] = ((abuff_swap_ptr[2] >> 13) & 7)
+    		+ 8 * (abuff_swap_ptr[1] & 1);
+
     reconstr_abuffa[9] = (abuff_swap_ptr[2] >> 10) & 7;
-    v8 = abuff_swap_ptr[2];
-    reconstr_abuffa[10] = (v8 >> 7) & 7;
-    v9 = ((abuff_swap_ptr[2] & 0xff) >> 4) & 7;
-    reconstr_abuffa[11] = v9;
-    reconstr_abuffa[12] = ((abuff_swap_ptr[2] & 0xff) >> 1) & 7;
-    v9 = abuff_swap_ptr[3];
-    v10 = (abuff_swap_ptr[2] & 0xff) & 1;
-    v11 = ((v9 >> 14) & 3) + 4 * v10;
-    reconstr_abuffa[13] = v11;
-    v10 = abuff_swap_ptr[3];
-    v12 = (v10 >> 12) & 3;
+    reconstr_abuffa[10] = (abuff_swap_ptr[2] >> 7) & 7;
+    reconstr_abuffa[11] = (abuff_swap_ptr[2] >> 4) & 7;
+    reconstr_abuffa[12] = (abuff_swap_ptr[2] >> 1) & 7;
+    reconstr_abuffa[13] = ((abuff_swap_ptr[3] >> 14) & 3)
+    		+ 4 * (abuff_swap_ptr[2] & 1);
+
+    v12 = (abuff_swap_ptr[3] >> 12) & 3;
   }
   else
   {
@@ -187,22 +181,22 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
 
     reconstr_abuffa[1] = (abuff_swap_ptr[0] >> 11) & 0x1F;
     reconstr_abuffa[2] = (abuff_swap_ptr[0] >> 6) & 0x1F;
-    reconstr_abuffa[3] = ((abuff_swap_ptr[0] & 0xff) >> 2) & 0xF;
+    reconstr_abuffa[3] = (abuff_swap_ptr[0] >> 2) & 0xF;
     reconstr_abuffa[4] = ((abuff_swap_ptr[1] >> 14) & 3)
     		+ 4 * (abuff_swap_ptr[0] & 3);
 
     reconstr_abuffa[5] = (abuff_swap_ptr[1] >> 10) & 0xF;
     reconstr_abuffa[6] = (abuff_swap_ptr[1] >> 6) & 0xF;
-    reconstr_abuffa[7] = ((abuff_swap_ptr[1] & 0xff) >> 2) & 0xF;
+    reconstr_abuffa[7] = (abuff_swap_ptr[1] >> 2) & 0xF;
     reconstr_abuffa[8] = ((abuff_swap_ptr[2] >> 14) & 3)
     		+ 4 * (abuff_swap_ptr[1] & 3);
 
     reconstr_abuffa[9] = (abuff_swap_ptr[2] >> 11) & 7;
     reconstr_abuffa[10] = (abuff_swap_ptr[2] >> 8) & 7;
-    reconstr_abuffa[11] = ((abuff_swap_ptr[2] & 0xff) >> 5) & 7;
-    reconstr_abuffa[12] = ((abuff_swap_ptr[2] & 0xff) >> 2) & 7;
+    reconstr_abuffa[11] = (abuff_swap_ptr[2] >> 5) & 7;
+    reconstr_abuffa[12] = (abuff_swap_ptr[2] >> 2) & 7;
     reconstr_abuffa[13] = ((abuff_swap_ptr[3] >> 15) & 1)
-    		+ 2 * ((abuff_swap_ptr[2] & 0xf) & 3);
+    		+ 2 * (abuff_swap_ptr[2] & 3);
 
     v12 = (abuff_swap_ptr[3] >> 12) & 7;
   }
