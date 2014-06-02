@@ -200,87 +200,83 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
 
     v12 = (abuff_swap_ptr[3] >> 12) & 7;
   }
-  reconstr_abuff_v4[14] = v12;
+
+  reconstr_abuff[14] = v12;
   if ( word_3D041C && !word_3D1264 )
   {
-    LOWORD(v11) = abuff_swap_ptr_v3[3];
-    reconstr_abuff_v4[19] = (v11 >> 7) & 0x1F;
-    reconstr_abuff_v4[20] = (*((_BYTE *)abuff_swap_ptr_v3 + 6) >> 2) & 0x1F;
-    reconstr_abuff_v4[21] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[4] >> 13) & 7;
-    reconstr_abuff_v4[22] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[4] >> 8) & 0x1F;
+    reconstr_abuff[19] = (abuff_swap_ptr[3] >> 7) & 0x1F;
+    reconstr_abuff[20] = (abuff_swap_ptr[3] >> 2) & 0x1F;
+    reconstr_abuff[21] = (abuff_swap_ptr[4] >> 13) & 7;
+    reconstr_abuff[22] = (abuff_swap_ptr[4] >> 8) & 0x1F;
     return;
   }
-  LOWORD(v11) = abuff_swap_ptr_v3[3];
-  reconstr_abuff_v4[19] = (v11 >> 7) & 0x1F;
+
+  reconstr_abuff_v4[19] = (abuff_swap_ptr_v3[3] >> 7) & 0x1F;
   *((_DWORD *)reconstr_abuff_v4 + 13) = *((_BYTE *)abuff_swap_ptr_v3 + 11)
-                                      + (((unsigned __int16)abuff_swap_ptr_v3[4]
-                                        + ((*((_BYTE *)abuff_swap_ptr_v3 + 6) & 0x7F) << 16)) << 8);
-  reconstr_abuff_v4[24] = (*((_BYTE *)abuff_swap_ptr_v3 + 10) >> 2) & 0x3F;
-  v18 = (((signed int)(unsigned __int16)abuff_swap_ptr_v3[6] >> 15) & 1) + 2 * (*((_BYTE *)abuff_swap_ptr_v3 + 10) & 3);
-  reconstr_abuff_v4[35] = v18;
-  reconstr_abuff_v4[36] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[6] >> 12) & 7;
-  LOWORD(v18) = abuff_swap_ptr_v3[6];
-  reconstr_abuff_v4[37] = (v18 >> 9) & 7;
-  reconstr_abuff_v4[38] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[6] >> 6) & 7;
-  reconstr_abuff_v4[39] = (*((_BYTE *)abuff_swap_ptr_v3 + 12) >> 3) & 7;
-  reconstr_abuff_v4[40] = *((_BYTE *)abuff_swap_ptr_v3 + 12) & 7;
-  reconstr_abuff_v4[41] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[7] >> 13) & 7;
-  reconstr_abuff_v4[20] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[7] >> 8) & 0x1F;
-  v19 = (unsigned __int16)abuff_swap_ptr_v3[8];
-  v20 = v19 + (*((_BYTE *)abuff_swap_ptr_v3 + 14) << 16);
-  LOWORD(v19) = abuff_swap_ptr_v3[9];
+                                      + ((abuff_swap_ptr_v3[4] + ((abuff_swap_ptr_v3[3] & 0x7F) << 16)) << 8);
+  reconstr_abuff_v4[24] = (abuff_swap_ptr_v3[5] >> 2) & 0x3F;
+  reconstr_abuff_v4[35] = ((abuff_swap_ptr_v3[6] >> 15) & 1) + 2 * (abuff_swap_ptr_v3[5] & 3);
+  reconstr_abuff_v4[36] = (abuff_swap_ptr_v3[6] >> 12) & 7;
+  reconstr_abuff_v4[37] = (abuff_swap_ptr_v3[6] >> 9) & 7;
+  reconstr_abuff_v4[38] = (abuff_swap_ptr_v3[6] >> 6) & 7;
+  reconstr_abuff_v4[39] = (abuff_swap_ptr_v3[6] >> 3) & 7;
+  reconstr_abuff_v4[40] = abuff_swap_ptr_v3[6] & 7;
+  reconstr_abuff_v4[41] = (abuff_swap_ptr_v3[7] >> 13) & 7;
+  reconstr_abuff_v4[20] = (abuff_swap_ptr_v3[7] >> 8) & 0x1F;
+  v20 = abuff_swap_ptr_v3[8] + (abuff_swap_ptr_v3[7] << 16);
+  v19 = abuff_swap_ptr_v3[9];
   v21 = ((v19 >> 9) & 0x7F) + (v20 << 7);
-  *((_DWORD *)reconstr_abuff_v4 + 22) = v21;
-  LOWORD(v21) = abuff_swap_ptr_v3[9];
+  reconstr_abuff_v4[11] = v21;
+  v21 = abuff_swap_ptr_v3[9];
   reconstr_abuff_v4[42] = (v21 >> 3) & 0x3F;
-  reconstr_abuff_v4[53] = *((_BYTE *)abuff_swap_ptr_v3 + 18) & 7;
-  reconstr_abuff_v4[54] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[10] >> 13) & 7;
-  reconstr_abuff_v4[55] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[10] >> 10) & 7;
-  reconstr_abuff_v4[56] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[10] >> 7) & 7;
-  reconstr_abuff_v4[57] = (*((_BYTE *)abuff_swap_ptr_v3 + 20) >> 4) & 7;
-  reconstr_abuff_v4[58] = (*((_BYTE *)abuff_swap_ptr_v3 + 20) >> 1) & 7;
-  reconstr_abuff_v4[59] = (((signed int)(unsigned __int16)abuff_swap_ptr_v3[11] >> 14) & 3)
-                        + 4 * (*((_BYTE *)abuff_swap_ptr_v3 + 20) & 1);
-  reconstr_abuff_v4[21] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[11] >> 9) & 0x1F;
-  v22 = (unsigned __int16)abuff_swap_ptr_v3[12];
+  reconstr_abuff_v4[53] = abuff_swap_ptr_v3[9] & 7;
+  reconstr_abuff_v4[54] = (abuff_swap_ptr_v3[10] >> 13) & 7;
+  reconstr_abuff_v4[55] = (abuff_swap_ptr_v3[10] >> 10) & 7;
+  reconstr_abuff_v4[56] = (abuff_swap_ptr_v3[10] >> 7) & 7;
+  reconstr_abuff_v4[57] = (abuff_swap_ptr_v3[10] >> 4) & 7;
+  reconstr_abuff_v4[58] = (abuff_swap_ptr_v3[10] >> 1) & 7;
+  reconstr_abuff_v4[59] = ((abuff_swap_ptr_v3[11] >> 14) & 3)
+                        + 4 * (abuff_swap_ptr_v3[10] & 1);
+  reconstr_abuff_v4[21] = (abuff_swap_ptr_v3[11] >> 9) & 0x1F;
+  v22 = abuff_swap_ptr_v3[12];
   v23 = v22 + ((abuff_swap_ptr_v3[11] & 0x1FF) << 16);
-  LOWORD(v22) = abuff_swap_ptr_v3[13];
+  v22 = abuff_swap_ptr_v3[13];
   v24 = ((v22 >> 10) & 0x3F) + (v23 << 6);
   *((_DWORD *)reconstr_abuff_v4 + 31) = v24;
-  LOWORD(v24) = abuff_swap_ptr_v3[13];
+  v24 = abuff_swap_ptr_v3[13];
   reconstr_abuff_v4[60] = (v24 >> 4) & 0x3F;
-  reconstr_abuff_v4[71] = (*((_BYTE *)abuff_swap_ptr_v3 + 26) >> 1) & 7;
-  v25 = (((signed int)(unsigned __int16)abuff_swap_ptr_v3[14] >> 14) & 3) + 4 * (*((_BYTE *)abuff_swap_ptr_v3 + 26) & 1);
+  reconstr_abuff_v4[71] = (abuff_swap_ptr_v3[13] >> 1) & 7;
+  v25 = ((abuff_swap_ptr_v3[14] >> 14) & 3) + 4 * (abuff_swap_ptr_v3[14] & 1);
   reconstr_abuff_v4[72] = v25;
-  reconstr_abuff_v4[73] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[14] >> 11) & 7;
-  LOWORD(v25) = abuff_swap_ptr_v3[14];
+  reconstr_abuff_v4[73] = (abuff_swap_ptr_v3[14] >> 11) & 7;
+  v25 = abuff_swap_ptr_v3[14];
   reconstr_abuff_v4[74] = (v25 >> 8) & 7;
-  reconstr_abuff_v4[75] = (*((_BYTE *)abuff_swap_ptr_v3 + 28) >> 5) & 7;
-  reconstr_abuff_v4[76] = (*((_BYTE *)abuff_swap_ptr_v3 + 28) >> 2) & 7;
-  reconstr_abuff_v4[77] = (((signed int)(unsigned __int16)abuff_swap_ptr_v3[15] >> 15) & 1)
-                        + 2 * (*((_BYTE *)abuff_swap_ptr_v3 + 28) & 3);
-  reconstr_abuff_v4[22] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[15] >> 10) & 0x1F;
+  reconstr_abuff_v4[75] = (abuff_swap_ptr_v3[14] >> 5) & 7;
+  reconstr_abuff_v4[76] = (abuff_swap_ptr_v3[14] >> 2) & 7;
+  reconstr_abuff_v4[77] = ((abuff_swap_ptr_v3[15] >> 15) & 1)
+                        + 2 * (abuff_swap_ptr_v3[14] & 3);
+  reconstr_abuff_v4[22] = (abuff_swap_ptr_v3[15] >> 10) & 0x1F;
   reconstr_abuffb = 0;
-  v26 = (unsigned __int16)abuff_swap_ptr_v3[16];
+  v26 = abuff_swap_ptr_v3[16];
   v52 = 0;
   v27 = v26 + ((abuff_swap_ptr_v3[15] & 0x3FF) << 16);
-  LOWORD(v26) = abuff_swap_ptr_v3[17];
+  v26 = abuff_swap_ptr_v3[17];
   v55 = 4;
   v28 = ((v26 >> 11) & 0x1F) + 32 * v27;
-  *((_DWORD *)reconstr_abuff_v4 + 40) = v28;
-  LOWORD(v28) = abuff_swap_ptr_v3[17];
+  reconstr_abuff_v4[20] = v28;
+  v28 = abuff_swap_ptr_v3[17];
   reconstr_abuff_v4[78] = (v28 >> 5) & 0x3F;
-  reconstr_abuff_v4[89] = (*((_BYTE *)abuff_swap_ptr_v3 + 34) >> 2) & 7;
-  v29 = (((signed int)(unsigned __int16)abuff_swap_ptr_v3[18] >> 15) & 1) + 2 * (*((_BYTE *)abuff_swap_ptr_v3 + 34) & 3);
+  reconstr_abuff_v4[89] = (abuff_swap_ptr_v3[17] >> 2) & 7;
+  v29 = ((abuff_swap_ptr_v3[18] >> 15) & 1) + 2 * (abuff_swap_ptr_v3[17] & 3);
   reconstr_abuff_v4[90] = v29;
-  reconstr_abuff_v4[91] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[18] >> 12) & 7;
+  reconstr_abuff_v4[91] = (abuff_swap_ptr_v3[18] >> 12) & 7;
   LOWORD(v29) = abuff_swap_ptr_v3[18];
   reconstr_abuff_v4[92] = (v29 >> 9) & 7;
-  reconstr_abuff_v4[93] = ((signed int)(unsigned __int16)abuff_swap_ptr_v3[18] >> 6) & 7;
-  reconstr_abuff_v4[94] = (*((_BYTE *)abuff_swap_ptr_v3 + 36) >> 3) & 7;
-  reconstr_abuff_v4[95] = *((_BYTE *)abuff_swap_ptr_v3 + 36) & 7;
-  v30 = (int)(reconstr_abuff_v4 + 26);
-  v53 = reconstr_abuff_v4 + 26;
+  reconstr_abuff_v4[93] = (abuff_swap_ptr_v3[18] >> 6) & 7;
+  reconstr_abuff_v4[94] = (abuff_swap_ptr_v3[18] >> 3) & 7;
+  reconstr_abuff_v4[95] = abuff_swap_ptr_v3[18] & 7;
+  v30 = &reconstr_abuff_v4[13];
+  v53 = &reconstr_abuff_v4[13];
   while ( 1 )
   {
     v31 = *(_DWORD *)v30;
