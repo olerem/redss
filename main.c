@@ -148,9 +148,9 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   {
     abuff_swap_ptr_v3 = abuff_swap_ptr;
     reconstr_abuff_v4 = reconstr_abuffa;
-    LOWORD(reconstr_abuff) = *abuff_swap_ptr;
-    v5 = ((signed int)reconstr_abuff >> 15) & 1;
-    *reconstr_abuffa = v5;
+    reconstr_abuff = abuff_swap_ptr[0];
+    v5 = (reconstr_abuff >> 15) & 1;
+    reconstr_abuffa[0] = v5;
     word_3D1264 = v5;
     reconstr_abuffa[1] = ((signed int)(unsigned __int16)*abuff_swap_ptr >> 10) & 0x1F;
     LOWORD(abuff_swap_a2) = *abuff_swap_ptr;
@@ -184,33 +184,27 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
     abuff_swap_ptr_v3 = abuff_swap_ptr;
     reconstr_abuff_v4 = reconstr_abuffa;
     word_3D1264 = 1;
-    LOWORD(reconstr_abuff) = *abuff_swap_ptr;
-    reconstr_abuffa[1] = ((signed int)reconstr_abuff >> 11) & 0x1F;
-    LOWORD(abuff_swap_a2) = *abuff_swap_ptr;
-    v13 = ((signed int)abuff_swap_a2 >> 6) & 0x1F;
-    reconstr_abuffa[2] = v13;
-    reconstr_abuffa[3] = (*(_BYTE *)abuff_swap_ptr >> 2) & 0xF;
-    LOWORD(v13) = abuff_swap_ptr[1];
-    v14 = ((v13 >> 14) & 3) + 4 * (*(_BYTE *)abuff_swap_ptr & 3);
-    reconstr_abuffa[4] = v14;
-    reconstr_abuffa[5] = ((signed int)(unsigned __int16)abuff_swap_ptr[1] >> 10) & 0xF;
-    LOWORD(v14) = abuff_swap_ptr[1];
-    reconstr_abuffa[6] = (v14 >> 6) & 0xF;
-    reconstr_abuffa[7] = (*((_BYTE *)abuff_swap_ptr + 2) >> 2) & 0xF;
-    v15 = (((signed int)(unsigned __int16)abuff_swap_ptr_v3[2] >> 14) & 3) + 4 * (*((_BYTE *)abuff_swap_ptr_v3 + 2) & 3);
-    reconstr_abuffa[8] = v15;
-    reconstr_abuffa[9] = ((signed int)(unsigned __int16)abuff_swap_ptr[2] >> 11) & 7;
-    LOWORD(v15) = abuff_swap_ptr[2];
-    reconstr_abuffa[10] = (v15 >> 8) & 7;
-    v16 = (*((_BYTE *)abuff_swap_ptr + 4) >> 5) & 7;
-    reconstr_abuffa[11] = v16;
-    reconstr_abuffa[12] = (*((_BYTE *)abuff_swap_ptr + 4) >> 2) & 7;
-    LOWORD(v16) = abuff_swap_ptr[3];
-    v17 = *((_BYTE *)abuff_swap_ptr + 4) & 3;
-    v11 = ((v16 >> 15) & 1) + 2 * v17;
-    reconstr_abuffa[13] = v11;
-    LOWORD(v17) = abuff_swap_ptr[3];
-    v12 = (v17 >> 12) & 7;
+
+    reconstr_abuffa[1] = (abuff_swap_ptr[0] >> 11) & 0x1F;
+    reconstr_abuffa[2] = (abuff_swap_ptr[0] >> 6) & 0x1F;
+    reconstr_abuffa[3] = ((abuff_swap_ptr[0] & 0xf) >> 2) & 0xF;
+    reconstr_abuffa[4] = ((abuff_swap_ptr[1] >> 14) & 3)
+    		+ 4 * (abuff_swap_ptr[0] & 3);
+
+    reconstr_abuffa[5] = (abuff_swap_ptr[1] >> 10) & 0xF;
+    reconstr_abuffa[6] = (abuff_swap_ptr[1] >> 6) & 0xF;
+    reconstr_abuffa[7] = ((abuff_swap_ptr[1] & 0xf) >> 2) & 0xF;
+    reconstr_abuffa[8] = ((abuff_swap_ptr[2] >> 14) & 3)
+    		+ 4 * (abuff_swap_ptr[1] & 3);
+
+    reconstr_abuffa[9] = (abuff_swap_ptr[2] >> 11) & 7;
+    reconstr_abuffa[10] = (abuff_swap_ptr[2] >> 8) & 7;
+    reconstr_abuffa[11] = ((abuff_swap_ptr[2] & 0xf) >> 5) & 7;
+    reconstr_abuffa[12] = ((abuff_swap_ptr[2] & 0xf) >> 2) & 7;
+    reconstr_abuffa[13] = ((abuff_swap_ptr[3] >> 15) & 1)
+    		+ 2 * ((abuff_swap_ptr[2] & 0xf) & 3);
+
+    v12 = (abuff_swap_ptr[3] >> 12) & 7;
   }
   reconstr_abuff_v4[14] = v12;
   if ( word_3D041C && !word_3D1264 )
