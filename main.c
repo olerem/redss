@@ -142,6 +142,7 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   __int16 *abuff_swap_ptra; // [sp+40h] [bp+8h]@12
   __int8 *abuff_swap_ptrb; // [sp+40h] [bp+8h]@22
   __int8 *abuff_swap_ptrc; // [sp+40h] [bp+8h]@27
+  int i;
 
   v2 = 0;
   if ( word_3D041C )
@@ -255,8 +256,7 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   reconstr_abuff_v4[22] = (abuff_swap_ptr_v3[15] >> 10) & 0x1F;
   reconstr_abuffb = 0;
 
-  v52 = 0;
-  v55 = 4;
+
   reconstr_abuff_v4[20] = ((abuff_swap_ptr_v3[17] >> 11) & 0x1F)
 		  + 32 * (abuff_swap_ptr_v3[16] + ((abuff_swap_ptr_v3[15] & 0x3FF) << 16));
   reconstr_abuff_v4[78] = (abuff_swap_ptr_v3[17] >> 5) & 0x3F;
@@ -271,46 +271,47 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   v30 = &reconstr_abuff_v4[13];
   v53 = &reconstr_abuff_v4[13];
 
+  v52 = 0;
+  v55 = 4;
+////////////////////////////////////////////////////////////////////
   while ( 1 )
   {
     v31 = *(_DWORD *)v30;
-    v56 = 72;
-    v57 = 2556;
-    v58 = 59640;
-    v59 = 1028790;
-    v60 = 13991544;
-    v61 = 156238908;
-    v62 = 1473109704;
-    v63 = -915885543;
+    v56[0] = 72;
+    v56[1] = 2556;
+    v56[2] = 59640;
+    v56[3] = 1028790;
+    v56[4] = 13991544;
+    v56[5] = 156238908;
+    v56[6] = 1473109704;
+    v56[7] = -915885543;
     if ( v31 <= 1473109703 )
-    {
       if ( word_3D0C26 != v2 )
         goto LABEL_22;
-    } else {
+    else
       word_3D0C26 = v2;
-    }
-    v32 = &v63;
+
+    v32 = &v56[7];
     v33 = 7;
-    *(_WORD *)(v30 + 16) = v2;
-    abuff_swap_ptra = (__int16 *)71;
-    v54 = &v63;
-    do
-    {
-      if ( *(v32 - 1) <= v31 )
+    v30[8] = v2;
+    abuff_swap_ptra = 71;
+    v54 = &v56[7];
+    for (i = 71; i >= 0; i--) {
+      if ( (signed int)*(v32 - 1) <= v31 )
       {
         --v33;
-        v32 = &v56 + (signed __int16)v33;
-        v31 -= *(&v56 + (signed __int16)v33);
-        v54 = &v56 + (signed __int16)v33;
-        reconstr_abuff_v4[v52 - (signed __int16)v33 + 34] = (signed __int16)abuff_swap_ptra;
-        if ( !(_WORD)v33 )
+        v32 = &v56[v33];
+        v31 -= v56[v33];
+        v54 = &v56[v33];
+        reconstr_abuff_v4[v52 - v33 + 34] = abuff_swap_ptra;
+        if (!v33)
           break;
       }
-      --v56;
-      if ( (signed __int16)v33 > 1 )
+      --v56[0];
+      if ( v33 > 1 )
       {
-        v34 = &v57;
-        v35 = (signed __int16)v33 - 1;
+        v34 = &v56[1];
+        v35 = v33 - 1;
         do
         {
           *v34 -= *(v34 - 1);
@@ -320,32 +321,29 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
         while ( v35 );
         v32 = v54;
       }
-      abuff_swap_ptra = (__int16 *)((char *)abuff_swap_ptra - 1);
-    }
-    while ( (signed __int16)abuff_swap_ptra >= 0 );
+    };
+
+
     if ( word_3D0C26 )
     {
-      v30 = (int)v53;
+      v30 = v53;
 LABEL_22:
       v36 = *(_DWORD *)v30;
       v37 = 7;
       v38 = 71;
       v39 = 504;
-      abuff_swap_ptrb = (__int8 *)7;
-      do
-      {
-        for ( ; v36 < g_unc_array_3C8978[v39 + (signed __int16)v38]; --v38 )
+
+      for (i = 7; i > 0; i--) {
+        for ( ; v36 < g_unc_array_3C8978[v39 + v38]; --v38 )
           ;
-        v40 = v39 + (signed __int16)v38;
+        v40 = v39 + v38;
         v39 -= 72;
         v36 -= g_unc_array_3C8978[v40];
         v41 = 18 * (_DWORD)reconstr_abuffb - v37--;
         reconstr_abuff_v4[v41 + 35] = v38;
-        --abuff_swap_ptrb;
       }
-      while ( abuff_swap_ptrb );
     }
-    v30 = (int)(v53 + 18);
+    v30 = v53 + 18;
     v42 = v55 == 1;
     reconstr_abuffb = (__int16 *)((char *)reconstr_abuffb + 1);
     v52 += 18;
@@ -355,26 +353,23 @@ LABEL_22:
       break;
     v2 = 0;
   }
+
+/////////////////////////////////////////////////////////////////////////
   v43 = (unsigned __int16)abuff_swap_ptr_v3[19];
   v44 = reconstr_abuff_v4 + 16;
   abuff_swap_ptrc = (__int8 *)(reconstr_abuff_v4 + 16);
-  v45 = 3;
   v46 = ((v43 << 8) + *((_BYTE *)abuff_swap_ptr_v3 + 41)) / 151;
   reconstr_abuff_v4[15] = ((v43 << 8) + *((_BYTE *)abuff_swap_ptr_v3 + 41)) % 151 + 36;
-  do
-  {
+  for (i = 3; i > 0; i--) {
     v47 = v46;
     ++v44;
     v46 /= 48;
-    --v45;
     *(v44 - 1) = v47 - 48 * v46;
   }
-  while ( v45 );
+
   v48 = reconstr_abuff_v4[15];
   v49 = abuff_swap_ptrc;
-  v50 = 3;
-  do
-  {
+  for (i = 3; i > 0; i--) {
     if ( v48 > 162 )
     {
       *(_WORD *)v49 += 139;
@@ -388,8 +383,6 @@ LABEL_22:
     }
     v48 = *(_WORD *)v49;
     v49 += 2;
-    --v50;
   }
-  while ( v50 );
-}
 
+}
