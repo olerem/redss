@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include "dss.h"
 #define __int8 int8_t
 #define __int16 int16_t
 
@@ -8,6 +9,7 @@
 
 unsigned int word_3D1264;
 unsigned int word_3D1266;
+unsigned int word_3D041C;
 unsigned int flip;
 
 
@@ -115,15 +117,10 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   int v40; // ebp@25
   int v41; // ebp@25
   bool v42; // zf@26
-  int v43; // edx@27
-  __int16 *v44; // ebx@27
   signed int v45; // ebp@27
   int v46; // ecx@27
   __int16 v47; // di@28
-  __int16 v48; // si@29
-  __int8 *v49; // eax@29
   signed int v50; // edx@29
-  int v51; // ecx@31
   int v52; // [sp+8h] [bp-30h]@7
   __int16 *v53; // [sp+Ch] [bp-2Ch]@7
   int *v54; // [sp+10h] [bp-28h]@12
@@ -334,11 +331,11 @@ LABEL_22:
       v39 = 504;
 
       for (i = 7; i > 0; i--) {
-        for ( ; v36 < g_unc_array_3C8978[v39 + v38]; --v38 )
+        for ( ; v36 < g_unc_combinatorial_table[v39 + v38]; --v38 )
           ;
         v40 = v39 + v38;
         v39 -= 72;
-        v36 -= g_unc_array_3C8978[v40];
+        v36 -= g_unc_combinatorial_table[v40];
         v41 = 18 * (_DWORD)reconstr_abuffb - v37--;
         reconstr_abuff_v4[v41 + 35] = v38;
       }
@@ -355,34 +352,40 @@ LABEL_22:
   }
 
 /////////////////////////////////////////////////////////////////////////
-  v43 = (unsigned __int16)abuff_swap_ptr_v3[19];
-  v44 = reconstr_abuff_v4 + 16;
-  abuff_swap_ptrc = (__int8 *)(reconstr_abuff_v4 + 16);
-  v46 = ((v43 << 8) + *((_BYTE *)abuff_swap_ptr_v3 + 41)) / 151;
-  reconstr_abuff_v4[15] = ((v43 << 8) + *((_BYTE *)abuff_swap_ptr_v3 + 41)) % 151 + 36;
+  int16_t *v44;
+  int16_t v43;
+
+  v43 = abuff_swap_ptr_v3[19];
+  v44 = &reconstr_abuff_v4[8];
+
+  v46 = ((v43 << 8) + *((int8_t *)abuff_swap_ptr_v3 + 41)) / 151;
+  reconstr_abuff_v4[15] = ((v43 << 8) + *((int8_t *)abuff_swap_ptr_v3 + 41)) % 151 + 36;
   for (i = 3; i > 0; i--) {
     v47 = v46;
     ++v44;
     v46 /= 48;
     *(v44 - 1) = v47 - 48 * v46;
   }
+////////////////////////////////////////////////////////////////////////
+  int16_t v51;
+  int16_t v48;
+  int16_t *v49;
 
   v48 = reconstr_abuff_v4[15];
-  v49 = abuff_swap_ptrc;
+  v49 = &reconstr_abuff_v4[8];
   for (i = 3; i > 0; i--) {
     if ( v48 > 162 )
     {
-      *(_WORD *)v49 += 139;
+      *v49 += 139;
     }
-    else
-    {
+    else {
       v51 = v48 - 23;
       if ( v51 < 36 )
-        LOWORD(v51) = 36;
-      *(_WORD *)v49 += v51;
+        v51 = 36;
+      *v49 += v51;
     }
-    v48 = *(_WORD *)v49;
-    v49 += 2;
+    v48 = *v49;
+    v49++;
   }
 
 }
