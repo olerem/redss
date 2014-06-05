@@ -10,6 +10,7 @@
 unsigned int word_3D1264;
 unsigned int word_3D1266;
 unsigned int word_3D041C;
+unsigned int word_3D0C26;
 unsigned int flip;
 
 
@@ -77,7 +78,7 @@ void g_unc_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag)
 void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
 {
   __int16 v2; // bp@1
-  __int16 *abuff_swap_ptr_v3; // eax@2
+  __int16 *abuff_swap_ptr; // eax@2
   __int16 *reconstr_abuff_v4; // esi@2
   int v5; // ecx@2
   int v6; // edx@2
@@ -125,7 +126,6 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   __int16 *v53; // [sp+Ch] [bp-2Ch]@7
   int *v54; // [sp+10h] [bp-28h]@12
   signed int v55; // [sp+14h] [bp-24h]@7
-  int v56; // [sp+18h] [bp-20h]@9
   int v57; // [sp+1Ch] [bp-1Ch]@9
   int v58; // [sp+20h] [bp-18h]@9
   int v59; // [sp+24h] [bp-14h]@9
@@ -134,8 +134,6 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   int v62; // [sp+30h] [bp-8h]@9
   int v63; // [sp+34h] [bp-4h]@9
   __int16 *reconstr_abuffa; // [sp+3Ch] [bp+4h]@0
-  __int16 *reconstr_abuffb; // [sp+3Ch] [bp+4h]@7
-  __int16 *abuff_swap_ptr; // [sp+40h] [bp+8h]@0
   __int16 *abuff_swap_ptra; // [sp+40h] [bp+8h]@12
   __int8 *abuff_swap_ptrb; // [sp+40h] [bp+8h]@22
   __int8 *abuff_swap_ptrc; // [sp+40h] [bp+8h]@27
@@ -144,7 +142,7 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   v2 = 0;
   if ( word_3D041C )
   {
-    abuff_swap_ptr_v3 = abuff_swap_ptr;
+    abuff_swap_ptr = abuff_swap_ptr;
     reconstr_abuff_v4 = reconstr_abuffa;
 
     v5 = (abuff_swap_ptr[0] >> 15) & 1;
@@ -173,7 +171,7 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   }
   else
   {
-    abuff_swap_ptr_v3 = abuff_swap_ptr;
+    abuff_swap_ptr = abuff_swap_ptr;
     reconstr_abuff_v4 = reconstr_abuffa;
     word_3D1264 = 1;
 
@@ -209,80 +207,76 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
     return;
   }
 
-  reconstr_abuff_v4[19] = (abuff_swap_ptr_v3[3] >> 7) & 0x1F;
-  *((_DWORD *)reconstr_abuff_v4 + 13) = *((_BYTE *)abuff_swap_ptr_v3 + 11)
-		  + ((abuff_swap_ptr_v3[4] + ((abuff_swap_ptr_v3[3] & 0x7F) << 16)) << 8);
-  reconstr_abuff_v4[24] = (abuff_swap_ptr_v3[5] >> 2) & 0x3F;
-  reconstr_abuff_v4[35] = ((abuff_swap_ptr_v3[6] >> 15) & 1) + 2 * (abuff_swap_ptr_v3[5] & 3);
-  reconstr_abuff_v4[36] = (abuff_swap_ptr_v3[6] >> 12) & 7;
-  reconstr_abuff_v4[37] = (abuff_swap_ptr_v3[6] >> 9) & 7;
-  reconstr_abuff_v4[38] = (abuff_swap_ptr_v3[6] >> 6) & 7;
-  reconstr_abuff_v4[39] = (abuff_swap_ptr_v3[6] >> 3) & 7;
-  reconstr_abuff_v4[40] = abuff_swap_ptr_v3[6] & 7;
-  reconstr_abuff_v4[41] = (abuff_swap_ptr_v3[7] >> 13) & 7;
+  reconstr_abuff_v4[19] = (abuff_swap_ptr[3] >> 7) & 0x1F;
+  reconstr_abuff_v4[26] = *((_BYTE *)abuff_swap_ptr + 11)
+		  + ((abuff_swap_ptr[4] + ((abuff_swap_ptr[3] & 0x7F) << 16)) << 8);
+  reconstr_abuff_v4[24] = (abuff_swap_ptr[5] >> 2) & 0x3F;
+  reconstr_abuff_v4[35] = ((abuff_swap_ptr[6] >> 15) & 1) + 2 * (abuff_swap_ptr[5] & 3);
+  reconstr_abuff_v4[36] = (abuff_swap_ptr[6] >> 12) & 7;
+  reconstr_abuff_v4[37] = (abuff_swap_ptr[6] >> 9) & 7;
+  reconstr_abuff_v4[38] = (abuff_swap_ptr[6] >> 6) & 7;
+  reconstr_abuff_v4[39] = (abuff_swap_ptr[6] >> 3) & 7;
+  reconstr_abuff_v4[40] = abuff_swap_ptr[6] & 7;
+  reconstr_abuff_v4[41] = (abuff_swap_ptr[7] >> 13) & 7;
 
-  reconstr_abuff_v4[20] = (abuff_swap_ptr_v3[7] >> 8) & 0x1F;
+  reconstr_abuff_v4[20] = (abuff_swap_ptr[7] >> 8) & 0x1F;
 
-  reconstr_abuff_v4[11] = ((abuff_swap_ptr_v3[9] >> 9) & 0x7F)
-		  + ((abuff_swap_ptr_v3[8] + (abuff_swap_ptr_v3[7] << 16)) << 7);
-  reconstr_abuff_v4[42] = (abuff_swap_ptr_v3[9] >> 3) & 0x3F;
-  reconstr_abuff_v4[53] = abuff_swap_ptr_v3[9] & 7;
-  reconstr_abuff_v4[54] = (abuff_swap_ptr_v3[10] >> 13) & 7;
-  reconstr_abuff_v4[55] = (abuff_swap_ptr_v3[10] >> 10) & 7;
-  reconstr_abuff_v4[56] = (abuff_swap_ptr_v3[10] >> 7) & 7;
-  reconstr_abuff_v4[57] = (abuff_swap_ptr_v3[10] >> 4) & 7;
-  reconstr_abuff_v4[58] = (abuff_swap_ptr_v3[10] >> 1) & 7;
-  reconstr_abuff_v4[59] = ((abuff_swap_ptr_v3[11] >> 14) & 3)
-		  + 4 * (abuff_swap_ptr_v3[10] & 1);
-  reconstr_abuff_v4[21] = (abuff_swap_ptr_v3[11] >> 9) & 0x1F;
+  reconstr_abuff_v4[44] = ((abuff_swap_ptr[9] >> 9) & 0x7F)
+		  + ((abuff_swap_ptr[8] + (abuff_swap_ptr[7] << 16)) << 7);
+  reconstr_abuff_v4[42] = (abuff_swap_ptr[9] >> 3) & 0x3F;
+  reconstr_abuff_v4[53] = abuff_swap_ptr[9] & 7;
+  reconstr_abuff_v4[54] = (abuff_swap_ptr[10] >> 13) & 7;
+  reconstr_abuff_v4[55] = (abuff_swap_ptr[10] >> 10) & 7;
+  reconstr_abuff_v4[56] = (abuff_swap_ptr[10] >> 7) & 7;
+  reconstr_abuff_v4[57] = (abuff_swap_ptr[10] >> 4) & 7;
+  reconstr_abuff_v4[58] = (abuff_swap_ptr[10] >> 1) & 7;
+  reconstr_abuff_v4[59] = ((abuff_swap_ptr[11] >> 14) & 3)
+		  + 4 * (abuff_swap_ptr[10] & 1);
 
-  v23 = abuff_swap_ptr_v3[12] + ((abuff_swap_ptr_v3[11] & 0x1FF) << 16);
-  v24 = ((abuff_swap_ptr_v3[13] >> 10) & 0x3F) + (v23 << 6);
-  *((_DWORD *)reconstr_abuff_v4 + 31) = v24;
+  reconstr_abuff_v4[21] = (abuff_swap_ptr[11] >> 9) & 0x1F;
 
-  reconstr_abuff_v4[60] = (abuff_swap_ptr_v3[13] >> 4) & 0x3F;
-  reconstr_abuff_v4[71] = (abuff_swap_ptr_v3[13] >> 1) & 7;
-  reconstr_abuff_v4[72] = ((abuff_swap_ptr_v3[14] >> 14) & 3)
-		  + 4 * (abuff_swap_ptr_v3[14] & 1);
-  reconstr_abuff_v4[73] = (abuff_swap_ptr_v3[14] >> 11) & 7;
-  reconstr_abuff_v4[74] = (abuff_swap_ptr_v3[14] >> 8) & 7;
-  reconstr_abuff_v4[75] = (abuff_swap_ptr_v3[14] >> 5) & 7;
-  reconstr_abuff_v4[76] = (abuff_swap_ptr_v3[14] >> 2) & 7;
-  reconstr_abuff_v4[77] = ((abuff_swap_ptr_v3[15] >> 15) & 1)
-		  + 2 * (abuff_swap_ptr_v3[14] & 3);
-  reconstr_abuff_v4[22] = (abuff_swap_ptr_v3[15] >> 10) & 0x1F;
-  reconstr_abuffb = 0;
+  reconstr_abuff_v4[62] = ((abuff_swap_ptr[13] >> 10) & 0x3F)
+  	  	  + ((abuff_swap_ptr[12] + ((abuff_swap_ptr[11] & 0x1FF) << 16)) << 6);
 
+  reconstr_abuff_v4[60] = (abuff_swap_ptr[13] >> 4) & 0x3F;
+  reconstr_abuff_v4[71] = (abuff_swap_ptr[13] >> 1) & 7;
+  reconstr_abuff_v4[72] = ((abuff_swap_ptr[14] >> 14) & 3)
+		  + 4 * (abuff_swap_ptr[14] & 1);
+  reconstr_abuff_v4[73] = (abuff_swap_ptr[14] >> 11) & 7;
+  reconstr_abuff_v4[74] = (abuff_swap_ptr[14] >> 8) & 7;
+  reconstr_abuff_v4[75] = (abuff_swap_ptr[14] >> 5) & 7;
+  reconstr_abuff_v4[76] = (abuff_swap_ptr[14] >> 2) & 7;
+  reconstr_abuff_v4[77] = ((abuff_swap_ptr[15] >> 15) & 1)
+		  + 2 * (abuff_swap_ptr[14] & 3);
 
-  reconstr_abuff_v4[20] = ((abuff_swap_ptr_v3[17] >> 11) & 0x1F)
-		  + 32 * (abuff_swap_ptr_v3[16] + ((abuff_swap_ptr_v3[15] & 0x3FF) << 16));
-  reconstr_abuff_v4[78] = (abuff_swap_ptr_v3[17] >> 5) & 0x3F;
-  reconstr_abuff_v4[89] = (abuff_swap_ptr_v3[17] >> 2) & 7;
-  reconstr_abuff_v4[90] = ((abuff_swap_ptr_v3[18] >> 15) & 1)
-		  + 2 * (abuff_swap_ptr_v3[17] & 3);
-  reconstr_abuff_v4[91] = (abuff_swap_ptr_v3[18] >> 12) & 7;
-  reconstr_abuff_v4[92] = (abuff_swap_ptr_v3[18] >> 9) & 7;
-  reconstr_abuff_v4[93] = (abuff_swap_ptr_v3[18] >> 6) & 7;
-  reconstr_abuff_v4[94] = (abuff_swap_ptr_v3[18] >> 3) & 7;
-  reconstr_abuff_v4[95] = abuff_swap_ptr_v3[18] & 7;
-  v30 = &reconstr_abuff_v4[13];
-  v53 = &reconstr_abuff_v4[13];
+  reconstr_abuff_v4[22] = (abuff_swap_ptr[15] >> 10) & 0x1F;
+
+  reconstr_abuff_v4[80] = ((abuff_swap_ptr[17] >> 11) & 0x1F)
+		  + 32 * (abuff_swap_ptr[16] + ((abuff_swap_ptr[15] & 0x3FF) << 16));
+  reconstr_abuff_v4[78] = (abuff_swap_ptr[17] >> 5) & 0x3F;
+  reconstr_abuff_v4[89] = (abuff_swap_ptr[17] >> 2) & 7;
+  reconstr_abuff_v4[90] = ((abuff_swap_ptr[18] >> 15) & 1)
+		  + 2 * (abuff_swap_ptr[17] & 3);
+  reconstr_abuff_v4[91] = (abuff_swap_ptr[18] >> 12) & 7;
+  reconstr_abuff_v4[92] = (abuff_swap_ptr[18] >> 9) & 7;
+  reconstr_abuff_v4[93] = (abuff_swap_ptr[18] >> 6) & 7;
+  reconstr_abuff_v4[94] = (abuff_swap_ptr[18] >> 3) & 7;
+  reconstr_abuff_v4[95] = abuff_swap_ptr[18] & 7;
+  v30 = &reconstr_abuff_v4[26];
+  v53 = &reconstr_abuff_v4[26];
 
   v52 = 0;
   v55 = 4;
 ////////////////////////////////////////////////////////////////////
+  int some_val = 0;
   while ( 1 )
   {
-    v31 = *(_DWORD *)v30;
-    v56[0] = 72;
-    v56[1] = 2556;
-    v56[2] = 59640;
-    v56[3] = 1028790;
-    v56[4] = 13991544;
-    v56[5] = 156238908;
-    v56[6] = 1473109704;
-    v56[7] = -915885543;
-    if ( v31 <= 1473109703 )
+	/* looks like Binomial coefficients C(72,n). But 3379081753 do not fit to this sequence */
+    unsigned int v56[8] = {72, 2556, 59640, 1028790, 13991544, 156238908, 1473109704, 3379081753};
+
+    v31 = *(int16_t *)v30;
+
+    if ( v31 < 1473109704 )
       if ( word_3D0C26 != v2 )
         goto LABEL_22;
     else
@@ -327,22 +321,29 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
 LABEL_22:
       v36 = *(_DWORD *)v30;
       v37 = 7;
-      v38 = 71;
-      v39 = 504;
+      v38 = 71; //GRID_SIZE
+      v39 = 7; //MAX_PULSES
 
+      /* this part seems to be close to g723.1 gen_fcb_excitation() RATE_6300 */
       for (i = 7; i > 0; i--) {
-        for ( ; v36 < g_unc_combinatorial_table[v39 + v38]; --v38 )
+        for ( ; v36 < g_unc_combinatorial_table[v39][v38]; --v38 )
           ;
-        v40 = v39 + v38;
-        v39 -= 72;
-        v36 -= g_unc_combinatorial_table[v40];
-        v41 = 18 * (_DWORD)reconstr_abuffb - v37--;
-        reconstr_abuff_v4[v41 + 35] = v38;
+        v36 -= g_unc_combinatorial_table[v39][v38];
+        v39--;
+        v41 = 18 * some_val - v37;
+        v37--;
+        reconstr_abuff_v4[v41 + 35] = v38; // on first run reconstr_abuff_v4[28],
+        // difference between start of each block is 18
+        // 28, 29, 30, 31, 32, 33, 34,
+        // 46, 47, 48, 49, 50, 51, 52,
+        // 64, 65, 66, 67, 68, 69, 70,
+        // 82, 83, 84, 85, 86, 87, 88,
+        //
       }
     }
     v30 = v53 + 18;
     v42 = v55 == 1;
-    reconstr_abuffb = (__int16 *)((char *)reconstr_abuffb + 1);
+    some_val = some_val + 1;
     v52 += 18;
     v53 += 18;
     --v55;
@@ -355,11 +356,11 @@ LABEL_22:
   int16_t *v44;
   int16_t v43;
 
-  v43 = abuff_swap_ptr_v3[19];
+  v43 = abuff_swap_ptr[19];
   v44 = &reconstr_abuff_v4[8];
 
-  v46 = ((v43 << 8) + *((int8_t *)abuff_swap_ptr_v3 + 41)) / 151;
-  reconstr_abuff_v4[15] = ((v43 << 8) + *((int8_t *)abuff_swap_ptr_v3 + 41)) % 151 + 36;
+  v46 = ((v43 << 8) + *((int8_t *)abuff_swap_ptr + 41)) / 151;
+  reconstr_abuff_v4[15] = ((v43 << 8) + *((int8_t *)abuff_swap_ptr + 41)) % 151 + 36;
   for (i = 3; i > 0; i--) {
     v47 = v46;
     ++v44;
