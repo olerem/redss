@@ -208,7 +208,8 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   }
 
   reconstr_abuff_v4[19] = (abuff_swap_ptr[3] >> 7) & 0x1F;
-  reconstr_abuff_v4[26] = *((_BYTE *)abuff_swap_ptr + 11)
+  // instead of "*((uint8_t *)abuff_swap_ptr + 11)" can be "(abuff_swap_ptr[5] >> 8) & 0xf"
+  reconstr_abuff_v4[26] = *((uint8_t *)abuff_swap_ptr + 11)
 		  + ((abuff_swap_ptr[4] + ((abuff_swap_ptr[3] & 0x7F) << 16)) << 8);
   reconstr_abuff_v4[24] = (abuff_swap_ptr[5] >> 2) & 0x3F;
   reconstr_abuff_v4[35] = ((abuff_swap_ptr[6] >> 15) & 1) + 2 * (abuff_swap_ptr[5] & 3);
@@ -285,7 +286,6 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
     v32 = &v56[7];
     v33 = 7;
     v30[8] = v2;
-    abuff_swap_ptra = 71;
     v54 = &v56[7];
     for (i = 71; i >= 0; i--) {
       if ( (signed int)*(v32 - 1) <= v31 )
@@ -294,22 +294,23 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
         v32 = &v56[v33];
         v31 -= v56[v33];
         v54 = &v56[v33];
-        reconstr_abuff_v4[v52 - v33 + 34] = abuff_swap_ptra;
+        reconstr_abuff_v4[v52 - v33 + 34] = i; //some structs, TODO
+        // difference between start of each block is 18
+        // 28, 29, 30, 31, 32, 33, 34,
+        // 46, 47, 48, 49, 50, 51, 52,
+        // 64, 65, 66, 67, 68, 69, 70,
+        // 82, 83, 84, 85, 86, 87, 88,
         if (!v33)
           break;
       }
       --v56[0];
       if ( v33 > 1 )
       {
-        v34 = &v56[1];
-        v35 = v33 - 1;
-        do
-        {
-          *v34 -= *(v34 - 1);
-          ++v34;
-          --v35;
+        int a = 1, b;
+        for (b = v33 - 1 ; b > 0; b--) {
+        	v56[a] -= v56[a - 1];
+        	a++;
         }
-        while ( v35 );
         v32 = v54;
       }
     };
@@ -389,4 +390,27 @@ LABEL_22:
     v49++;
   }
 
+}
+
+void g_unc_sub_3B8740(int32_t *array14, int a2, int null_a3, int null_a4, int null_a5, int null_a6, int null_a7, int null_a8, __int16 a9)
+{
+  int v9; // ecx@1
+  __int32 *array14_ptr; // edx@1
+  __int16 *array14_v11; // eax@1
+  signed int size; // esi@1
+  int v13; // ebx@2
+  int i;
+
+
+  array14_ptr = array14;
+  array14_v11 = (__int16 *)((char *)&a2 + 2);
+  for (i = 0; i < 14; i++)
+  {
+    v13 = *array14_v11;
+    ++array14_v11;
+    ++array14_ptr;
+    *(array14_ptr - 1) = g_unc_array_3C84F0[i][v13];
+  }
+  if ( word_3D041C )
+    array14[13] = g_unc_array_3C8870[a9];
 }
