@@ -75,7 +75,7 @@ void g_unc_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag)
   }
 }
 
-void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
+void g_unc_sub_3B9120(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 {
   __int16 v2; // bp@1
   __int16 *abuff_swap_ptr; // eax@2
@@ -133,7 +133,7 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   int v61; // [sp+2Ch] [bp-Ch]@9
   int v62; // [sp+30h] [bp-8h]@9
   int v63; // [sp+34h] [bp-4h]@9
-  __int16 *reconstr_abuffa; // [sp+3Ch] [bp+4h]@0
+  struct struc_1 *reconstr_abuffa; // [sp+3Ch] [bp+4h]@0
   __int16 *abuff_swap_ptra; // [sp+40h] [bp+8h]@12
   __int8 *abuff_swap_ptrb; // [sp+40h] [bp+8h]@22
   __int8 *abuff_swap_ptrc; // [sp+40h] [bp+8h]@27
@@ -143,28 +143,27 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
   if ( word_3D041C )
   {
     abuff_swap_ptr = abuff_swap_ptr;
-    reconstr_abuff_v4 = reconstr_abuffa;
+    reconstr_abuff_v4 = reconstr_abuff;
 
-    v5 = (abuff_swap_ptr[0] >> 15) & 1;
-    reconstr_abuffa[0] = v5;
-    word_3D1264 = v5;
-    reconstr_abuffa[1] = (abuff_swap_ptr[0] >> 10) & 0x1F;
-    reconstr_abuffa[2] = (abuff_swap_ptr[0] >> 5) & 0x1F;
-    reconstr_abuffa[3] = (abuff_swap_ptr[0] >> 1) & 0xF;
-    reconstr_abuffa[4] = ((abuff_swap_ptr[1] >> 13) & 7)
+    word_3D1264 = reconstr_abuff->field_0 = (abuff_swap_ptr[0] >> 15) & 1;
+
+    reconstr_abuff->array14_stage0[0] = (abuff_swap_ptr[0] >> 10) & 0x1F;
+    reconstr_abuff->array14_stage0[1] = (abuff_swap_ptr[0] >> 5) & 0x1F;
+    reconstr_abuff->array14_stage0[2] = (abuff_swap_ptr[0] >> 1) & 0xF;
+    reconstr_abuff->array14_stage0[3] = ((abuff_swap_ptr[1] >> 13) & 7)
     		+ 8 * (abuff_swap_ptr[0] & 1);
 
-    reconstr_abuffa[5] = (abuff_swap_ptr[1] >> 9) & 0xF;
-    reconstr_abuffa[6] = (abuff_swap_ptr[1] >> 5) & 0xF;
-    reconstr_abuffa[7] = (abuff_swap_ptr[1] >> 1) & 0xF;
-    reconstr_abuffa[8] = ((abuff_swap_ptr[2] >> 13) & 7)
+    reconstr_abuff->array14_stage0[4] = (abuff_swap_ptr[1] >> 9) & 0xF;
+    reconstr_abuff->array14_stage0[5] = (abuff_swap_ptr[1] >> 5) & 0xF;
+    reconstr_abuff->array14_stage0[6] = (abuff_swap_ptr[1] >> 1) & 0xF;
+    reconstr_abuff->array14_stage0[7] = ((abuff_swap_ptr[2] >> 13) & 7)
     		+ 8 * (abuff_swap_ptr[1] & 1);
 
-    reconstr_abuffa[9] = (abuff_swap_ptr[2] >> 10) & 7;
-    reconstr_abuffa[10] = (abuff_swap_ptr[2] >> 7) & 7;
-    reconstr_abuffa[11] = (abuff_swap_ptr[2] >> 4) & 7;
-    reconstr_abuffa[12] = (abuff_swap_ptr[2] >> 1) & 7;
-    reconstr_abuffa[13] = ((abuff_swap_ptr[3] >> 14) & 3)
+    reconstr_abuff->array14_stage0[8] = (abuff_swap_ptr[2] >> 10) & 7;
+    reconstr_abuff->array14_stage0[9] = (abuff_swap_ptr[2] >> 7) & 7;
+    reconstr_abuff->array14_stage0[10] = (abuff_swap_ptr[2] >> 4) & 7;
+    reconstr_abuff->array14_stage0[11] = (abuff_swap_ptr[2] >> 1) & 7;
+    reconstr_abuff->array14_stage0[12] = ((abuff_swap_ptr[3] >> 14) & 3)
     		+ 4 * (abuff_swap_ptr[2] & 1);
 
     v12 = (abuff_swap_ptr[3] >> 12) & 3;
@@ -175,29 +174,30 @@ void g_unc_sub_3B9120(uint16_t *reconstr_abuff, int16_t *abuff_swap_a2)
     reconstr_abuff_v4 = reconstr_abuffa;
     word_3D1264 = 1;
 
-    reconstr_abuffa[1] = (abuff_swap_ptr[0] >> 11) & 0x1F;
-    reconstr_abuffa[2] = (abuff_swap_ptr[0] >> 6) & 0x1F;
-    reconstr_abuffa[3] = (abuff_swap_ptr[0] >> 2) & 0xF;
-    reconstr_abuffa[4] = ((abuff_swap_ptr[1] >> 14) & 3)
+    reconstr_abuff->array14_stage0[0] = (abuff_swap_ptr[0] >> 11) & 0x1F;
+    reconstr_abuff->array14_stage0[1] = (abuff_swap_ptr[0] >> 6) & 0x1F;
+    reconstr_abuff->array14_stage0[2] = (abuff_swap_ptr[0] >> 2) & 0xF;
+    reconstr_abuff->array14_stage0[3] = ((abuff_swap_ptr[1] >> 14) & 3)
     		+ 4 * (abuff_swap_ptr[0] & 3);
 
-    reconstr_abuffa[5] = (abuff_swap_ptr[1] >> 10) & 0xF;
-    reconstr_abuffa[6] = (abuff_swap_ptr[1] >> 6) & 0xF;
-    reconstr_abuffa[7] = (abuff_swap_ptr[1] >> 2) & 0xF;
-    reconstr_abuffa[8] = ((abuff_swap_ptr[2] >> 14) & 3)
+    reconstr_abuff->array14_stage0[4] = (abuff_swap_ptr[1] >> 10) & 0xF;
+    reconstr_abuff->array14_stage0[5] = (abuff_swap_ptr[1] >> 6) & 0xF;
+    reconstr_abuff->array14_stage0[6] = (abuff_swap_ptr[1] >> 2) & 0xF;
+    reconstr_abuff->array14_stage0[7] = ((abuff_swap_ptr[2] >> 14) & 3)
     		+ 4 * (abuff_swap_ptr[1] & 3);
 
-    reconstr_abuffa[9] = (abuff_swap_ptr[2] >> 11) & 7;
-    reconstr_abuffa[10] = (abuff_swap_ptr[2] >> 8) & 7;
-    reconstr_abuffa[11] = (abuff_swap_ptr[2] >> 5) & 7;
-    reconstr_abuffa[12] = (abuff_swap_ptr[2] >> 2) & 7;
-    reconstr_abuffa[13] = ((abuff_swap_ptr[3] >> 15) & 1)
+    reconstr_abuff->array14_stage0[8] = (abuff_swap_ptr[2] >> 11) & 7;
+    reconstr_abuff->array14_stage0[9] = (abuff_swap_ptr[2] >> 8) & 7;
+    reconstr_abuff->array14_stage0[10] = (abuff_swap_ptr[2] >> 5) & 7;
+    reconstr_abuff->array14_stage0[11] = (abuff_swap_ptr[2] >> 2) & 7;
+    reconstr_abuff->array14_stage0[12] = ((abuff_swap_ptr[3] >> 15) & 1)
     		+ 2 * (abuff_swap_ptr[2] & 3);
 
     v12 = (abuff_swap_ptr[3] >> 12) & 7;
   }
 
-  reconstr_abuff[14] = v12;
+  reconstr_abuff->array14_stage0[13] = v12;
+
   if ( word_3D041C && !word_3D1264 )
   {
     reconstr_abuff[19] = (abuff_swap_ptr[3] >> 7) & 0x1F;
@@ -392,25 +392,156 @@ LABEL_22:
 
 }
 
-void g_unc_sub_3B8740(int32_t *array14, int a2, int null_a3, int null_a4, int null_a5, int null_a6, int null_a7, int null_a8, __int16 a9)
+/* create stage 1 array14_stage0 based on stage0 and some kind of pulse table */
+void g_unc_sub_3B8740(int32_t *array14_stage1, const struct struc_1 *a2)
 {
-  int v9; // ecx@1
-  __int32 *array14_ptr; // edx@1
-  __int16 *array14_v11; // eax@1
-  signed int size; // esi@1
-  int v13; // ebx@2
   int i;
 
-
-  array14_ptr = array14;
-  array14_v11 = (__int16 *)((char *)&a2 + 2);
   for (i = 0; i < 14; i++)
-  {
-    v13 = *array14_v11;
-    ++array14_v11;
-    ++array14_ptr;
-    *(array14_ptr - 1) = g_unc_array_3C84F0[i][v13];
-  }
+    array14_stage1[i] = g_unc_array_3C84F0[i][a2->array14_stage0[i]];
+
   if ( word_3D041C )
-    array14[13] = g_unc_array_3C8870[a9];
+    array14_stage1[13] = g_unc_array_3C8870[a2->array14_stage0[13]];
+}
+
+
+void g_unc_sub_3B8410(struc_6 *struc_6_a1, struc_8 *struc_6_stg2_a2)
+{
+  struc_8 *struc_6_v2; // ecx@1
+  int v3; // esi@1
+  signed int v4; // ebp@2
+  int v5; // ebx@2
+  signed int v6; // eax@2
+  int v7; // esi@3
+  int v8; // edi@3
+  int v9; // edx@3
+  int v10; // edx@3
+  int v11; // edx@5
+  int v12; // edx@5
+  struc_6 *struc_6_v14; // ebx@11
+  int v14; // ebp@11
+  int v15; // esi@12
+  signed int v16; // esi@13
+  int v17; // ebp@15
+  int v18; // eax@15
+  int v19; // edi@15
+  int v20; // edx@15
+  int v21; // edx@15
+  int v22; // edx@18
+  int v23; // edx@18
+  bool v24; // zf@25
+  int v25; // [sp+10h] [bp-14h]@1
+  int v26; // [sp+10h] [bp-14h]@11
+  struct struc_6 *struc_6_v29; // [sp+14h] [bp-10h]@11
+  signed int v28; // [sp+18h] [bp-Ch]@11
+  int v29; // [sp+1Ch] [bp-8h]@12
+  int v30; // [sp+20h] [bp-4h]@12
+  int array14a; // [sp+28h] [bp+4h]@11
+  int struc_6_a2a; // [sp+2Ch] [bp+8h]@2
+  signed int struc_6_a2b; // [sp+2Ch] [bp+8h]@12
+
+  struc_6_v2 = struc_6_stg2_a2;
+  v3 = 0;
+  word_3D9B7C = 0;
+  struc_6_stg2_a2->array14_stage2[0] = 0x2000u;
+  v25 = 0;
+  while ( 1 )
+  {
+    v4 = 1;
+    v5 = (signed __int16)v3;
+    struc_6_a2a = 1;
+    v6 = (signed __int16)v3 + 1;
+    struc_6_v2->array14_stage2[v6] = struc_6_a1->array14_stage1[(signed __int16)v3] >> 2;
+    if ( v6 / 2 >= 1 )
+      break;
+LABEL_9:
+    ++v3;
+    v25 = v3;
+    if ( (signed __int16)v3 >= 14 )
+      return;
+  }
+  while ( 1 )
+  {
+    v7 = struc_6_v2->array14_stage2[v4];
+    v8 = struc_6_v2->array14_stage2[v5 - v4 + 1];
+    v9 = (struc_6_a1->array14_stage1[v5] * v8 + (v7 << 15) + 16384) >> 15;
+    struc_6_v2->array14_stage2[v4] = v9;
+    v10 = v9 & 0xFFFF8000;
+    if ( v10 )
+    {
+      if ( v10 != -32768 )
+        break;
+    }
+    v11 = (struc_6_a1->array14_stage1[v5] * v7 + (v8 << 15) + 16384) >> 15;
+    struc_6_v2->array14_stage2[v5 - v4 + 1] = v11;
+    v12 = v11 & 0xFFFF8000;
+    if ( v12 )
+    {
+      if ( v12 != -32768 )
+        break;
+    }
+    ++struc_6_a2a;
+    v4 = struc_6_a2a;
+    if ( struc_6_a2a > v6 / 2 )
+    {
+      v3 = v25;
+      goto LABEL_9;
+    }
+  }
+  struc_6_v14 = struc_6_a1;
+  v14 = 0;
+  word_3D9B7C = 1;
+  struc_6_v2->array14_stage2[0] = 4096;
+  v26 = 0;
+  struc_6_v29 = struc_6_a1;
+  array14a = (int)&struc_6_v2->array14_stage2[1];
+  v28 = 14;
+  do
+  {
+    v15 = v14 + 1;
+    *(_DWORD *)array14a = struc_6_v14->array14_stage1[0] >> 3;
+    struc_6_a2b = 1;
+    v30 = v14 + 1;
+    v29 = (v14 + 1) / 2;
+    if ( (v14 + 1) / 2 >= 1 )
+    {
+      v16 = 1;
+      while ( 1 )
+      {
+        v17 = v14 - v16;
+        v18 = struc_6_v2->array14_stage2[v16];
+        v19 = struc_6_v2->array14_stage2[v17 + 1];
+        v20 = (v19 * struc_6_v14->array14_stage1[0] + (struc_6_v2->array14_stage2[v16] << 15) + 16384) >> 15;
+        struc_6_v2->array14_stage2[v16] = v20;
+        v21 = v20 & 0xFFFF8000;
+        if ( v21 && v21 != -32768 )
+          struc_6_v2->array14_stage2[v16] = (unsigned __int16)((v21 <= 0) - 1) - 32768;
+        struc_6_v14 = struc_6_v29;
+        v22 = (v18 * struc_6_v29->array14_stage1[0] + (v19 << 15) + 16384) >> 15;
+        struc_6_v2->array14_stage2[v17 + 1] = v22;
+        v23 = v22 & 0xFFFF8000;
+        if ( v23 && v23 != 0xFFFF8000 )
+        {
+          if ( v23 <= 0 )
+            struc_6_v2->array14_stage2[v17 + 1] = -32768;
+          else
+            struc_6_v2->array14_stage2[v17 + 1] = 32767;
+        }
+        ++struc_6_a2b;
+        v16 = struc_6_a2b;
+        if ( struc_6_a2b > v29 )
+          break;
+        v14 = v26;
+      }
+      v15 = v30;
+    }
+    v14 = v15;
+    struc_6_v14 = (struc_6 *)((char *)struc_6_v14 + 4);
+    v24 = v28 == 1;
+    v26 = v15;
+    array14a += 4;
+    struc_6_v29 = struc_6_v14;
+    --v28;
+  }
+  while ( !v24 );
 }

@@ -8,6 +8,20 @@
 #ifndef DSS__
 #define DSS__
 
+struct struc_1 {
+	int16_t	field_0;
+	int16_t	array14_stage0[14];
+};
+
+struct struc_6 {
+	int32_t array14_stage1[14];
+	int32_t filed_38;
+};
+
+struct struc_8 {
+	int32_t array14_stage2[14];
+	int32_t filed_38;
+};
 
 /*
  * Comment from: ./libavcodec/g723_1_data.h
