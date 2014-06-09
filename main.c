@@ -11,6 +11,7 @@ unsigned int word_3D1264;
 unsigned int word_3D1266;
 unsigned int word_3D041C;
 unsigned int word_3D0C26;
+unsigned int word_3D9B7C;
 unsigned int flip;
 
 
@@ -405,11 +406,10 @@ void g_unc_sub_3B8740(int32_t *array14_stage1, const struct struc_1 *a2)
 }
 
 
-void g_unc_sub_3B8410(struc_6 *struc_6_a1, struc_8 *struc_6_stg2_a2)
+void g_unc_sub_3B8410(struct struc_6 *struc_6_a1, struct struc_8 *struc_6_stg2_a2)
 {
-  struc_8 *struc_6_v2; // ecx@1
+  struct struc_8 *struc_6_v2; // ecx@1
   int v3; // esi@1
-  signed int v4; // ebp@2
   int v5; // ebx@2
   signed int v6; // eax@2
   int v7; // esi@3
@@ -418,7 +418,7 @@ void g_unc_sub_3B8410(struc_6 *struc_6_a1, struc_8 *struc_6_stg2_a2)
   int v10; // edx@3
   int v11; // edx@5
   int v12; // edx@5
-  struc_6 *struc_6_v14; // ebx@11
+  struct struc_6 *struc_6_v14; // ebx@11
   int v14; // ebp@11
   int v15; // esi@12
   signed int v16; // esi@13
@@ -429,78 +429,74 @@ void g_unc_sub_3B8410(struc_6 *struc_6_a1, struc_8 *struc_6_stg2_a2)
   int v21; // edx@15
   int v22; // edx@18
   int v23; // edx@18
-  bool v24; // zf@25
+  int v24; // zf@25
   int v25; // [sp+10h] [bp-14h]@1
   int v26; // [sp+10h] [bp-14h]@11
   struct struc_6 *struc_6_v29; // [sp+14h] [bp-10h]@11
   signed int v28; // [sp+18h] [bp-Ch]@11
   int v29; // [sp+1Ch] [bp-8h]@12
   int v30; // [sp+20h] [bp-4h]@12
-  int array14a; // [sp+28h] [bp+4h]@11
-  int struc_6_a2a; // [sp+2Ch] [bp+8h]@2
+  int32_t *array14a; // [sp+28h] [bp+4h]@11
+  int counter; // [sp+2Ch] [bp+8h]@2
   signed int struc_6_a2b; // [sp+2Ch] [bp+8h]@12
+  int tmp;
 
   struc_6_v2 = struc_6_stg2_a2;
   v3 = 0;
   word_3D9B7C = 0;
-  struc_6_stg2_a2->array14_stage2[0] = 0x2000u;
-  v25 = 0;
+  struc_6_stg2_a2->field_0 = 0x2000u;
   while ( 1 )
   {
-    v4 = 1;
-    v5 = (signed __int16)v3;
-    struc_6_a2a = 1;
-    v6 = (signed __int16)v3 + 1;
-    struc_6_v2->array14_stage2[v6] = struc_6_a1->array14_stage1[(signed __int16)v3] >> 2;
+    v5 = v3;
+    v6 = v3 + 1;
+    struc_6_v2->array14_stage2[v3] = struc_6_a1->array14_stage1[v3] >> 2;
     if ( v6 / 2 >= 1 )
       break;
 LABEL_9:
     ++v3;
-    v25 = v3;
-    if ( (signed __int16)v3 >= 14 )
+    if (v3 >= 14 )
       return;
   }
+
+  /////////////////////////////
+  counter = 1;
   while ( 1 )
   {
-    v7 = struc_6_v2->array14_stage2[v4];
-    v8 = struc_6_v2->array14_stage2[v5 - v4 + 1];
-    v9 = (struc_6_a1->array14_stage1[v5] * v8 + (v7 << 15) + 16384) >> 15;
-    struc_6_v2->array14_stage2[v4] = v9;
-    v10 = v9 & 0xFFFF8000;
-    if ( v10 )
-    {
-      if ( v10 != -32768 )
+    v7 = struc_6_v2->array14_stage2[counter - 1];
+    // 4, 4, 4
+    v8 = struc_6_v2->array14_stage2[v5 - counter];
+    // 8, 8, c
+    tmp = (struc_6_a1->array14_stage1[v5] * v8 + (v7 << 15) + 0x4000) >> 15;
+    struc_6_v2->array14_stage2[counter - 1] = tmp;
+    if ( tmp != 0xFFFF8000 )
         break;
-    }
-    v11 = (struc_6_a1->array14_stage1[v5] * v7 + (v8 << 15) + 16384) >> 15;
-    struc_6_v2->array14_stage2[v5 - v4 + 1] = v11;
-    v12 = v11 & 0xFFFF8000;
-    if ( v12 )
-    {
-      if ( v12 != -32768 )
+
+    tmp = (struc_6_a1->array14_stage1[v5] * v7 + (v8 << 15) + 0x4000) >> 15;
+    struc_6_v2->array14_stage2[v5 - counter] = tmp;
+    if ( tmp != 0xFFFF8000 )
         break;
-    }
-    ++struc_6_a2a;
-    v4 = struc_6_a2a;
-    if ( struc_6_a2a > v6 / 2 )
-    {
-      v3 = v25;
+
+    ++counter;
+    if ( counter > v6 / 2 )
       goto LABEL_9;
-    }
   }
+  //////////////////////////////////
+  // looks like sort of cleanup part. In case "tmp != 0xFFFF8000" check will fail.
+  // or may be not used at all.
+#if 0
   struc_6_v14 = struc_6_a1;
   v14 = 0;
   word_3D9B7C = 1;
-  struc_6_v2->array14_stage2[0] = 4096;
+  struc_6_v2->field_0 = 0x1000;
   v26 = 0;
   struc_6_v29 = struc_6_a1;
-  array14a = (int)&struc_6_v2->array14_stage2[1];
+  array14a = struc_6_v2->array14_stage2;
   v28 = 14;
   do
   {
     v15 = v14 + 1;
-    *(_DWORD *)array14a = struc_6_v14->array14_stage1[0] >> 3;
-    struc_6_a2b = 1;
+    *array14a = struc_6_v14->array14_stage1[0] >> 3;
+    counter = 1;
     v30 = v14 + 1;
     v29 = (v14 + 1) / 2;
     if ( (v14 + 1) / 2 >= 1 )
@@ -509,39 +505,65 @@ LABEL_9:
       while ( 1 )
       {
         v17 = v14 - v16;
-        v18 = struc_6_v2->array14_stage2[v16];
-        v19 = struc_6_v2->array14_stage2[v17 + 1];
-        v20 = (v19 * struc_6_v14->array14_stage1[0] + (struc_6_v2->array14_stage2[v16] << 15) + 16384) >> 15;
-        struc_6_v2->array14_stage2[v16] = v20;
+        v18 = struc_6_v2->array14_stage2[v16 - 1];
+        v19 = struc_6_v2->array14_stage2[v17];
+        v20 = (v19 * struc_6_v14->array14_stage1[0] + (struc_6_v2->array14_stage2[v16 - 1] << 15) + 0x4000) >> 15;
+        struc_6_v2->array14_stage2[v16 - 1] = v20;
         v21 = v20 & 0xFFFF8000;
-        if ( v21 && v21 != -32768 )
-          struc_6_v2->array14_stage2[v16] = (unsigned __int16)((v21 <= 0) - 1) - 32768;
+        if ( v21 && v21 != 0xFFFF8000 )
+          struc_6_v2->array14_stage2[v16 - 1] = ((v21 <= 0) - 1) - 0x8000;
         struc_6_v14 = struc_6_v29;
-        v22 = (v18 * struc_6_v29->array14_stage1[0] + (v19 << 15) + 16384) >> 15;
-        struc_6_v2->array14_stage2[v17 + 1] = v22;
+        v22 = (v18 * struc_6_v29->array14_stage1[0] + (v19 << 15) + 0x4000) >> 15;
+        struc_6_v2->array14_stage2[v17] = v22;
         v23 = v22 & 0xFFFF8000;
         if ( v23 && v23 != 0xFFFF8000 )
         {
           if ( v23 <= 0 )
-            struc_6_v2->array14_stage2[v17 + 1] = -32768;
+            struc_6_v2->array14_stage2[v17] = 0xFFFF8000;
           else
-            struc_6_v2->array14_stage2[v17 + 1] = 32767;
+            struc_6_v2->array14_stage2[v17] = 0x7FFF;
         }
-        ++struc_6_a2b;
-        v16 = struc_6_a2b;
-        if ( struc_6_a2b > v29 )
+        ++counter;
+        v16 = counter;
+        if ( counter > v29 )
           break;
         v14 = v26;
       }
       v15 = v30;
     }
     v14 = v15;
-    struc_6_v14 = (struc_6 *)((char *)struc_6_v14 + 4);
+    struc_6_v14 = (struct struc_6 *)((char *)struc_6_v14 + 4);
     v24 = v28 == 1;
     v26 = v15;
-    array14a += 4;
+    array14a++;
     struc_6_v29 = struc_6_v14;
     --v28;
   }
   while ( !v24 );
+#endif
+}
+
+
+void g_unc_sub_3B9870(int32_t *array72_a1, struct struc_1 *struc_1_a2)
+{
+  int v2; // esi@1
+  int16_t *v3; // eax@1
+  signed int size_7_v52; // edx@1
+  int v5; // ecx@2
+  signed int v6; // ebx@2
+  __int16 v7; // [sp+D8h] [bp+C8h]@0
+  int i;
+
+  v2 = struc_1_a2->field_30;
+  v3 = struc_1_a2->array7_1_46;
+
+  for (i = 0; i < 7; i++) {
+	  //v5 = struc_1_a2->array7_2_38[i]
+    v5 = *(v3 - 7);
+    // v6 = g_unc_array_3C8878[v2] * g_unc_array_3C9278[struc_1_a2->array7_1_46[i]] + 16384
+    v6 = g_unc_array_3C8878[v2] * g_unc_array_3C9278[*v3] + 16384;
+    v3 += 2;
+    array72_a1[v5] += v6 >> 15;
+  }
+
 }

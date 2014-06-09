@@ -11,16 +11,32 @@
 struct struc_1 {
 	int16_t	field_0;
 	int16_t	array14_stage0[14];
+
+	int16_t field_30;
+
+	int16_t	array7_2_38[7];
+	int16_t	array7_1_46[7];
+
+	int16_t	array7_2_5C[7];
+	int16_t	array7_1_6A[7];
+
+	int16_t	array7_2_80[7];
+	int16_t	array7_1_8E[7];
+
+	int16_t	array7_2_A4[7];
+	int16_t	array7_1_B2[7];
 };
 
 struct struc_6 {
 	int32_t array14_stage1[14];
-	int32_t filed_38;
+	int32_t field_38;
 };
 
 struct struc_8 {
-	int32_t array14_stage2[14];
-	int32_t filed_38;
+	int32_t field_0;
+	int32_t array14_stage2[15]; // generally it is array14,
+	// first field is used for some thing else and should be moved to filed_0
+	int32_t field_38;
 };
 
 /*
@@ -198,5 +214,16 @@ static const int16_t g_unc_array_3C84F0[14][32] = {
            0,      0,      0,      0,      0,      0,      0,      0,
            0,      0,      0,      0,      0,      0,      0,      0 },
 };
+
+static const int16_t  g_unc_array_3C8878[64] = {
+       0,    4,    8,   13,   17,   22,   26,   31,
+      35,   40,   44,   48,   53,   58,   63,   69,
+      76,   83,   91,   99,  109,  119,  130,  142,
+     155,  170,  185,  203,  222,  242,  265,  290,
+     317,  346,  378,  414,  452,  494,  540,  591,
+     646,  706,  771,  843,  922, 1007, 1101, 1204,
+    1316, 1438, 1572, 1719, 1879, 2053, 2244, 2453,
+    2682, 2931, 3204, 3502, 3828, 4184, 4574, 5000,
+}
 
 #endif /* DSS__ */
