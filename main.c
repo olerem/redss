@@ -543,7 +543,7 @@ LABEL_9:
 #endif
 }
 
-
+/* this function will get pointer to one of 4 subframes */
 void g_unc_sub_3B9870(int32_t *array72_a1, struct struc_1 *struc_1_a2)
 {
   int v2; // esi@1
