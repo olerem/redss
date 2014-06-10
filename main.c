@@ -76,7 +76,7 @@ void g_unc_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag)
   }
 }
 
-void g_unc_sub_3B9120(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
+void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 {
   __int16 v2; // bp@1
   __int16 *abuff_swap_ptr; // eax@2
@@ -211,66 +211,66 @@ void g_unc_sub_3B9120(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
   reconstr_abuff_v4->subframe_something[0] = (abuff_swap_ptr[3] >> 7) & 0x1F;
 
   // instead of "*((uint8_t *)abuff_swap_ptr + 11)" can be "(abuff_swap_ptr[5] >> 8) & 0xf"
-  reconstr_abuff_v4->subframe[0].field_4 = *((uint8_t *)abuff_swap_ptr + 11)
+  reconstr_abuff_v4->sf[0].field_4 = *((uint8_t *)abuff_swap_ptr + 11)
 		  + ((abuff_swap_ptr[4] + ((abuff_swap_ptr[3] & 0x7F) << 16)) << 8);
-  reconstr_abuff_v4->subframe[0].field_0 = (abuff_swap_ptr[5] >> 2) & 0x3F;
+  reconstr_abuff_v4->sf[0].gain = (abuff_swap_ptr[5] >> 2) & 0x3F;
 
-  reconstr_abuff_v4->subframe[0].array7_1[0] = ((abuff_swap_ptr[6] >> 15) & 1) + 2 * (abuff_swap_ptr[5] & 3);
-  reconstr_abuff_v4->subframe[0].array7_1[1] = (abuff_swap_ptr[6] >> 12) & 7;
-  reconstr_abuff_v4->subframe[0].array7_1[2] = (abuff_swap_ptr[6] >> 9) & 7;
-  reconstr_abuff_v4->subframe[0].array7_1[3] = (abuff_swap_ptr[6] >> 6) & 7;
-  reconstr_abuff_v4->subframe[0].array7_1[4] = (abuff_swap_ptr[6] >> 3) & 7;
-  reconstr_abuff_v4->subframe[0].array7_1[5] = abuff_swap_ptr[6] & 7;
-  reconstr_abuff_v4->subframe[0].array7_1[6] = (abuff_swap_ptr[7] >> 13) & 7;
+  reconstr_abuff_v4->sf[0].pulse_val[0] = ((abuff_swap_ptr[6] >> 15) & 1) + 2 * (abuff_swap_ptr[5] & 3);
+  reconstr_abuff_v4->sf[0].pulse_val[1] = (abuff_swap_ptr[6] >> 12) & 7;
+  reconstr_abuff_v4->sf[0].pulse_val[2] = (abuff_swap_ptr[6] >> 9) & 7;
+  reconstr_abuff_v4->sf[0].pulse_val[3] = (abuff_swap_ptr[6] >> 6) & 7;
+  reconstr_abuff_v4->sf[0].pulse_val[4] = (abuff_swap_ptr[6] >> 3) & 7;
+  reconstr_abuff_v4->sf[0].pulse_val[5] = abuff_swap_ptr[6] & 7;
+  reconstr_abuff_v4->sf[0].pulse_val[6] = (abuff_swap_ptr[7] >> 13) & 7;
 
   reconstr_abuff_v4->subframe_something[1] = (abuff_swap_ptr[7] >> 8) & 0x1F;
 
-  reconstr_abuff_v4->subframe[1].field_4 = ((abuff_swap_ptr[9] >> 9) & 0x7F)
+  reconstr_abuff_v4->sf[1].field_4 = ((abuff_swap_ptr[9] >> 9) & 0x7F)
 		  + ((abuff_swap_ptr[8] + (abuff_swap_ptr[7] << 16)) << 7);
-  reconstr_abuff_v4->subframe[1].field_0 = (abuff_swap_ptr[9] >> 3) & 0x3F;
+  reconstr_abuff_v4->sf[1].gain = (abuff_swap_ptr[9] >> 3) & 0x3F;
 
-  reconstr_abuff_v4->subframe[1].array7_1[0] = abuff_swap_ptr[9] & 7;
-  reconstr_abuff_v4->subframe[1].array7_1[1] = (abuff_swap_ptr[10] >> 13) & 7;
-  reconstr_abuff_v4->subframe[1].array7_1[2] = (abuff_swap_ptr[10] >> 10) & 7;
-  reconstr_abuff_v4->subframe[1].array7_1[3] = (abuff_swap_ptr[10] >> 7) & 7;
-  reconstr_abuff_v4->subframe[1].array7_1[4] = (abuff_swap_ptr[10] >> 4) & 7;
-  reconstr_abuff_v4->subframe[1].array7_1[5] = (abuff_swap_ptr[10] >> 1) & 7;
-  reconstr_abuff_v4->subframe[1].array7_1[6] = ((abuff_swap_ptr[11] >> 14) & 3)
+  reconstr_abuff_v4->sf[1].pulse_val[0] = abuff_swap_ptr[9] & 7;
+  reconstr_abuff_v4->sf[1].pulse_val[1] = (abuff_swap_ptr[10] >> 13) & 7;
+  reconstr_abuff_v4->sf[1].pulse_val[2] = (abuff_swap_ptr[10] >> 10) & 7;
+  reconstr_abuff_v4->sf[1].pulse_val[3] = (abuff_swap_ptr[10] >> 7) & 7;
+  reconstr_abuff_v4->sf[1].pulse_val[4] = (abuff_swap_ptr[10] >> 4) & 7;
+  reconstr_abuff_v4->sf[1].pulse_val[5] = (abuff_swap_ptr[10] >> 1) & 7;
+  reconstr_abuff_v4->sf[1].pulse_val[6] = ((abuff_swap_ptr[11] >> 14) & 3)
 		  + 4 * (abuff_swap_ptr[10] & 1);
 
   reconstr_abuff_v4->subframe_something[2] = (abuff_swap_ptr[11] >> 9) & 0x1F;
 
-  reconstr_abuff_v4->subframe[2].field_4 = ((abuff_swap_ptr[13] >> 10) & 0x3F)
+  reconstr_abuff_v4->sf[2].field_4 = ((abuff_swap_ptr[13] >> 10) & 0x3F)
   	  	  + ((abuff_swap_ptr[12] + ((abuff_swap_ptr[11] & 0x1FF) << 16)) << 6);
 
-  reconstr_abuff_v4->subframe[2].field_0 = (abuff_swap_ptr[13] >> 4) & 0x3F;
+  reconstr_abuff_v4->sf[2].gain = (abuff_swap_ptr[13] >> 4) & 0x3F;
 
-  reconstr_abuff_v4->subframe[2].array7_1[0] = (abuff_swap_ptr[13] >> 1) & 7;
-  reconstr_abuff_v4->subframe[2].array7_1[1] = ((abuff_swap_ptr[14] >> 14) & 3)
+  reconstr_abuff_v4->sf[2].pulse_val[0] = (abuff_swap_ptr[13] >> 1) & 7;
+  reconstr_abuff_v4->sf[2].pulse_val[1] = ((abuff_swap_ptr[14] >> 14) & 3)
 		  + 4 * (abuff_swap_ptr[14] & 1);
-  reconstr_abuff_v4->subframe[2].array7_1[2] = (abuff_swap_ptr[14] >> 11) & 7;
-  reconstr_abuff_v4->subframe[2].array7_1[3] = (abuff_swap_ptr[14] >> 8) & 7;
-  reconstr_abuff_v4->subframe[2].array7_1[4] = (abuff_swap_ptr[14] >> 5) & 7;
-  reconstr_abuff_v4->subframe[2].array7_1[5] = (abuff_swap_ptr[14] >> 2) & 7;
-  reconstr_abuff_v4->subframe[2].array7_1[6] = ((abuff_swap_ptr[15] >> 15) & 1)
+  reconstr_abuff_v4->sf[2].pulse_val[2] = (abuff_swap_ptr[14] >> 11) & 7;
+  reconstr_abuff_v4->sf[2].pulse_val[3] = (abuff_swap_ptr[14] >> 8) & 7;
+  reconstr_abuff_v4->sf[2].pulse_val[4] = (abuff_swap_ptr[14] >> 5) & 7;
+  reconstr_abuff_v4->sf[2].pulse_val[5] = (abuff_swap_ptr[14] >> 2) & 7;
+  reconstr_abuff_v4->sf[2].pulse_val[6] = ((abuff_swap_ptr[15] >> 15) & 1)
 		  + 2 * (abuff_swap_ptr[14] & 3);
 
   reconstr_abuff_v4->subframe_something[3] = (abuff_swap_ptr[15] >> 10) & 0x1F;
 
-  reconstr_abuff_v4->subframe[3].field_4 = ((abuff_swap_ptr[17] >> 11) & 0x1F)
+  reconstr_abuff_v4->sf[3].field_4 = ((abuff_swap_ptr[17] >> 11) & 0x1F)
 		  + 32 * (abuff_swap_ptr[16] + ((abuff_swap_ptr[15] & 0x3FF) << 16));
-  reconstr_abuff_v4->subframe[3].field_0 = (abuff_swap_ptr[17] >> 5) & 0x3F;
+  reconstr_abuff_v4->sf[3].gain = (abuff_swap_ptr[17] >> 5) & 0x3F;
 
-  reconstr_abuff_v4->subframe[3].array7_1[0] = (abuff_swap_ptr[17] >> 2) & 7;
-  reconstr_abuff_v4->subframe[3].array7_1[1] = ((abuff_swap_ptr[18] >> 15) & 1)
+  reconstr_abuff_v4->sf[3].pulse_val[0] = (abuff_swap_ptr[17] >> 2) & 7;
+  reconstr_abuff_v4->sf[3].pulse_val[1] = ((abuff_swap_ptr[18] >> 15) & 1)
 		  + 2 * (abuff_swap_ptr[17] & 3);
-  reconstr_abuff_v4->subframe[3].array7_1[2] = (abuff_swap_ptr[18] >> 12) & 7;
-  reconstr_abuff_v4->subframe[3].array7_1[3] = (abuff_swap_ptr[18] >> 9) & 7;
-  reconstr_abuff_v4->subframe[3].array7_1[4] = (abuff_swap_ptr[18] >> 6) & 7;
-  reconstr_abuff_v4->subframe[3].array7_1[5] = (abuff_swap_ptr[18] >> 3) & 7;
-  reconstr_abuff_v4->subframe[3].array7_1[6] = abuff_swap_ptr[18] & 7;
-  v30 = &reconstr_abuff_v4->subframe[0].field_4;
-  v53 = &reconstr_abuff_v4->subframe[0].field_4;
+  reconstr_abuff_v4->sf[3].pulse_val[2] = (abuff_swap_ptr[18] >> 12) & 7;
+  reconstr_abuff_v4->sf[3].pulse_val[3] = (abuff_swap_ptr[18] >> 9) & 7;
+  reconstr_abuff_v4->sf[3].pulse_val[4] = (abuff_swap_ptr[18] >> 6) & 7;
+  reconstr_abuff_v4->sf[3].pulse_val[5] = (abuff_swap_ptr[18] >> 3) & 7;
+  reconstr_abuff_v4->sf[3].pulse_val[6] = abuff_swap_ptr[18] & 7;
+  v30 = &reconstr_abuff_v4->sf[0].field_4;
+  v53 = &reconstr_abuff_v4->sf[0].field_4;
 
   v52 = 0;
   v55 = 4;
@@ -334,9 +334,9 @@ LABEL_22:
 
       /* this part seems to be close to g723.1 gen_fcb_excitation() RATE_6300 */
       for (i = 7; i > 0; i--) {
-        for ( ; v36 < g_unc_combinatorial_table[v39][v38]; --v38 )
+        for ( ; v36 < dss2_combinatorial_table[v39][v38]; --v38 )
           ;
-        v36 -= g_unc_combinatorial_table[v39][v38];
+        v36 -= dss2_combinatorial_table[v39][v38];
         v39--;
         v41 = 18 * some_val - v37;
         v37--;
@@ -494,7 +494,7 @@ LABEL_9:
   struc_6_v14 = struc_6_a1;
   v14 = 0;
   word_3D9B7C = 1;
-  struc_6_v2->field_0 = 0x1000;
+  struc_6_v2->gain = 0x1000;
   v26 = 0;
   struc_6_v29 = struc_6_a1;
   array14a = struc_6_v2->array14_stage2;
@@ -551,15 +551,121 @@ LABEL_9:
 }
 
 /* this function will get pointer to one of 4 subframes */
-void g_unc_sub_3B9870(int32_t *array72_a1, struct struc_9 *subframe)
+void g_unc_add_pulses(int32_t *array72_a1, struct dss2_subframe *sf)
 {
-  int i, val;
+  int i;
 
-  val = subframe->field_0;
-
+  //looks like "output[sf->pulse_pos[i]] += g_gains[sf->gain] * g_pulse_val[sf->pulse_val[i]] + 0x4000 >> 15;"
   for (i = 0; i < 7; i++)
-    array72_a1[subframe->array7_2[i]] +=
-    		(g_unc_array_3C8878[val]
-    		                    * g_unc_array_3C9278[subframe->array7_1[i]] + 16384) >> 15;
+    array72_a1[sf->pulse_pos[i]] +=
+    		(dss2_fixed_cb_gain[sf->gain]
+    		                    * dss2_pulse_val[sf->pulse_val[i]] + 0x4000) >> 15;
 
 }
+
+void dss2_sub_3B9080(__int32 *array72, __int32 *array36, __int16 a3, int a4)
+{
+  __int32 *array72_ptr0; // edx@2
+  signed int size1; // esi@2
+  __int32 *v6; // eax@2
+  __int32 v7; // ecx@3
+  __int32 *array72_ptr_v8; // edi@5
+  int v9; // esi@5
+  signed int size0; // ebp@5
+  int v11; // eax@6
+  __int32 *array72_ptr1; // ecx@7
+  signed int size2; // edi@7
+  int v14; // eax@8
+  int v15; // eax@8
+
+  if ( a3 < 72 )
+  {
+    array72_ptr_v8 = array72;
+    v9 = 0;
+    size0 = 72;
+    do
+    {
+      ++array72_ptr_v8;
+      v11 = a3 - v9++ % a3;
+      --size0;
+      *(array72_ptr_v8 - 1) = array36[v11];
+    }
+    while ( size0 );
+  }
+  else
+  {
+    array72_ptr0 = array72;
+    size1 = 72;
+    v6 = &array36[a3];
+    do
+    {
+      v7 = *v6;
+      --v6;
+      *array72_ptr0 = v7;
+      ++array72_ptr0;
+      --size1;
+    }
+    while ( size1 );
+  }
+  array72_ptr1 = array72;
+  size2 = 72;
+  do
+  {
+    v14 = a4 * *array72_ptr1 >> 11;
+    *array72_ptr1 = v14;
+    v15 = v14 & 0xFFFF8000;
+    if ( v15 )
+    {
+      if ( v15 != 0xFFFF8000 )
+        *array72_ptr1 = (unsigned __int16)(((v15 <= 0) - 1) & 0xFFFE) - 0x7FFF;
+    }
+    ++array72_ptr1;
+    --size2;
+  }
+  while ( size2 );
+}
+
+
+void g_unc_normalize(__int32 *array_a1, __int16 normalize_bits, __int16 array_a1_size)
+{
+  __int32 *v3; // eax@3
+  int t_size2; // edx@3
+  __int32 val2; // esi@4
+  __int32 *v6; // eax@7
+  int t_size1; // edx@7
+  __int32 val1; // esi@8
+
+  if ( normalize_bits < 0 )
+  {
+    if ( array_a1_size > 0 )
+    {
+      v6 = array_a1;
+      t_size1 = array_a1_size;
+      do
+      {
+        val1 = *v6;
+        ++v6;
+        --t_size1;
+        *(v6 - 1) = val1 >> -(char)normalize_bits;
+      }
+      while ( t_size1 );
+    }
+  }
+  else
+  {
+    if ( array_a1_size > 0 )
+    {
+      v3 = array_a1;
+      t_size2 = array_a1_size;
+      do
+      {
+        val2 = *v3;
+        ++v3;
+        --t_size2;
+        *(v3 - 1) = val2 << normalize_bits;
+      }
+      while ( t_size2 );
+    }
+  }
+}
+

@@ -8,13 +8,13 @@
 #ifndef DSS__
 #define DSS__
 
-struct struc_9 {
-	int16_t field_0;
+struct dss2_subframe {
+	int16_t gain;
 	int16_t field_2;
 	int16_t field_4;
 	int16_t field_6;
-	int16_t array7_2[7]; /* this values was calculate */
-	int16_t array7_1[7]; /* this values was get directly from decompressor */
+	int16_t pulse_pos[7]; /* this values was calculate */
+	int16_t pulse_val[7]; /* this values was get directly from decompressor */
 };
 
 struct struc_1 {
@@ -23,7 +23,7 @@ struct struc_1 {
 
 	int16_t subframe_something[4];
 
-	struct struc_9 subframe[4];
+	struct dss2_subframe sf[4];
 };
 
 struct struc_6 {
@@ -43,7 +43,7 @@ struct struc_8 {
  * Used for the coding/decoding of the pulses positions
  * for the MP-MLQ codebook
  */
-static const uint32_t g_unc_combinatorial_table[8][72] = {
+static const uint32_t dss2_combinatorial_table[8][72] = {
     {       0,         0,         0,          0,          0,          0,
             0,         0,         0,          0,          0,          0,
             0,         0,         0,          0,          0,          0,
@@ -214,7 +214,7 @@ static const int16_t g_unc_array_3C84F0[14][32] = {
            0,      0,      0,      0,      0,      0,      0,      0 },
 };
 
-static const int16_t  g_unc_array_3C8878[64] = {
+static const int16_t  dss2_fixed_cb_gain[64] = {
        0,    4,    8,   13,   17,   22,   26,   31,
       35,   40,   44,   48,   53,   58,   63,   69,
       76,   83,   91,   99,  109,  119,  130,  142,
@@ -229,7 +229,7 @@ static const int16_t g_unc_array_3C8870[4] = {
     -8166, -2419, 1997, 6705
 };
 
-static const int16_t  g_unc_array_3C9278[] = {
+static const int16_t  dss2_pulse_val[8] = {
     -31182, -22273, -13364, -4455, 4455, 13364, 22273, 31182
 };
 
