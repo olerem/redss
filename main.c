@@ -80,7 +80,7 @@ void g_unc_sub_3B9120(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 {
   __int16 v2; // bp@1
   __int16 *abuff_swap_ptr; // eax@2
-  __int16 *reconstr_abuff_v4; // esi@2
+  struct struc_1 *reconstr_abuff_v4; // esi@2
   int v5; // ecx@2
   int v6; // edx@2
   signed int v7; // edx@2
@@ -201,71 +201,76 @@ void g_unc_sub_3B9120(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 
   if ( word_3D041C && !word_3D1264 )
   {
-    reconstr_abuff[19] = (abuff_swap_ptr[3] >> 7) & 0x1F;
-    reconstr_abuff[20] = (abuff_swap_ptr[3] >> 2) & 0x1F;
-    reconstr_abuff[21] = (abuff_swap_ptr[4] >> 13) & 7;
-    reconstr_abuff[22] = (abuff_swap_ptr[4] >> 8) & 0x1F;
+    reconstr_abuff->subframe_something[0] = (abuff_swap_ptr[3] >> 7) & 0x1F;
+    reconstr_abuff->subframe_something[1] = (abuff_swap_ptr[3] >> 2) & 0x1F;
+    reconstr_abuff->subframe_something[2] = (abuff_swap_ptr[4] >> 13) & 7;
+    reconstr_abuff->subframe_something[3] = (abuff_swap_ptr[4] >> 8) & 0x1F;
     return;
   }
 
-  reconstr_abuff_v4[19] = (abuff_swap_ptr[3] >> 7) & 0x1F;
+  reconstr_abuff_v4->subframe_something[0] = (abuff_swap_ptr[3] >> 7) & 0x1F;
+
   // instead of "*((uint8_t *)abuff_swap_ptr + 11)" can be "(abuff_swap_ptr[5] >> 8) & 0xf"
-  reconstr_abuff_v4[26] = *((uint8_t *)abuff_swap_ptr + 11)
+  reconstr_abuff_v4->subframe[0].field_4 = *((uint8_t *)abuff_swap_ptr + 11)
 		  + ((abuff_swap_ptr[4] + ((abuff_swap_ptr[3] & 0x7F) << 16)) << 8);
-  reconstr_abuff_v4[24] = (abuff_swap_ptr[5] >> 2) & 0x3F;
-  reconstr_abuff_v4[35] = ((abuff_swap_ptr[6] >> 15) & 1) + 2 * (abuff_swap_ptr[5] & 3);
-  reconstr_abuff_v4[36] = (abuff_swap_ptr[6] >> 12) & 7;
-  reconstr_abuff_v4[37] = (abuff_swap_ptr[6] >> 9) & 7;
-  reconstr_abuff_v4[38] = (abuff_swap_ptr[6] >> 6) & 7;
-  reconstr_abuff_v4[39] = (abuff_swap_ptr[6] >> 3) & 7;
-  reconstr_abuff_v4[40] = abuff_swap_ptr[6] & 7;
-  reconstr_abuff_v4[41] = (abuff_swap_ptr[7] >> 13) & 7;
+  reconstr_abuff_v4->subframe[0].field_0 = (abuff_swap_ptr[5] >> 2) & 0x3F;
 
-  reconstr_abuff_v4[20] = (abuff_swap_ptr[7] >> 8) & 0x1F;
+  reconstr_abuff_v4->subframe[0].array7_1[0] = ((abuff_swap_ptr[6] >> 15) & 1) + 2 * (abuff_swap_ptr[5] & 3);
+  reconstr_abuff_v4->subframe[0].array7_1[1] = (abuff_swap_ptr[6] >> 12) & 7;
+  reconstr_abuff_v4->subframe[0].array7_1[2] = (abuff_swap_ptr[6] >> 9) & 7;
+  reconstr_abuff_v4->subframe[0].array7_1[3] = (abuff_swap_ptr[6] >> 6) & 7;
+  reconstr_abuff_v4->subframe[0].array7_1[4] = (abuff_swap_ptr[6] >> 3) & 7;
+  reconstr_abuff_v4->subframe[0].array7_1[5] = abuff_swap_ptr[6] & 7;
+  reconstr_abuff_v4->subframe[0].array7_1[6] = (abuff_swap_ptr[7] >> 13) & 7;
 
-  reconstr_abuff_v4[44] = ((abuff_swap_ptr[9] >> 9) & 0x7F)
+  reconstr_abuff_v4->subframe_something[1] = (abuff_swap_ptr[7] >> 8) & 0x1F;
+
+  reconstr_abuff_v4->subframe[1].field_4 = ((abuff_swap_ptr[9] >> 9) & 0x7F)
 		  + ((abuff_swap_ptr[8] + (abuff_swap_ptr[7] << 16)) << 7);
-  reconstr_abuff_v4[42] = (abuff_swap_ptr[9] >> 3) & 0x3F;
-  reconstr_abuff_v4[53] = abuff_swap_ptr[9] & 7;
-  reconstr_abuff_v4[54] = (abuff_swap_ptr[10] >> 13) & 7;
-  reconstr_abuff_v4[55] = (abuff_swap_ptr[10] >> 10) & 7;
-  reconstr_abuff_v4[56] = (abuff_swap_ptr[10] >> 7) & 7;
-  reconstr_abuff_v4[57] = (abuff_swap_ptr[10] >> 4) & 7;
-  reconstr_abuff_v4[58] = (abuff_swap_ptr[10] >> 1) & 7;
-  reconstr_abuff_v4[59] = ((abuff_swap_ptr[11] >> 14) & 3)
+  reconstr_abuff_v4->subframe[1].field_0 = (abuff_swap_ptr[9] >> 3) & 0x3F;
+
+  reconstr_abuff_v4->subframe[1].array7_1[0] = abuff_swap_ptr[9] & 7;
+  reconstr_abuff_v4->subframe[1].array7_1[1] = (abuff_swap_ptr[10] >> 13) & 7;
+  reconstr_abuff_v4->subframe[1].array7_1[2] = (abuff_swap_ptr[10] >> 10) & 7;
+  reconstr_abuff_v4->subframe[1].array7_1[3] = (abuff_swap_ptr[10] >> 7) & 7;
+  reconstr_abuff_v4->subframe[1].array7_1[4] = (abuff_swap_ptr[10] >> 4) & 7;
+  reconstr_abuff_v4->subframe[1].array7_1[5] = (abuff_swap_ptr[10] >> 1) & 7;
+  reconstr_abuff_v4->subframe[1].array7_1[6] = ((abuff_swap_ptr[11] >> 14) & 3)
 		  + 4 * (abuff_swap_ptr[10] & 1);
 
-  reconstr_abuff_v4[21] = (abuff_swap_ptr[11] >> 9) & 0x1F;
+  reconstr_abuff_v4->subframe_something[2] = (abuff_swap_ptr[11] >> 9) & 0x1F;
 
-  reconstr_abuff_v4[62] = ((abuff_swap_ptr[13] >> 10) & 0x3F)
+  reconstr_abuff_v4->subframe[2].field_4 = ((abuff_swap_ptr[13] >> 10) & 0x3F)
   	  	  + ((abuff_swap_ptr[12] + ((abuff_swap_ptr[11] & 0x1FF) << 16)) << 6);
 
-  reconstr_abuff_v4[60] = (abuff_swap_ptr[13] >> 4) & 0x3F;
-  reconstr_abuff_v4[71] = (abuff_swap_ptr[13] >> 1) & 7;
-  reconstr_abuff_v4[72] = ((abuff_swap_ptr[14] >> 14) & 3)
+  reconstr_abuff_v4->subframe[2].field_0 = (abuff_swap_ptr[13] >> 4) & 0x3F;
+
+  reconstr_abuff_v4->subframe[2].array7_1[0] = (abuff_swap_ptr[13] >> 1) & 7;
+  reconstr_abuff_v4->subframe[2].array7_1[1] = ((abuff_swap_ptr[14] >> 14) & 3)
 		  + 4 * (abuff_swap_ptr[14] & 1);
-  reconstr_abuff_v4[73] = (abuff_swap_ptr[14] >> 11) & 7;
-  reconstr_abuff_v4[74] = (abuff_swap_ptr[14] >> 8) & 7;
-  reconstr_abuff_v4[75] = (abuff_swap_ptr[14] >> 5) & 7;
-  reconstr_abuff_v4[76] = (abuff_swap_ptr[14] >> 2) & 7;
-  reconstr_abuff_v4[77] = ((abuff_swap_ptr[15] >> 15) & 1)
+  reconstr_abuff_v4->subframe[2].array7_1[2] = (abuff_swap_ptr[14] >> 11) & 7;
+  reconstr_abuff_v4->subframe[2].array7_1[3] = (abuff_swap_ptr[14] >> 8) & 7;
+  reconstr_abuff_v4->subframe[2].array7_1[4] = (abuff_swap_ptr[14] >> 5) & 7;
+  reconstr_abuff_v4->subframe[2].array7_1[5] = (abuff_swap_ptr[14] >> 2) & 7;
+  reconstr_abuff_v4->subframe[2].array7_1[6] = ((abuff_swap_ptr[15] >> 15) & 1)
 		  + 2 * (abuff_swap_ptr[14] & 3);
 
-  reconstr_abuff_v4[22] = (abuff_swap_ptr[15] >> 10) & 0x1F;
+  reconstr_abuff_v4->subframe_something[3] = (abuff_swap_ptr[15] >> 10) & 0x1F;
 
-  reconstr_abuff_v4[80] = ((abuff_swap_ptr[17] >> 11) & 0x1F)
+  reconstr_abuff_v4->subframe[3].field_4 = ((abuff_swap_ptr[17] >> 11) & 0x1F)
 		  + 32 * (abuff_swap_ptr[16] + ((abuff_swap_ptr[15] & 0x3FF) << 16));
-  reconstr_abuff_v4[78] = (abuff_swap_ptr[17] >> 5) & 0x3F;
-  reconstr_abuff_v4[89] = (abuff_swap_ptr[17] >> 2) & 7;
-  reconstr_abuff_v4[90] = ((abuff_swap_ptr[18] >> 15) & 1)
+  reconstr_abuff_v4->subframe[3].field_0 = (abuff_swap_ptr[17] >> 5) & 0x3F;
+
+  reconstr_abuff_v4->subframe[3].array7_1[0] = (abuff_swap_ptr[17] >> 2) & 7;
+  reconstr_abuff_v4->subframe[3].array7_1[1] = ((abuff_swap_ptr[18] >> 15) & 1)
 		  + 2 * (abuff_swap_ptr[17] & 3);
-  reconstr_abuff_v4[91] = (abuff_swap_ptr[18] >> 12) & 7;
-  reconstr_abuff_v4[92] = (abuff_swap_ptr[18] >> 9) & 7;
-  reconstr_abuff_v4[93] = (abuff_swap_ptr[18] >> 6) & 7;
-  reconstr_abuff_v4[94] = (abuff_swap_ptr[18] >> 3) & 7;
-  reconstr_abuff_v4[95] = abuff_swap_ptr[18] & 7;
-  v30 = &reconstr_abuff_v4[26];
-  v53 = &reconstr_abuff_v4[26];
+  reconstr_abuff_v4->subframe[3].array7_1[2] = (abuff_swap_ptr[18] >> 12) & 7;
+  reconstr_abuff_v4->subframe[3].array7_1[3] = (abuff_swap_ptr[18] >> 9) & 7;
+  reconstr_abuff_v4->subframe[3].array7_1[4] = (abuff_swap_ptr[18] >> 6) & 7;
+  reconstr_abuff_v4->subframe[3].array7_1[5] = (abuff_swap_ptr[18] >> 3) & 7;
+  reconstr_abuff_v4->subframe[3].array7_1[6] = abuff_swap_ptr[18] & 7;
+  v30 = &reconstr_abuff_v4->subframe[0].field_4;
+  v53 = &reconstr_abuff_v4->subframe[0].field_4;
 
   v52 = 0;
   v55 = 4;
@@ -295,6 +300,7 @@ void g_unc_sub_3B9120(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
         v32 = &v56[v33];
         v31 -= v56[v33];
         v54 = &v56[v33];
+        // this is actually reconstr_abuff_v4->subframe[a].array7_2[b]
         reconstr_abuff_v4[v52 - v33 + 34] = i; //some structs, TODO
         // difference between start of each block is 18
         // 28, 29, 30, 31, 32, 33, 34,
@@ -334,6 +340,7 @@ LABEL_22:
         v39--;
         v41 = 18 * some_val - v37;
         v37--;
+        // this is actually reconstr_abuff_v4->subframe[a].array7_2[b]
         reconstr_abuff_v4[v41 + 35] = v38; // on first run reconstr_abuff_v4[28],
         // difference between start of each block is 18
         // 28, 29, 30, 31, 32, 33, 34,
@@ -482,7 +489,7 @@ LABEL_9:
   }
   //////////////////////////////////
   // looks like sort of cleanup part. In case "tmp != 0xFFFF8000" check will fail.
-  // or may be not used at all.
+  // or may be not used at all. With my test file it was never triggered
 #if 0
   struc_6_v14 = struc_6_a1;
   v14 = 0;
@@ -544,26 +551,15 @@ LABEL_9:
 }
 
 /* this function will get pointer to one of 4 subframes */
-void g_unc_sub_3B9870(int32_t *array72_a1, struct struc_1 *struc_1_a2)
+void g_unc_sub_3B9870(int32_t *array72_a1, struct struc_9 *subframe)
 {
-  int v2; // esi@1
-  int16_t *v3; // eax@1
-  signed int size_7_v52; // edx@1
-  int v5; // ecx@2
-  signed int v6; // ebx@2
-  __int16 v7; // [sp+D8h] [bp+C8h]@0
-  int i;
+  int i, val;
 
-  v2 = struc_1_a2->field_30;
-  v3 = struc_1_a2->array7_1_46;
+  val = subframe->field_0;
 
-  for (i = 0; i < 7; i++) {
-	  //v5 = struc_1_a2->array7_2_38[i]
-    v5 = *(v3 - 7);
-    // v6 = g_unc_array_3C8878[v2] * g_unc_array_3C9278[struc_1_a2->array7_1_46[i]] + 16384
-    v6 = g_unc_array_3C8878[v2] * g_unc_array_3C9278[*v3] + 16384;
-    v3 += 2;
-    array72_a1[v5] += v6 >> 15;
-  }
+  for (i = 0; i < 7; i++)
+    array72_a1[subframe->array7_2[i]] +=
+    		(g_unc_array_3C8878[val]
+    		                    * g_unc_array_3C9278[subframe->array7_1[i]] + 16384) >> 15;
 
 }

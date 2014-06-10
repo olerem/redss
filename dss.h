@@ -8,23 +8,22 @@
 #ifndef DSS__
 #define DSS__
 
+struct struc_9 {
+	int16_t field_0;
+	int16_t field_2;
+	int16_t field_4;
+	int16_t field_6;
+	int16_t array7_2[7]; /* this values was calculate */
+	int16_t array7_1[7]; /* this values was get directly from decompressor */
+};
+
 struct struc_1 {
 	int16_t	field_0;
 	int16_t	array14_stage0[14];
 
-	int16_t field_30;
+	int16_t subframe_something[4];
 
-	int16_t	array7_2_38[7];
-	int16_t	array7_1_46[7];
-
-	int16_t	array7_2_5C[7];
-	int16_t	array7_1_6A[7];
-
-	int16_t	array7_2_80[7];
-	int16_t	array7_1_8E[7];
-
-	int16_t	array7_2_A4[7];
-	int16_t	array7_1_B2[7];
+	struct struc_9 subframe[4];
 };
 
 struct struc_6 {
@@ -224,6 +223,14 @@ static const int16_t  g_unc_array_3C8878[64] = {
      646,  706,  771,  843,  922, 1007, 1101, 1204,
     1316, 1438, 1572, 1719, 1879, 2053, 2244, 2453,
     2682, 2931, 3204, 3502, 3828, 4184, 4574, 5000,
-}
+};
+
+static const int16_t g_unc_array_3C8870[4] = {
+    -8166, -2419, 1997, 6705
+};
+
+static const int16_t  g_unc_array_3C9278[] = {
+    -31182, -22273, -13364, -4455, 4455, 13364, 22273, 31182
+};
 
 #endif /* DSS__ */
