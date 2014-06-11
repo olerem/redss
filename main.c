@@ -1,3 +1,10 @@
+/*
+ * dss2_decoder
+ *
+ *  Created on: 03.06.2014
+ *      Autor: lex
+ */
+
 
 #include <stdio.h>
 #include <stdint.h>
@@ -143,7 +150,6 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
   v2 = 0;
   if ( word_3D041C )
   {
-    abuff_swap_ptr = abuff_swap_ptr;
     reconstr_abuff_v4 = reconstr_abuff;
 
     word_3D1264 = reconstr_abuff->field_0 = (abuff_swap_ptr[0] >> 15) & 1;
@@ -168,10 +174,7 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
     		+ 4 * (abuff_swap_ptr[2] & 1);
 
     v12 = (abuff_swap_ptr[3] >> 12) & 3;
-  }
-  else
-  {
-    abuff_swap_ptr = abuff_swap_ptr;
+  } else {
     reconstr_abuff_v4 = reconstr_abuffa;
     word_3D1264 = 1;
 
@@ -269,96 +272,61 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
   reconstr_abuff_v4->sf[3].pulse_val[4] = (abuff_swap_ptr[18] >> 6) & 7;
   reconstr_abuff_v4->sf[3].pulse_val[5] = (abuff_swap_ptr[18] >> 3) & 7;
   reconstr_abuff_v4->sf[3].pulse_val[6] = abuff_swap_ptr[18] & 7;
-  v30 = &reconstr_abuff_v4->sf[0].field_4;
-  v53 = &reconstr_abuff_v4->sf[0].field_4;
 
-  v52 = 0;
-  v55 = 4;
 ////////////////////////////////////////////////////////////////////
-  int some_val = 0;
-  while ( 1 )
-  {
+  int subframe_idx;
+  for (subframe_idx = 0; subframe_idx < 4; subframe_idx++) {
 	/* looks like Binomial coefficients C(72,n). But 3379081753 do not fit to this sequence */
     unsigned int v56[8] = {72, 2556, 59640, 1028790, 13991544, 156238908, 1473109704, 3379081753};
 
-    v31 = *(int16_t *)v30;
+    v31 = reconstr_abuff_v4->sf[subframe_idx].field_4;
 
-    if ( v31 < 1473109704 )
-      if ( word_3D0C26 != v2 )
+    if ( v31 < v56[7] )
+      if ( word_3D0C26 != 0 )
         goto LABEL_22;
     else
-      word_3D0C26 = v2;
+      word_3D0C26 = 0;
 
-    v32 = &v56[7];
-    v33 = 7;
-    v30[8] = v2;
-    v54 = &v56[7];
+    v33 = 6;
+    /* why do we need this? */
+    reconstr_abuff_v4->sf[subframe_idx].pulse_pos[6] = 0;
+
+    //////////////////
     for (i = 71; i >= 0; i--) {
-      if ( (signed int)*(v32 - 1) <= v31 )
-      {
-        --v33;
-        v32 = &v56[v33];
+      if ( v56[v33] <= v31 ) {
         v31 -= v56[v33];
-        v54 = &v56[v33];
-        // this is actually reconstr_abuff_v4->subframe[a].array7_2[b]
-        reconstr_abuff_v4[v52 - v33 + 34] = i; //some structs, TODO
-        // difference between start of each block is 18
-        // 28, 29, 30, 31, 32, 33, 34,
-        // 46, 47, 48, 49, 50, 51, 52,
-        // 64, 65, 66, 67, 68, 69, 70,
-        // 82, 83, 84, 85, 86, 87, 88,
+
+        reconstr_abuff_v4->sf[subframe_idx].pulse_pos[(v33 ^ 7) - 1] = i;
+
         if (!v33)
           break;
+        --v33;
       }
       --v56[0];
-      if ( v33 > 1 )
-      {
-        int a = 1, b;
-        for (b = v33 - 1 ; b > 0; b--) {
-        	v56[a] -= v56[a - 1];
-        	a++;
-        }
-        v32 = v54;
+      if ( v33 >= 1 ) {
+        int a;
+        for (a = 0; a < v33; a++)
+        	v56[a] -= v56[a + 1];
       }
     };
+    ////////////////////////////
 
+    if ( word_3D0C26 ) {
 
-    if ( word_3D0C26 )
-    {
-      v30 = v53;
 LABEL_22:
-      v36 = *(_DWORD *)v30;
-      v37 = 7;
+      v36 = reconstr_abuff_v4->sf[subframe_idx].field_4;
       v38 = 71; //GRID_SIZE
       v39 = 7; //MAX_PULSES
 
       /* this part seems to be close to g723.1 gen_fcb_excitation() RATE_6300 */
-      for (i = 7; i > 0; i--) {
+      for (i = 0; i < 7; i++) {
         for ( ; v36 < dss2_combinatorial_table[v39][v38]; --v38 )
           ;
         v36 -= dss2_combinatorial_table[v39][v38];
         v39--;
-        v41 = 18 * some_val - v37;
-        v37--;
-        // this is actually reconstr_abuff_v4->subframe[a].array7_2[b]
-        reconstr_abuff_v4[v41 + 35] = v38; // on first run reconstr_abuff_v4[28],
-        // difference between start of each block is 18
-        // 28, 29, 30, 31, 32, 33, 34,
-        // 46, 47, 48, 49, 50, 51, 52,
-        // 64, 65, 66, 67, 68, 69, 70,
-        // 82, 83, 84, 85, 86, 87, 88,
-        //
+        reconstr_abuff_v4->sf[subframe_idx].pulse_pos[i] = v38;
       }
     }
-    v30 = v53 + 18;
-    v42 = v55 == 1;
-    some_val = some_val + 1;
-    v52 += 18;
-    v53 += 18;
-    --v55;
-    if ( v42 )
-      break;
-    v2 = 0;
   }
 
 /////////////////////////////////////////////////////////////////////////

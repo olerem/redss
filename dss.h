@@ -1,5 +1,5 @@
 /*
- * dss.
+ * dss2_decoder
  *
  *  Created on: 03.06.2014
  *      Autor: lex
@@ -11,8 +11,7 @@
 struct dss2_subframe {
 	int16_t gain;
 	int16_t field_2;
-	int16_t field_4;
-	int16_t field_6;
+	int32_t field_4;
 	int16_t pulse_pos[7]; /* this values was calculate */
 	int16_t pulse_val[7]; /* this values was get directly from decompressor */
 };
