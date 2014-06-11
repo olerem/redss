@@ -79,71 +79,11 @@ void g_unc_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag) {
 }
 
 void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2) {
-	__int16 v2; // bp@1
-	__int16 *abuff_swap_ptr; // eax@2
-	struct struc_1 *reconstr_abuff_v4; // esi@2
-	int v5; // ecx@2
-	int v6; // edx@2
-	signed int v7; // edx@2
-	signed int v8; // edx@2
-	int v9; // ecx@2
-	int v10; // edx@2
-	signed int v11; // ecx@2
+	int16_t *abuff_swap_ptr; // eax@2
 	int v12; // edx@2
-	int v13; // edx@3
-	signed int v14; // edx@3
-	signed int v15; // edx@3
-	int v16; // ecx@3
-	int v17; // edx@3
-	signed int v18; // ecx@7
-	signed int v19; // edx@7
-	int v20; // ecx@7
-	signed int v21; // ecx@7
-	signed int v22; // ecx@7
-	int v23; // edx@7
-	signed int v24; // edx@7
-	signed int v25; // edx@7
-	signed int v26; // edx@7
-	int v27; // ecx@7
-	signed int v28; // ecx@7
-	signed int v29; // ecx@7
-	int v30; // edx@7
-	signed int v31; // edi@9
-	int *v32; // ebx@12
-	signed int v33; // ecx@12
-	int *v34; // edx@16
-	int v35; // ebx@16
-	unsigned int v36; // edx@22
-	signed int v37; // ebx@22
-	signed int v38; // ecx@22
-	signed int v39; // edi@22
-	int v40; // ebp@25
-	int v41; // ebp@25
-	bool v42; // zf@26
-	signed int v45; // ebp@27
-	int v46; // ecx@27
-	__int16 v47; // di@28
-	signed int v50; // edx@29
-	int v52; // [sp+8h] [bp-30h]@7
-	__int16 *v53; // [sp+Ch] [bp-2Ch]@7
-	int *v54; // [sp+10h] [bp-28h]@12
-	signed int v55; // [sp+14h] [bp-24h]@7
-	int v57; // [sp+1Ch] [bp-1Ch]@9
-	int v58; // [sp+20h] [bp-18h]@9
-	int v59; // [sp+24h] [bp-14h]@9
-	int v60; // [sp+28h] [bp-10h]@9
-	int v61; // [sp+2Ch] [bp-Ch]@9
-	int v62; // [sp+30h] [bp-8h]@9
-	int v63; // [sp+34h] [bp-4h]@9
-	struct struc_1 *reconstr_abuffa; // [sp+3Ch] [bp+4h]@0
-	__int16 *abuff_swap_ptra; // [sp+40h] [bp+8h]@12
-	__int8 *abuff_swap_ptrb; // [sp+40h] [bp+8h]@22
-	__int8 *abuff_swap_ptrc; // [sp+40h] [bp+8h]@27
 	int i;
 
-	v2 = 0;
 	if (word_3D041C) {
-		reconstr_abuff_v4 = reconstr_abuff;
 
 		word_3D1264 = reconstr_abuff->field_0 = (abuff_swap_ptr[0] >> 15) & 1;
 
@@ -168,7 +108,6 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 
 		v12 = (abuff_swap_ptr[3] >> 12) & 3;
 	} else {
-		reconstr_abuff_v4 = reconstr_abuffa;
 		word_3D1264 = 1;
 
 		reconstr_abuff->array14_stage0[0] = (abuff_swap_ptr[0] >> 11) & 0x1F;
@@ -203,163 +142,162 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 		return;
 	}
 
-	reconstr_abuff_v4->subframe_something[0] = (abuff_swap_ptr[3] >> 7) & 0x1F;
+	reconstr_abuff->subframe_something[0] = (abuff_swap_ptr[3] >> 7) & 0x1F;
 
 	// instead of "*((uint8_t *)abuff_swap_ptr + 11)" can be "(abuff_swap_ptr[5] >> 8) & 0xf"
-	reconstr_abuff_v4->sf[0].field_4 = *((uint8_t *) abuff_swap_ptr + 11)
+	reconstr_abuff->sf[0].combined_pulse_pos = *((uint8_t *) abuff_swap_ptr + 11)
 			+ ((abuff_swap_ptr[4] + ((abuff_swap_ptr[3] & 0x7F) << 16)) << 8);
-	reconstr_abuff_v4->sf[0].gain = (abuff_swap_ptr[5] >> 2) & 0x3F;
+	reconstr_abuff->sf[0].gain = (abuff_swap_ptr[5] >> 2) & 0x3F;
 
-	reconstr_abuff_v4->sf[0].pulse_val[0] = ((abuff_swap_ptr[6] >> 15) & 1)
+	reconstr_abuff->sf[0].pulse_val[0] = ((abuff_swap_ptr[6] >> 15) & 1)
 			+ 2 * (abuff_swap_ptr[5] & 3);
-	reconstr_abuff_v4->sf[0].pulse_val[1] = (abuff_swap_ptr[6] >> 12) & 7;
-	reconstr_abuff_v4->sf[0].pulse_val[2] = (abuff_swap_ptr[6] >> 9) & 7;
-	reconstr_abuff_v4->sf[0].pulse_val[3] = (abuff_swap_ptr[6] >> 6) & 7;
-	reconstr_abuff_v4->sf[0].pulse_val[4] = (abuff_swap_ptr[6] >> 3) & 7;
-	reconstr_abuff_v4->sf[0].pulse_val[5] = abuff_swap_ptr[6] & 7;
-	reconstr_abuff_v4->sf[0].pulse_val[6] = (abuff_swap_ptr[7] >> 13) & 7;
+	reconstr_abuff->sf[0].pulse_val[1] = (abuff_swap_ptr[6] >> 12) & 7;
+	reconstr_abuff->sf[0].pulse_val[2] = (abuff_swap_ptr[6] >> 9) & 7;
+	reconstr_abuff->sf[0].pulse_val[3] = (abuff_swap_ptr[6] >> 6) & 7;
+	reconstr_abuff->sf[0].pulse_val[4] = (abuff_swap_ptr[6] >> 3) & 7;
+	reconstr_abuff->sf[0].pulse_val[5] = abuff_swap_ptr[6] & 7;
+	reconstr_abuff->sf[0].pulse_val[6] = (abuff_swap_ptr[7] >> 13) & 7;
 
-	reconstr_abuff_v4->subframe_something[1] = (abuff_swap_ptr[7] >> 8) & 0x1F;
+	reconstr_abuff->subframe_something[1] = (abuff_swap_ptr[7] >> 8) & 0x1F;
 
-	reconstr_abuff_v4->sf[1].field_4 = ((abuff_swap_ptr[9] >> 9) & 0x7F)
+	reconstr_abuff->sf[1].combined_pulse_pos = ((abuff_swap_ptr[9] >> 9) & 0x7F)
 			+ ((abuff_swap_ptr[8] + (abuff_swap_ptr[7] << 16)) << 7);
-	reconstr_abuff_v4->sf[1].gain = (abuff_swap_ptr[9] >> 3) & 0x3F;
+	reconstr_abuff->sf[1].gain = (abuff_swap_ptr[9] >> 3) & 0x3F;
 
-	reconstr_abuff_v4->sf[1].pulse_val[0] = abuff_swap_ptr[9] & 7;
-	reconstr_abuff_v4->sf[1].pulse_val[1] = (abuff_swap_ptr[10] >> 13) & 7;
-	reconstr_abuff_v4->sf[1].pulse_val[2] = (abuff_swap_ptr[10] >> 10) & 7;
-	reconstr_abuff_v4->sf[1].pulse_val[3] = (abuff_swap_ptr[10] >> 7) & 7;
-	reconstr_abuff_v4->sf[1].pulse_val[4] = (abuff_swap_ptr[10] >> 4) & 7;
-	reconstr_abuff_v4->sf[1].pulse_val[5] = (abuff_swap_ptr[10] >> 1) & 7;
-	reconstr_abuff_v4->sf[1].pulse_val[6] = ((abuff_swap_ptr[11] >> 14) & 3)
+	reconstr_abuff->sf[1].pulse_val[0] = abuff_swap_ptr[9] & 7;
+	reconstr_abuff->sf[1].pulse_val[1] = (abuff_swap_ptr[10] >> 13) & 7;
+	reconstr_abuff->sf[1].pulse_val[2] = (abuff_swap_ptr[10] >> 10) & 7;
+	reconstr_abuff->sf[1].pulse_val[3] = (abuff_swap_ptr[10] >> 7) & 7;
+	reconstr_abuff->sf[1].pulse_val[4] = (abuff_swap_ptr[10] >> 4) & 7;
+	reconstr_abuff->sf[1].pulse_val[5] = (abuff_swap_ptr[10] >> 1) & 7;
+	reconstr_abuff->sf[1].pulse_val[6] = ((abuff_swap_ptr[11] >> 14) & 3)
 			+ 4 * (abuff_swap_ptr[10] & 1);
 
-	reconstr_abuff_v4->subframe_something[2] = (abuff_swap_ptr[11] >> 9) & 0x1F;
+	reconstr_abuff->subframe_something[2] = (abuff_swap_ptr[11] >> 9) & 0x1F;
 
-	reconstr_abuff_v4->sf[2].field_4 =
+	reconstr_abuff->sf[2].combined_pulse_pos =
 			((abuff_swap_ptr[13] >> 10) & 0x3F)
 					+ ((abuff_swap_ptr[12]
 							+ ((abuff_swap_ptr[11] & 0x1FF) << 16)) << 6);
 
-	reconstr_abuff_v4->sf[2].gain = (abuff_swap_ptr[13] >> 4) & 0x3F;
+	reconstr_abuff->sf[2].gain = (abuff_swap_ptr[13] >> 4) & 0x3F;
 
-	reconstr_abuff_v4->sf[2].pulse_val[0] = (abuff_swap_ptr[13] >> 1) & 7;
-	reconstr_abuff_v4->sf[2].pulse_val[1] = ((abuff_swap_ptr[14] >> 14) & 3)
+	reconstr_abuff->sf[2].pulse_val[0] = (abuff_swap_ptr[13] >> 1) & 7;
+	reconstr_abuff->sf[2].pulse_val[1] = ((abuff_swap_ptr[14] >> 14) & 3)
 			+ 4 * (abuff_swap_ptr[14] & 1);
-	reconstr_abuff_v4->sf[2].pulse_val[2] = (abuff_swap_ptr[14] >> 11) & 7;
-	reconstr_abuff_v4->sf[2].pulse_val[3] = (abuff_swap_ptr[14] >> 8) & 7;
-	reconstr_abuff_v4->sf[2].pulse_val[4] = (abuff_swap_ptr[14] >> 5) & 7;
-	reconstr_abuff_v4->sf[2].pulse_val[5] = (abuff_swap_ptr[14] >> 2) & 7;
-	reconstr_abuff_v4->sf[2].pulse_val[6] = ((abuff_swap_ptr[15] >> 15) & 1)
+	reconstr_abuff->sf[2].pulse_val[2] = (abuff_swap_ptr[14] >> 11) & 7;
+	reconstr_abuff->sf[2].pulse_val[3] = (abuff_swap_ptr[14] >> 8) & 7;
+	reconstr_abuff->sf[2].pulse_val[4] = (abuff_swap_ptr[14] >> 5) & 7;
+	reconstr_abuff->sf[2].pulse_val[5] = (abuff_swap_ptr[14] >> 2) & 7;
+	reconstr_abuff->sf[2].pulse_val[6] = ((abuff_swap_ptr[15] >> 15) & 1)
 			+ 2 * (abuff_swap_ptr[14] & 3);
 
-	reconstr_abuff_v4->subframe_something[3] = (abuff_swap_ptr[15] >> 10)
+	reconstr_abuff->subframe_something[3] = (abuff_swap_ptr[15] >> 10)
 			& 0x1F;
 
-	reconstr_abuff_v4->sf[3].field_4 = ((abuff_swap_ptr[17] >> 11) & 0x1F)
+	reconstr_abuff->sf[3].combined_pulse_pos = ((abuff_swap_ptr[17] >> 11) & 0x1F)
 			+ 32 * (abuff_swap_ptr[16] + ((abuff_swap_ptr[15] & 0x3FF) << 16));
-	reconstr_abuff_v4->sf[3].gain = (abuff_swap_ptr[17] >> 5) & 0x3F;
+	reconstr_abuff->sf[3].gain = (abuff_swap_ptr[17] >> 5) & 0x3F;
 
-	reconstr_abuff_v4->sf[3].pulse_val[0] = (abuff_swap_ptr[17] >> 2) & 7;
-	reconstr_abuff_v4->sf[3].pulse_val[1] = ((abuff_swap_ptr[18] >> 15) & 1)
+	reconstr_abuff->sf[3].pulse_val[0] = (abuff_swap_ptr[17] >> 2) & 7;
+	reconstr_abuff->sf[3].pulse_val[1] = ((abuff_swap_ptr[18] >> 15) & 1)
 			+ 2 * (abuff_swap_ptr[17] & 3);
-	reconstr_abuff_v4->sf[3].pulse_val[2] = (abuff_swap_ptr[18] >> 12) & 7;
-	reconstr_abuff_v4->sf[3].pulse_val[3] = (abuff_swap_ptr[18] >> 9) & 7;
-	reconstr_abuff_v4->sf[3].pulse_val[4] = (abuff_swap_ptr[18] >> 6) & 7;
-	reconstr_abuff_v4->sf[3].pulse_val[5] = (abuff_swap_ptr[18] >> 3) & 7;
-	reconstr_abuff_v4->sf[3].pulse_val[6] = abuff_swap_ptr[18] & 7;
+	reconstr_abuff->sf[3].pulse_val[2] = (abuff_swap_ptr[18] >> 12) & 7;
+	reconstr_abuff->sf[3].pulse_val[3] = (abuff_swap_ptr[18] >> 9) & 7;
+	reconstr_abuff->sf[3].pulse_val[4] = (abuff_swap_ptr[18] >> 6) & 7;
+	reconstr_abuff->sf[3].pulse_val[5] = (abuff_swap_ptr[18] >> 3) & 7;
+	reconstr_abuff->sf[3].pulse_val[6] = abuff_swap_ptr[18] & 7;
 
 ////////////////////////////////////////////////////////////////////
 	int subframe_idx;
 	for (subframe_idx = 0; subframe_idx < 4; subframe_idx++) {
-		/* looks like Binomial coefficients C(72,n). But 3379081753 do not fit to this sequence */
-		unsigned int v56[8] = { 72, 2556, 59640, 1028790, 13991544, 156238908,
+		unsigned int C72_binomials[PULSE_MAX] = { 72, 2556, 59640, 1028790, 13991544, 156238908,
 				1473109704, 3379081753 };
+		unsigned int combined_pulse_pos =
+				reconstr_abuff->sf[subframe_idx].combined_pulse_pos;
+		int index = 6;
 
-		v31 = reconstr_abuff_v4->sf[subframe_idx].field_4;
-
-		if (v31 < v56[7])
+		if (combined_pulse_pos < C72_binomials[PULSE_MAX - 1])
 			if (word_3D0C26 != 0)
 				goto LABEL_22;
 			else
 				word_3D0C26 = 0;
 
-		v33 = 6;
+
 		/* why do we need this? */
-		reconstr_abuff_v4->sf[subframe_idx].pulse_pos[6] = 0;
+		reconstr_abuff->sf[subframe_idx].pulse_pos[6] = 0;
 
 		//////////////////
 		for (i = 71; i >= 0; i--) {
-			if (v56[v33] <= v31) {
-				v31 -= v56[v33];
+			if (C72_binomials[index] <= combined_pulse_pos) {
+				combined_pulse_pos -= C72_binomials[index];
 
-				reconstr_abuff_v4->sf[subframe_idx].pulse_pos[(v33 ^ 7) - 1] =
+				reconstr_abuff->sf[subframe_idx].pulse_pos[(index ^ 7) - 1] =
 						i;
 
-				if (!v33)
+				if (!index)
 					break;
-				--v33;
+				--index;
 			}
-			--v56[0];
-			if (v33 >= 1) {
+			--C72_binomials[0];
+			if (index) {
 				int a;
-				for (a = 0; a < v33; a++)
-					v56[a + 1] -= v56[a];
+				for (a = 0; a < index; a++)
+					C72_binomials[a + 1] -= C72_binomials[a];
 			}
 		};
 		////////////////////////////
 
 		if (word_3D0C26) {
+			int pulse, pulse_idx;
 LABEL_22:
-			v36 = reconstr_abuff_v4->sf[subframe_idx].field_4;
-			v38 = 71; //GRID_SIZE
-			v39 = 7; //MAX_PULSES
+			pulse = PULSE_MAX - 1;
+			pulse_idx = 71; //GRID_SIZE
+			combined_pulse_pos = reconstr_abuff->sf[subframe_idx].combined_pulse_pos;
 
 			/* this part seems to be close to g723.1 gen_fcb_excitation() RATE_6300 */
+			/* TODO: 7 is what? size of subframe? */
 			for (i = 0; i < 7; i++) {
-				for (; v36 < dss2_combinatorial_table[v39][v38]; --v38)
+				for (; combined_pulse_pos < dss2_combinatorial_table[pulse][pulse_idx]; --pulse_idx)
 					;
-				v36 -= dss2_combinatorial_table[v39][v38];
-				v39--;
-				reconstr_abuff_v4->sf[subframe_idx].pulse_pos[i] = v38;
+				combined_pulse_pos -= dss2_combinatorial_table[pulse][pulse_idx];
+				pulse--;
+				reconstr_abuff->sf[subframe_idx].pulse_pos[i] = pulse_idx;
 			}
 		}
 	}
 
 /////////////////////////////////////////////////////////////////////////
-	int16_t *v44;
 	int16_t v43;
+	int v46;
 
 	v43 = abuff_swap_ptr[19];
-	v44 = &reconstr_abuff_v4[8];
 
-	v46 = ((v43 << 8) + *((int8_t *) abuff_swap_ptr + 41)) / 151;
-	reconstr_abuff_v4[15] = ((v43 << 8) + *((int8_t *) abuff_swap_ptr + 41))
+	v46 = ((v43 << 8) + *((int8_t *) abuff_swap_ptr + 0x29)) / 151;
+	// TODO, is filed_1e part of array_20?
+	reconstr_abuff->filed_1e = ((v43 << 8) + *((int8_t *) abuff_swap_ptr + 0x29))
 			% 151 + 36;
-	for (i = 3; i > 0; i--) {
-		v47 = v46;
-		++v44;
+	for (i = 0; i < 3; i++) {
+		int v47 = v46;
 		v46 /= 48;
-		*(v44 - 1) = v47 - 48 * v46;
+		reconstr_abuff->array_20[i] = v47 - 48 * v46;
 	}
 ////////////////////////////////////////////////////////////////////////
 	int16_t v51;
 	int16_t v48;
-	int16_t *v49;
 
-	v48 = reconstr_abuff_v4[15];
-	v49 = &reconstr_abuff_v4[8];
-	for (i = 3; i > 0; i--) {
+	v48 = reconstr_abuff->filed_1e;
+	for (i = 0; i < 3; i++) {
 		if (v48 > 162) {
-			*v49 += 139;
+			reconstr_abuff->array_20[i] += 139;
 		} else {
 			v51 = v48 - 23;
 			if (v51 < 36)
 				v51 = 36;
-			*v49 += v51;
+			reconstr_abuff->array_20[i] += v51;
 		}
-		v48 = *v49;
-		v49++;
+		v48 = reconstr_abuff->array_20[i];
+
 	}
 
 }

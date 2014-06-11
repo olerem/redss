@@ -8,10 +8,13 @@
 #ifndef DSS__
 #define DSS__
 
+
+#define PULSE_MAX		8
+
 struct dss2_subframe {
 	int16_t gain;
 	int16_t field_2;
-	int32_t field_4;
+	int32_t combined_pulse_pos;
 	int16_t pulse_pos[7]; /* this values was calculate */
 	int16_t pulse_val[7]; /* this values was get directly from decompressor */
 };
@@ -21,6 +24,8 @@ struct struc_1 {
 	int16_t	array14_stage0[14];
 
 	int16_t subframe_something[4];
+	int16_t filed_1e;
+	int16_t array_20[3];
 
 	struct dss2_subframe sf[4];
 };
@@ -42,7 +47,7 @@ struct struc_8 {
  * Used for the coding/decoding of the pulses positions
  * for the MP-MLQ codebook
  */
-static const uint32_t dss2_combinatorial_table[8][72] = {
+static const uint32_t dss2_combinatorial_table[PULSE_MAX][72] = {
     {       0,         0,         0,          0,          0,          0,
             0,         0,         0,          0,          0,          0,
             0,         0,         0,          0,          0,          0,
