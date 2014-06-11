@@ -304,14 +304,14 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 			if (v33 >= 1) {
 				int a;
 				for (a = 0; a < v33; a++)
-					v56[a] -= v56[a + 1];
+					v56[a + 1] -= v56[a];
 			}
 		};
 		////////////////////////////
 
 		if (word_3D0C26) {
-
-			LABEL_22: v36 = reconstr_abuff_v4->sf[subframe_idx].field_4;
+LABEL_22:
+			v36 = reconstr_abuff_v4->sf[subframe_idx].field_4;
 			v38 = 71; //GRID_SIZE
 			v39 = 7; //MAX_PULSES
 
