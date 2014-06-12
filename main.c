@@ -547,6 +547,8 @@ void ssh2_vec_mult(const int32_t *array15_ro_src, int32_t *array15_dst, const in
 {
   int i;
 
+  array15_dst[0] = array15_ro_src[0];
+
   for (i = 1; i < 14; i++)
 	  array15_dst[i] = (array15_ro_src[i] * array15_ro_a3[i] + 0x4000) >> 15;
 }
