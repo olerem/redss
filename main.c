@@ -145,8 +145,10 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 	reconstr_abuff->subframe_something[0] = (abuff_swap_ptr[3] >> 7) & 0x1F;
 
 	// instead of "*((uint8_t *)abuff_swap_ptr + 11)" can be "(abuff_swap_ptr[5] >> 8) & 0xf"
-	reconstr_abuff->sf[0].combined_pulse_pos = *((uint8_t *) abuff_swap_ptr + 11)
-			+ ((abuff_swap_ptr[4] + ((abuff_swap_ptr[3] & 0x7F) << 16)) << 8);
+	reconstr_abuff->sf[0].combined_pulse_pos =
+			*((uint8_t *) abuff_swap_ptr + 11)
+					+ ((abuff_swap_ptr[4] + ((abuff_swap_ptr[3] & 0x7F) << 16))
+							<< 8);
 	reconstr_abuff->sf[0].gain = (abuff_swap_ptr[5] >> 2) & 0x3F;
 
 	reconstr_abuff->sf[0].pulse_val[0] = ((abuff_swap_ptr[6] >> 15) & 1)
@@ -192,10 +194,10 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 	reconstr_abuff->sf[2].pulse_val[6] = ((abuff_swap_ptr[15] >> 15) & 1)
 			+ 2 * (abuff_swap_ptr[14] & 3);
 
-	reconstr_abuff->subframe_something[3] = (abuff_swap_ptr[15] >> 10)
-			& 0x1F;
+	reconstr_abuff->subframe_something[3] = (abuff_swap_ptr[15] >> 10) & 0x1F;
 
-	reconstr_abuff->sf[3].combined_pulse_pos = ((abuff_swap_ptr[17] >> 11) & 0x1F)
+	reconstr_abuff->sf[3].combined_pulse_pos = ((abuff_swap_ptr[17] >> 11)
+			& 0x1F)
 			+ 32 * (abuff_swap_ptr[16] + ((abuff_swap_ptr[15] & 0x3FF) << 16));
 	reconstr_abuff->sf[3].gain = (abuff_swap_ptr[17] >> 5) & 0x3F;
 
@@ -211,8 +213,8 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 ////////////////////////////////////////////////////////////////////
 	int subframe_idx;
 	for (subframe_idx = 0; subframe_idx < 4; subframe_idx++) {
-		unsigned int C72_binomials[PULSE_MAX] = { 72, 2556, 59640, 1028790, 13991544, 156238908,
-				1473109704, 3379081753 };
+		unsigned int C72_binomials[PULSE_MAX] = { 72, 2556, 59640, 1028790,
+				13991544, 156238908, 1473109704, 3379081753 };
 		unsigned int combined_pulse_pos =
 				reconstr_abuff->sf[subframe_idx].combined_pulse_pos;
 		int index = 6;
@@ -223,7 +225,6 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 			else
 				word_3D0C26 = 0;
 
-
 		/* why do we need this? */
 		reconstr_abuff->sf[subframe_idx].pulse_pos[6] = 0;
 
@@ -232,8 +233,7 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 			if (C72_binomials[index] <= combined_pulse_pos) {
 				combined_pulse_pos -= C72_binomials[index];
 
-				reconstr_abuff->sf[subframe_idx].pulse_pos[(index ^ 7) - 1] =
-						i;
+				reconstr_abuff->sf[subframe_idx].pulse_pos[(index ^ 7) - 1] = i;
 
 				if (!index)
 					break;
@@ -253,14 +253,19 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 LABEL_22:
 			pulse = PULSE_MAX - 1;
 			pulse_idx = 71; //GRID_SIZE
-			combined_pulse_pos = reconstr_abuff->sf[subframe_idx].combined_pulse_pos;
+			combined_pulse_pos =
+					reconstr_abuff->sf[subframe_idx].combined_pulse_pos;
 
 			/* this part seems to be close to g723.1 gen_fcb_excitation() RATE_6300 */
 			/* TODO: 7 is what? size of subframe? */
 			for (i = 0; i < 7; i++) {
-				for (; combined_pulse_pos < dss2_combinatorial_table[pulse][pulse_idx]; --pulse_idx)
+				for (;
+						combined_pulse_pos
+								< dss2_combinatorial_table[pulse][pulse_idx];
+						--pulse_idx)
 					;
-				combined_pulse_pos -= dss2_combinatorial_table[pulse][pulse_idx];
+				combined_pulse_pos -=
+						dss2_combinatorial_table[pulse][pulse_idx];
 				pulse--;
 				reconstr_abuff->sf[subframe_idx].pulse_pos[i] = pulse_idx;
 			}
@@ -275,8 +280,8 @@ LABEL_22:
 
 	v46 = ((v43 << 8) + *((int8_t *) abuff_swap_ptr + 0x29)) / 151;
 	// TODO, is filed_1e part of array_20?
-	reconstr_abuff->filed_1e = ((v43 << 8) + *((int8_t *) abuff_swap_ptr + 0x29))
-			% 151 + 36;
+	reconstr_abuff->filed_1e =
+			((v43 << 8) + *((int8_t *) abuff_swap_ptr + 0x29)) % 151 + 36;
 	for (i = 0; i < 3; i++) {
 		int v47 = v46;
 		v46 /= 48;
@@ -471,19 +476,17 @@ void dss2_sub_3B9080(int32_t *array72, int32_t *array36, int a3, int a4) {
 		for (i = 0; i < 72; i++)
 			array72[i] = array36[a3 - i];
 
-
 	for (i = 0; i < 72; i++) {
 		int tmp = a4 * array72[i] >> 11;
 		array72[i] = tmp;
 		tmp = tmp & 0xFFFF8000;
-		if ( tmp && tmp != 0xFFFF8000 )
-				array72[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
+		if (tmp && tmp != 0xFFFF8000)
+			array72[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 
 	};
 }
 
-void g_unc_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size)
-{
+void g_unc_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size) {
 	int i;
 
 	if (array_a1_size <= 0)
@@ -497,8 +500,7 @@ void g_unc_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size)
 			array_a1[i] = array_a1[i] << normalize_bits;
 }
 
-void g_unc_sub_3B9FB0(int32_t *array72, int32_t *arrayXX)
-{
+void g_unc_sub_3B9FB0(int32_t *array72, int32_t *arrayXX) {
 	int i;
 
 	for (i = 0; i < 114; i++)
@@ -506,4 +508,37 @@ void g_unc_sub_3B9FB0(int32_t *array72, int32_t *arrayXX)
 
 	for (i = 0; i < 72; i++)
 		arrayXX[72 - i] = array72[i];
+}
+
+void dss2_shift_sq_sub(const int32_t *array_a1, int32_t *array_a2,
+		int32_t *array_a3_dst) {
+	int a, shift;
+
+	shift = 13 - word_3D9B7C;
+
+	for (a = 0; a < 72; a++) {
+		int i, tmp;
+
+		tmp = array_a3_dst[a] * array_a1[0];
+
+		for (i = 14; i > 0; i--)
+			tmp -= array_a2[i] * array_a1[i];
+
+		/* original code overwrite array_a2[1] two times - makes no sense for me. */
+		for (i = 14; i > 1; i--)
+			array_a2[i] = array_a2[i - 1];
+
+		tmp = (tmp + 4096) >> shift;
+
+		array_a2[1] = tmp;
+
+		array_a3_dst[a] = tmp;
+		tmp &= 0xFFFF8000;
+		if (tmp && tmp != 0xFFFF8000) {
+			if (tmp <= 0)
+				array_a2[1] = array_a3_dst[a] = 0xFFFF8000;
+			else
+				array_a2[1] = array_a3_dst[a] = 0x7FFF;
+		}
+	}
 }
