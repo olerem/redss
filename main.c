@@ -358,7 +358,8 @@ void g_unc_sub_3B8410(struct struc_6 *struc_6_a1,
 		struc_6_v2->array14_stage2[v3] = struc_6_a1->array14_stage1[v3] >> 2;
 		if (v6 / 2 >= 1)
 			break;
-		LABEL_9: ++v3;
+LABEL_9:
+		++v3;
 		if (v3 >= 14)
 			return;
 	}
@@ -496,3 +497,13 @@ void g_unc_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size)
 			array_a1[i] = array_a1[i] << normalize_bits;
 }
 
+void g_unc_sub_3B9FB0(int32_t *array72, int32_t *arrayXX)
+{
+	int i;
+
+	for (i = 0; i < 114; i++)
+		arrayXX[114 - i] = arrayXX[186 - i];
+
+	for (i = 0; i < 72; i++)
+		arrayXX[72 - i] = array72[i];
+}
