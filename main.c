@@ -252,8 +252,7 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 
 		if (word_3D0C26) {
 			int pulse, pulse_idx;
-LABEL_22:
-			pulse = PULSE_MAX - 1;
+			LABEL_22: pulse = PULSE_MAX - 1;
 			pulse_idx = 71; //GRID_SIZE
 			combined_pulse_pos =
 					reconstr_abuff->sf[subframe_idx].combined_pulse_pos;
@@ -365,8 +364,7 @@ void g_unc_sub_3B8410(struct struc_6 *struc_6_a1,
 		struc_6_v2->array14_stage2[v3] = struc_6_a1->array14_stage1[v3] >> 2;
 		if (v6 / 2 >= 1)
 			break;
-LABEL_9:
-		++v3;
+		LABEL_9: ++v3;
 		if (v3 >= 14)
 			return;
 	}
@@ -545,195 +543,186 @@ void dss2_shift_sq_sub(const int32_t *array_a1, int32_t *array_a2,
 	}
 }
 
-void dss2_vec_mult(const int32_t *array15_ro_src, int32_t *array15_dst, const int32_t *array15_ro_a3)
-{
-  int i;
+void dss2_vec_mult(const int32_t *array15_ro_src, int32_t *array15_dst,
+		const int32_t *array15_ro_a3) {
+	int i;
 
-  array15_dst[0] = array15_ro_src[0];
+	array15_dst[0] = array15_ro_src[0];
 
-  /* TODO: pseudocode and my result are too different. May be my version is wrong */
-  for (i = 1; i < 14; i++)
-	  array15_dst[i] = (array15_ro_src[i] * array15_ro_a3[i] + 0x4000) >> 15;
+	/* TODO: pseudocode and my result are too different. May be my version is wrong */
+	for (i = 1; i < 14; i++)
+		array15_dst[i] = (array15_ro_src[i] * array15_ro_a3[i] + 0x4000) >> 15;
 }
 
-int dss2_get_normalize_bits(int32_t *array_var, int16_t size)
-{
-  unsigned int val;
-  int max_val;
-  int i;
+int dss2_get_normalize_bits(int32_t *array_var, int16_t size) {
+	unsigned int val;
+	int max_val;
+	int i;
 
-  val = 1;
-  if (size)
-    for (i = 0; i < size; i++)
-    	val |= abs(array_var[i]);
+	val = 1;
+	if (size)
+		for (i = 0; i < size; i++)
+			val |= abs(array_var[i]);
 
-  for ( max_val = 0; (val & 0xFFFFC000) == 0 | (val & 0xFFFFC000) == 0xFFFFC000; ++max_val )
-    val *= 2;
-  return max_val;
+	for (max_val = 0;
+			(val & 0xFFFFC000) == 0 | (val & 0xFFFFC000) == 0xFFFFC000;
+			++max_val)
+		val *= 2;
+	return max_val;
 }
 
+void g_unc_sub_3B80F0(__int32 a0, __int32 *array15_a1, __int32 *array72_a3,
+		__int32 *array72_a4, __int16 size) {
+	signed int v5; // esi@1
+	__int32 *array_a3_tmp; // ecx@2
+	int size_tmp; // edx@2
+	__int32 v8; // eax@3
+	int normalize_bits_v9; // eax@9
+	int normalize_bits_v10; // edi@9
+	__int32 v11; // esi@9
+	__int32 *v12; // ecx@12
+	int v13; // eax@13
+	int v14; // eax@13
+	__int32 v15; // eax@17
+	int v16; // eax@17
+	int v17; // edi@20
+	signed int v18; // ecx@20
+	__int32 *v19; // edx@21
+	int v20; // esi@21
+	__int32 v21; // eax@22
+	int v22; // eax@27
+	int v23; // esi@29
+	int v24; // eax@29
+	int v25; // eax@29
+	__int32 *local_rw_array_v41_ptr; // edx@33
+	int size_v27; // edi@33
+	int v28; // eax@34
+	int v29; // eax@34
+	__int32 *array72_a4_v30; // ecx@39
+	int v31; // ebp@39
+	__int32 v32; // eax@40
+	int v33; // eax@40
+	signed int v34; // [sp+10h] [bp-1A8h]@1
+	int v35; // [sp+14h] [bp-1A4h]@12
+	__int32 v36; // [sp+18h] [bp-1A0h]@9
+	__int32 local_rw_array15_v1a[15]; // [sp+1Ch] [bp-19Ch]@9
+	__int32 local_rw_array15_v39[15]; // [sp+58h] [bp-160h]@9
+	int v39; // [sp+94h] [bp-124h]@29
+	__int32 local_rw_array_v41[72]; // [sp+98h] [bp-120h]@33
 
-void g_unc_sub_3B80F0(__int32 a0, __int32 *array15_a1, __int32 *array72_a3, __int32 *array72_a4, __int16 size)
-{
-  signed int v5; // esi@1
-  __int32 *array_a3_tmp; // ecx@2
-  int size_tmp; // edx@2
-  __int32 v8; // eax@3
-  int normalize_bits_v9; // eax@9
-  int normalize_bits_v10; // edi@9
-  __int32 v11; // esi@9
-  __int32 *v12; // ecx@12
-  int v13; // eax@13
-  int v14; // eax@13
-  __int32 v15; // eax@17
-  int v16; // eax@17
-  int v17; // edi@20
-  signed int v18; // ecx@20
-  __int32 *v19; // edx@21
-  int v20; // esi@21
-  __int32 v21; // eax@22
-  int v22; // eax@27
-  int v23; // esi@29
-  int v24; // eax@29
-  int v25; // eax@29
-  __int32 *local_rw_array_v41_ptr; // edx@33
-  int size_v27; // edi@33
-  int v28; // eax@34
-  int v29; // eax@34
-  __int32 *array72_a4_v30; // ecx@39
-  int v31; // ebp@39
-  __int32 v32; // eax@40
-  int v33; // eax@40
-  signed int v34; // [sp+10h] [bp-1A8h]@1
-  int v35; // [sp+14h] [bp-1A4h]@12
-  __int32 v36; // [sp+18h] [bp-1A0h]@9
-  __int32 local_rw_array15_v1a[15]; // [sp+1Ch] [bp-19Ch]@9
-  __int32 local_rw_array15_v39[15]; // [sp+58h] [bp-160h]@9
-  int v39; // [sp+94h] [bp-124h]@29
-  __int32 local_rw_array_v41[72]; // [sp+98h] [bp-120h]@33
+	v5 = 0;
+	v34 = 0;
+	if (size > 0) {
+		array_a3_tmp = array72_a3;
+		size_tmp = size;
+		do {
+			v8 = *array_a3_tmp;
+			if (*array_a3_tmp >= 0)
+				v5 += v8;
+			else
+				v5 -= v8;
+			++array_a3_tmp;
+			--size_tmp;
+		} while (size_tmp);
+		v34 = v5;
+		if (v5 > (signed int) 0xFFFFFu)
+			v34 = 0xFFFFFu;
+	}
 
-  v5 = 0;
-  v34 = 0;
-  if ( size > 0 )
-  {
-    array_a3_tmp = array72_a3;
-    size_tmp = size;
-    do
-    {
-      v8 = *array_a3_tmp;
-      if ( *array_a3_tmp >= 0 )
-        v5 += v8;
-      else
-        v5 -= v8;
-      ++array_a3_tmp;
-      --size_tmp;
-    }
-    while ( size_tmp );
-    v34 = v5;
-    if ( v5 > (signed int)0xFFFFFu )
-      v34 = 0xFFFFFu;
-  }
+	normalize_bits_v9 = dss2_get_normalize_bits(array72_a3, size);
+	normalize_bits_v10 = normalize_bits_v9;
 
-  normalize_bits_v9 = dss2_get_normalize_bits(array72_a3, size);
-  normalize_bits_v10 = normalize_bits_v9;
-  dss2_normalize(array72_a3, normalize_bits_v9 - 3, size);
-  dss2_normalize(g_unc_rw_array15_3D0420, normalize_bits_v10, 15);
-  dss2_normalize(g_unc_rw_array15_3D045C, normalize_bits_v10, 15);
-  v36 = g_unc_rw_array15_3D045C[1];
-  dss2_vec_mult(array15_a1, local_rw_array15_v39, g_unc_ro_array37_3C845C);
-  g_unc_shift_sq_add(local_rw_array15_v39, g_unc_rw_array15_3D0420, array72_a3);
-  dss2_vec_mult(array15_a1, local_rw_array15_v1a, g_unc_ro_array15_3C8420);
-  dss2_shift_sq_sub(local_rw_array15_v1a, g_unc_rw_array15_3D045C, array72_a3);
-  v11 = a0 >> 1;
-  if ( a0 >> 1 >= 0 )
-    v11 = 0;
-  if ( size > 1 )
-  {
-    v12 = &array72_a3[size - 1];
-    v35 = size - 1;
-    do
-    {
-      v13 = (v11 * *(v12 - 1) + (*v12 << 15) + 16384) >> 15;
-      *v12 = v13;
-      v14 = v13 & 0xFFFF8000;
-      if ( v14 && v14 != -32768 )
-        *v12 = (unsigned __int16)(((v14 <= 0) - 1) & 0xFFFE) - 32767;
-      --v12;
-      --v35;
-    }
-    while ( v35 );
-  }
-  v15 = (v36 * v11 + (*array72_a3 << 15) + 16384) >> 15;
-  *array72_a3 = v15;
-  v16 = v15 & 0xFFFF8000;
-  if ( v16 && v16 != -32768 )
-    *array72_a3 = (unsigned __int16)(((v16 <= 0) - 1) & 0xFFFE) - 32767;
-  v17 = -normalize_bits_v10;
-  dss2_normalize(array72_a3, v17, size);
-  dss2_normalize(g_unc_rw_array15_3D0420, v17, 15);
-  dss2_normalize(g_unc_rw_array15_3D045C, v17, 15);
-  v18 = 0;
-  if ( size > 0 )
-  {
-    v19 = array72_a3;
-    v20 = size;
-    do
-    {
-      v21 = *v19;
-      if ( *v19 >= 0 )
-        v18 += v21;
-      else
-        v18 -= v21;
-      ++v19;
-      --v20;
-    }
-    while ( v20 );
-  }
-  if ( v18 & 0xFFFFFFC0 )
-    v22 = (v34 << 11) / v18;
-  else
-    v22 = 1;
-  v23 = 409 * v22 >> 15 << 15;
-  v24 = (v23 + 32358 * dword_3D0498) >> 15;
-  v39 = v24;
-  v25 = v24 & 0xFFFF8000;
-  if ( v25 && v25 != -32768 )
-    v39 = (unsigned __int16)(((v25 <= 0) - 1) & 0xFFFE) - 32767;
-  if ( size > 1 )
-  {
-    local_rw_array_v41_ptr = local_rw_array_v41;
-    size_v27 = size - 1;
-    do
-    {
-      v28 = (v23 + 32358 * *(local_rw_array_v41_ptr - 1)) >> 15;
-      *local_rw_array_v41_ptr = v28;
-      v29 = v28 & 0xFFFF8000;
-      if ( v29 && v29 != -32768 )
-        *local_rw_array_v41_ptr = (unsigned __int16)(((v29 <= 0) - 1) & 0xFFFE) - 32767;
-      ++local_rw_array_v41_ptr;
-      --size_v27;
-    }
-    while ( size_v27 );
-  }
-  dword_3D0498 = local_rw_array15_v39[size + 14];// wrong array, should be v41
-  if ( size > 0 )
-  {
-    array72_a4_v30 = array72_a4;
-    v31 = size;
-    do
-    {
-      v32 = *(__int32 *)((char *)array72_a4_v30 + (char *)&v39 - (char *)array72_a4)
-          * *(__int32 *)((char *)array72_a4_v30 + (char *)&v39 - (char *)array72_a4 + (char *)array72_a3 - (char *)&v39) >> 11;
-      *array72_a4_v30 = v32;
-      v33 = v32 & 0xFFFF8000;
-      if ( v33 )
-      {
-        if ( v33 != -32768 )
-          *array72_a4_v30 = (unsigned __int16)(((v33 <= 0) - 1) & 0xFFFE) - 32767;
-      }
-      ++array72_a4_v30;
-      --v31;
-    }
-    while ( v31 );
-  }
+	dss2_normalize(array72_a3, normalize_bits_v9 - 3, size);
+	dss2_normalize(g_unc_rw_array15_3D0420, normalize_bits_v10, 15);
+	dss2_normalize(g_unc_rw_array15_3D045C, normalize_bits_v10, 15);
+
+	v36 = g_unc_rw_array15_3D045C[1];
+	dss2_vec_mult(array15_a1, local_rw_array15_v39, g_unc_ro_array37_3C845C);
+	g_unc_shift_sq_add(local_rw_array15_v39, g_unc_rw_array15_3D0420,
+			array72_a3);
+	dss2_vec_mult(array15_a1, local_rw_array15_v1a, g_unc_ro_array15_3C8420);
+	dss2_shift_sq_sub(local_rw_array15_v1a, g_unc_rw_array15_3D045C,
+			array72_a3);
+	v11 = a0 >> 1;
+	if (a0 >> 1 >= 0)
+		v11 = 0;
+	if (size > 1) {
+		v12 = &array72_a3[size - 1];
+		v35 = size - 1;
+		do {
+			v13 = (v11 * *(v12 - 1) + (*v12 << 15) + 16384) >> 15;
+			*v12 = v13;
+			v14 = v13 & 0xFFFF8000;
+			if ( v14 && v14 != -32768 )
+			*v12 = (unsigned __int16)(((v14 <= 0) - 1) & 0xFFFE) - 32767;
+			--v12;
+			--v35;
+		} while (v35);
+	}
+	v15 = (v36 * v11 + (*array72_a3 << 15) + 16384) >> 15;
+	*array72_a3 = v15;
+	v16 = v15 & 0xFFFF8000;
+	if ( v16 && v16 != -32768 )
+	*array72_a3 = (unsigned __int16)(((v16 <= 0) - 1) & 0xFFFE) - 32767;
+	v17 = -normalize_bits_v10;
+	dss2_normalize(array72_a3, v17, size);
+	dss2_normalize(g_unc_rw_array15_3D0420, v17, 15);
+	dss2_normalize(g_unc_rw_array15_3D045C, v17, 15);
+	v18 = 0;
+	if (size > 0) {
+		v19 = array72_a3;
+		v20 = size;
+		do {
+			v21 = *v19;
+			if (*v19 >= 0)
+				v18 += v21;
+			else
+				v18 -= v21;
+			++v19;
+			--v20;
+		} while (v20);
+	}
+	if (v18 & 0xFFFFFFC0)
+		v22 = (v34 << 11) / v18;
+	else
+		v22 = 1;
+	v23 = 409 * v22 >> 15 << 15;
+	v24 = (v23 + 32358 * dword_3D0498) >> 15;
+	v39 = v24;
+	v25 = v24 & 0xFFFF8000;
+	if ( v25 && v25 != -32768 )
+	v39 = (unsigned __int16)(((v25 <= 0) - 1) & 0xFFFE) - 32767;
+	if (size > 1) {
+		local_rw_array_v41_ptr = local_rw_array_v41;
+		size_v27 = size - 1;
+		do {
+			v28 = (v23 + 32358 * *(local_rw_array_v41_ptr - 1)) >> 15;
+			*local_rw_array_v41_ptr = v28;
+			v29 = v28 & 0xFFFF8000;
+			if ( v29 && v29 != -32768 )
+			*local_rw_array_v41_ptr = (unsigned __int16)(((v29 <= 0) - 1) & 0xFFFE) - 32767;
+			++local_rw_array_v41_ptr;
+			--size_v27;
+		} while (size_v27);
+	}
+	dword_3D0498 = local_rw_array15_v39[size + 14]; // wrong array, should be v41
+	if (size > 0) {
+		array72_a4_v30 = array72_a4;
+		v31 = size;
+		do {
+			v32 = *(__int32 *) ((char *) array72_a4_v30 + (char *) &v39
+					- (char *) array72_a4)
+					* *(__int32 *) ((char *) array72_a4_v30 + (char *) &v39
+							- (char *) array72_a4 + (char *) array72_a3
+							- (char *) &v39) >> 11;
+			*array72_a4_v30 = v32;
+			v33 = v32 & 0xFFFF8000;
+			if (v33) {
+			if ( v33 != -32768 )
+			*array72_a4_v30 = (unsigned __int16)(((v33 <= 0) - 1) & 0xFFFE) - 32767;
+		}
+		++array72_a4_v30;
+		--v31;
+	} while (v31);
+}
 }
