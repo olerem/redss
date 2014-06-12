@@ -486,7 +486,7 @@ void dss2_sub_3B9080(int32_t *array72, int32_t *array36, int a3, int a4) {
 	};
 }
 
-void g_unc_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size) {
+void ssh2_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size) {
 	int i;
 
 	if (array_a1_size <= 0)
@@ -541,4 +541,12 @@ void dss2_shift_sq_sub(const int32_t *array_a1, int32_t *array_a2,
 				array_a2[1] = array_a3_dst[a] = 0x7FFF;
 		}
 	}
+}
+
+void ssh2_vec_mult(const int32_t *array15_ro_src, int32_t *array15_dst, const int32_t *array15_ro_a3)
+{
+  int i;
+
+  for (i = 1; i < 14; i++)
+	  array15_dst[i] = (array15_ro_src[i] * array15_ro_a3[i] + 0x4000) >> 15;
 }
