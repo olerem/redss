@@ -372,12 +372,12 @@ void g_unc_sub_3B8410(struct struc_6 *struc_6_a1,
 		// 8, 8, c
 		tmp = (struc_6_a1->array14_stage1[v5] * v8 + (v7 << 15) + 0x4000) >> 15;
 		struc_6_v2->array14_stage2[counter - 1] = tmp;
-		if (tmp != 0xFFFF8000)
+		if ((tmp & 0xFFFF8000) != 0xFFFF8000)
 			break;
 
 		tmp = (struc_6_a1->array14_stage1[v5] * v7 + (v8 << 15) + 0x4000) >> 15;
 		struc_6_v2->array14_stage2[v5 - counter] = tmp;
-		if (tmp != 0xFFFF8000)
+		if ((tmp & 0xFFFF8000) != 0xFFFF8000)
 			break;
 
 		++counter;
@@ -458,88 +458,41 @@ void g_unc_add_pulses(int32_t *array72_a1, struct dss2_subframe *sf) {
 
 }
 
-void dss2_sub_3B9080(__int32 *array72, __int32 *array36, __int16 a3, int a4) {
-	__int32 *array72_ptr0; // edx@2
-	signed int size1; // esi@2
-	__int32 *v6; // eax@2
-	__int32 v7; // ecx@3
-	__int32 *array72_ptr_v8; // edi@5
-	int v9; // esi@5
-	signed int size0; // ebp@5
-	int v11; // eax@6
-	__int32 *array72_ptr1; // ecx@7
-	signed int size2; // edi@7
-	int v14; // eax@8
-	int v15; // eax@8
+void dss2_sub_3B9080(int32_t *array72, int32_t *array36, int a3, int a4) {
 
-	if (a3 < 72) {
-		array72_ptr_v8 = array72;
-		v9 = 0;
-		size0 = 72;
-		do {
-			++array72_ptr_v8;
-			v11 = a3 - v9++ % a3;
-			--size0;
-			*(array72_ptr_v8 - 1) = array36[v11];
-		} while (size0);
-	} else {
-		array72_ptr0 = array72;
-		size1 = 72;
-		v6 = &array36[a3];
-		do {
-			v7 = *v6;
-			--v6;
-			*array72_ptr0 = v7;
-			++array72_ptr0;
-			--size1;
-		} while (size1);
-	}
-	array72_ptr1 = array72;
-	size2 = 72;
-	do {
-		v14 = a4 * *array72_ptr1 >> 11;
-		*array72_ptr1 = v14;
-		v15 = v14 & 0xFFFF8000;
-		if (v15) {
-		if ( v15 != 0xFFFF8000 )
-		*array72_ptr1 = (unsigned __int16)(((v15 <= 0) - 1) & 0xFFFE) - 0x7FFF;
-	}
-	++array72_ptr1;
-	--size2;
-} while (size2);
+	int i;
+
+	/* do we actually need this check? we can use just [a3 - i % a3] for both cases */
+	if (a3 < 72)
+		for (i = 0; i < 72; i++)
+			array72[i] = array36[a3 - i % a3];
+	else
+		for (i = 0; i < 72; i++)
+			array72[i] = array36[a3 - i];
+
+
+	for (i = 0; i < 72; i++) {
+		int tmp = a4 * array72[i] >> 11;
+		array72[i] = tmp;
+		tmp = tmp & 0xFFFF8000;
+		if ( tmp && tmp != 0xFFFF8000 )
+				array72[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
+
+	};
 }
 
-void g_unc_normalize(__int32 *array_a1, __int16 normalize_bits,
-	__int16 array_a1_size) {
-__int32 *v3; // eax@3
-int t_size2; // edx@3
-__int32 val2; // esi@4
-__int32 *v6; // eax@7
-int t_size1; // edx@7
-__int32 val1; // esi@8
+void g_unc_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size)
+{
+	int i;
 
-if (normalize_bits < 0) {
-	if (array_a1_size > 0) {
-		v6 = array_a1;
-		t_size1 = array_a1_size;
-		do {
-			val1 = *v6;
-			++v6;
-			--t_size1;
-			*(v6 - 1) = val1 >> -(char) normalize_bits;
-		} while (t_size1);
-	}
-} else {
-	if (array_a1_size > 0) {
-		v3 = array_a1;
-		t_size2 = array_a1_size;
-		do {
-			val2 = *v3;
-			++v3;
-			--t_size2;
-			*(v3 - 1) = val2 << normalize_bits;
-		} while (t_size2);
-	}
-}
+	if (array_a1_size <= 0)
+		return;
+
+	if (normalize_bits < 0)
+		for (i = 0; i < array_a1_size; i++)
+			array_a1[i] = array_a1[i] >> abs(normalize_bits);
+	else
+		for (i = 0; i < array_a1_size; i++)
+			array_a1[i] = array_a1[i] << normalize_bits;
 }
 
