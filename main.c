@@ -379,12 +379,14 @@ void g_unc_sub_3B8410(struct struc_6 *struc_6_a1,
 		// 8, 8, c
 		tmp = (struc_6_a1->array14_stage1[v5] * v8 + (v7 << 15) + 0x4000) >> 15;
 		struc_6_v2->array14_stage2[counter - 1] = tmp;
-		if ((tmp & 0xFFFF8000) != 0xFFFF8000)
+		tmp &= 0xFFFF8000;
+		if (tmp && tmp != 0xFFFF8000)
 			break;
 
 		tmp = (struc_6_a1->array14_stage1[v5] * v7 + (v8 << 15) + 0x4000) >> 15;
 		struc_6_v2->array14_stage2[v5 - counter] = tmp;
-		if ((tmp & 0xFFFF8000) != 0xFFFF8000)
+		tmp &= 0xFFFF8000;
+		if (tmp && tmp != 0xFFFF8000)
 			break;
 
 		++counter;
