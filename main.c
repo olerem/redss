@@ -689,6 +689,76 @@ int16_t dss2_sub_3BA000(int16_t *a1) {
 	return tmp;
 }
 
+void dss2_sub_3B98D0(__int32 *array72_a1)
+{
+  int v1; // edx@1
+  __int32 *array288_ptr; // eax@1
+  signed int size6; // ecx@1
+  __int32 *array72_a1a; // ebp@3
+  __int32 *v5; // eax@3
+  unsigned int size72; // esi@3
+  unsigned int v7; // esi@5
+  signed int size6_v8; // edi@6
+  int *v9; // ecx@6
+  signed int v10; // eax@6
+  int v11; // ebx@7
+  __int32 v12; // eax@8
+  int v13; // eax@8
+  int v14; // ecx@11
+  unsigned __int64 v15; // kr08_8@11
+
+  LOWORD(v1) = 0;
+  array288_ptr = g_unc_rw_array288_3D0DC0;
+  size6 = 6;
+  do
+  {
+    *array288_ptr = array288_ptr[288];
+    ++array288_ptr;
+    --size6;
+  }
+  while ( size6 );
+  array72_a1a = array72_a1;
+  v5 = &g_unc_rw_array288_3D0DC0[6];
+  size72 = 0x120u;
+  do
+  {
+    *v5 = *(__int32 *)((char *)v5 + (char *)array72_a1 - (char *)&g_unc_rw_array288_3D0DC0[6]);
+    ++v5;
+    --size72;
+  }
+  while ( size72 );
+  v7 = (unsigned int)&g_unc_rw_array288_3D0DC0[6];
+  do
+  {
+    size6_v8 = 6;
+    v9 = &g_unc_array_3C9288[(signed __int16)v1];
+    v10 = 0;
+    do
+    {
+      v11 = *v9;
+      v9 += 11;
+      v10 += *(_DWORD *)v7 * v11;
+      v7 -= 4;
+      --size6_v8;
+    }
+    while ( size6_v8 );
+    v12 = v10 >> 15;
+    v7 += 28;
+    *array72_a1a = v12;
+    v13 = v12 & 0xFFFF8000;
+    if ( v13 && v13 != -32768 )
+      *array72_a1a = (unsigned __int16)(((v13 <= 0) - 1) & 0xFFFE) - 0x7FFF;
+    ++array72_a1a;
+    v15 = __PAIR__(11, (signed __int16)(v1 + 1) % 11);
+    v14 = v15 >> 32;
+    v1 = v15;
+    if ( !(_WORD)v1 )
+      v7 += 4;
+  }
+  while ( v7 < (unsigned int)&g_unc_array_size_3D1258 );
+}
+
+
 int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 		int **abuff, int param_a5, struc_4 *a6, int *a7, int a8, float *a9,
 		signed int *a10, unsigned int a11) {
@@ -836,8 +906,10 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 
 	};
 ////////
+
+
 	if (!(*dec_flag & 0x40000))
-		g_unc_sub_3B98D0(local_rw_array72_v101);
+		dss2_sub_3B98D0(local_rw_array72_v101);
 	v36 = dec_flag;
 	v37 = 0;
 	v38 = *dec_flag;
