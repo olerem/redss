@@ -28,6 +28,8 @@ int16_t array14_3D0DA4[14];
 int32_t g_unc_rw_array72_3D0C44[72];
 int32_t g_unc_rw_arrayXX_3D08FC[186];
 int word_3D9B7E;
+int dword_3D0DA0;
+struct struc_8 g_unc_rw_array15_3D0BE8;
 
 void dss2_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag) {
 	uint8_t *abuff_tmp;
@@ -463,7 +465,7 @@ void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 }
 
 /* this function will get pointer to one of 4 subframes */
-void dss2_add_pulses(int32_t *array72_a1, struct dss2_subframe *sf) {
+void dss2_add_pulses(int32_t *array72_a1, const struct dss2_subframe *sf) {
 	int i;
 
 	//looks like "output[sf->pulse_pos[i]] += g_gains[sf->gain] * g_pulse_val[sf->pulse_val[i]] + 0x4000 >> 15;"
@@ -738,7 +740,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 	int v57; // [sp+18h] [bp-544h]@14
 	struct struc_1 struc_1_v96; // [sp+1Ch] [bp-540h]@5
 	int32_t local_rw_array72_v101[72]; // [sp+DCh] [bp-480h]@14
-	int i;
+	int i, tmp;
 
 	if (*dec_flag & 0x10) {
 		g_unc_sub_3B9F80(param_a5, (int) &some_ptr_a2[132 * param_a5],
@@ -787,6 +789,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 	local_rw_array72_v101_ptr = local_rw_array72_v101;
 	v21 = struc_1_v96.subframe_something; //copy pointer
 	v56 = local_rw_array72_v101; // copy pointer
+////////
 	do {
 		if (word_3D1264) {
 			dss2_sub_3B9080(g_unc_rw_array72_3D0C44, g_unc_rw_arrayXX_3D08FC,
@@ -795,13 +798,14 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 			abuff_swap_v94 = v57 - 1;
 			memcpy(&struc_1_v45, &struc_1_v96, sizeof(struc_1_v45));
 
+			/* TODO: some thing is wrong here, struc_1_v4 should be subframe */
 			dss2_add_pulses(g_unc_rw_array72_3D0C44, struc_1_v45);
 		} else {
 			for (i = 0; i < 72; i++)
 				g_unc_rw_array72_3D0C44[i] = (g_unc_array_3C8938[*v21]
 						* dss2_sub_3BA000(&word_3D9B7E)) >> 14;
 
-			local_rw_array72_v101_ptr = (int32_t *) v56;
+			local_rw_array72_v101_ptr = v56;
 		}
 		dss2_sub_3B9FB0(g_unc_rw_array72_3D0C44, g_unc_rw_arrayXX_3D08FC);
 
@@ -809,26 +813,21 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 		for (i = 0; i < 72; i++)
 			g_unc_rw_array72_3D0C44[i] = g_unc_rw_arrayXX_3D08FC[71 - i];
 
+		/* TODO: find what happens with g_unc_rw_array15_3D0BE8 */
 		dss2_shift_sq_sub(
-				(const int32_t *) &g_unc_rw_array15_stg2_3D08C0.field_0,
-				&array1, g_unc_rw_array72_3D0C44);
-		v30 = dword_3D0DA0;
-		v31 = g_unc_rw_array72_3D0C44;
-		v32 = 72;
-		do {
-			v33 = (8191 * v30 + (*v31 << 15) + 16384) >> 15;
-			*v31 = v33;
-			v34 = v33 & 0xFFFF8000;
-			if (v34 && v34 != 0xFFFF8000) {
-				v35 = v34 < 0;
-				LOBYTE (v35) = v34 <= 0;
-				v30 = ((v35 - 1) & 0xFFFE) - 0x7FFF;
-				*v31 = v30;
+				&g_unc_rw_array15_stg2_3D08C0,
+				&g_unc_rw_array15_3D0BE8, g_unc_rw_array72_3D0C44);
+
+		for (i = 0; i < 72; i++) {
+			tmp = (((dword_3D0DA0 << 13) - dword_3D0DA0) + (g_unc_rw_array72_3D0C44[i] << 15) + 0x4000) >> 15;
+			g_unc_rw_array72_3D0C44[i] = tmp;
+			tmp &= 0xFFFF8000;
+			if (tmp && tmp != 0xFFFF8000) {
+				dword_3D0DA0 = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF
+				g_unc_rw_array72_3D0C44[i] = dword_3D0DA0;
 			}
-			++v31;
-			--v32;
-		} while (v32);
-		dword_3D0DA0 = v30;
+		}
+
 		if (*dec_flag & 0x20000)
 			dss2_sub_3B80F0(g_unc_rw_array14_stg1_3D0D64.array14_stage1[0],
 					(int32_t *) &g_unc_rw_array15_stg2_3D08C0.field_0,
@@ -842,7 +841,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 		v18 = (signed __int16)(v57++ - 3) < 0;
 		LODWORD (v56) = local_rw_array72_v101_ptr;
 	} while ((unsigned __int8)(v18 ^ v19) | v17 );
-
+////////
 	if (!(*dec_flag & 0x40000))
 		g_unc_sub_3B98D0(local_rw_array72_v101);
 	v36 = dec_flag;
