@@ -22,8 +22,14 @@ int dword_3D0498;
 unsigned int flip;
 int32_t g_unc_rw_array15_3D0420[15];
 int32_t g_unc_rw_array15_3D045C[15];
+struct struc_6 g_unc_rw_array14_stg1_3D0D64;
+struct struc_8 g_unc_rw_array15_stg2_3D08C0;
+int16_t array14_3D0DA4[14];
+int32_t g_unc_rw_array72_3D0C44[72];
+int32_t g_unc_rw_arrayXX_3D08FC[186];
+int word_3D9B7E;
 
-void g_unc_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag) {
+void dss2_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag) {
 	uint8_t *abuff_tmp;
 	int size; // si@1
 	int i;
@@ -81,7 +87,7 @@ void g_unc_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag) {
 	}
 }
 
-void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2) {
+void dss2_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2) {
 	int16_t *abuff_swap_ptr; // eax@2
 	int v12; // edx@2
 	int i;
@@ -310,7 +316,7 @@ void g_unc_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2)
 }
 
 /* create stage 1 array14_stage0 based on stage0 and some kind of pulse table */
-void g_unc_sub_3B8740(int32_t *array14_stage1, const struct struc_1 *a2) {
+void dss2_sub_3B8740(int32_t *array14_stage1, const struct struc_1 *a2) {
 	int i;
 
 	for (i = 0; i < 14; i++)
@@ -320,7 +326,7 @@ void g_unc_sub_3B8740(int32_t *array14_stage1, const struct struc_1 *a2) {
 		array14_stage1[13] = g_unc_array_3C8870[a2->array14_stage0[13]];
 }
 
-void g_unc_sub_3B8410(struct struc_6 *struc_6_a1,
+void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 		struct struc_8 *struc_6_stg2_a2) {
 	struct struc_8 *struc_6_v2; // ecx@1
 	int v3; // esi@1
@@ -457,7 +463,7 @@ void g_unc_sub_3B8410(struct struc_6 *struc_6_a1,
 }
 
 /* this function will get pointer to one of 4 subframes */
-void g_unc_add_pulses(int32_t *array72_a1, struct dss2_subframe *sf) {
+void dss2_add_pulses(int32_t *array72_a1, struct dss2_subframe *sf) {
 	int i;
 
 	//looks like "output[sf->pulse_pos[i]] += g_gains[sf->gain] * g_pulse_val[sf->pulse_val[i]] + 0x4000 >> 15;"
@@ -503,7 +509,7 @@ void dss2_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size) {
 			array_a1[i] = array_a1[i] << normalize_bits;
 }
 
-void g_unc_sub_3B9FB0(int32_t *array72, int32_t *arrayXX) {
+void dss2_sub_3B9FB0(int32_t *array72, int32_t *arrayXX) {
 	int i;
 
 	for (i = 0; i < 114; i++)
@@ -574,7 +580,7 @@ int dss2_get_normalize_bits(int32_t *array_var, int16_t size) {
 	return max_val;
 }
 
-void g_unc_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
+void dss2_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
 		int32_t *array72_a4, int size) {
 
 	int32_t local_rw_array15_v1a[15];
@@ -615,10 +621,11 @@ void g_unc_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
 
 	if (size > 1) {
 		for (i = size - 1; i > 0; i--) {
-			tmp = ((v11 * array72_a3[i - 1] + (array72_a3[i] << 15)) + 0x4000) >> 15;
+			tmp = ((v11 * array72_a3[i - 1] + (array72_a3[i] << 15)) + 0x4000)
+					>> 15;
 			array72_a3[i] = tmp;
 			tmp &= 0xFFFF8000;
-			if ( tmp && tmp != 0xFFFF8000 )
+			if (tmp && tmp != 0xFFFF8000)
 				array72_a3[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 		}
 	}
@@ -626,7 +633,7 @@ void g_unc_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
 	tmp = (v36 * v11 + (array72_a3[0] << 15) + 16384) >> 15;
 	array72_a3[0] = tmp;
 	tmp &= 0xFFFF8000;
-	if ( tmp && tmp != 0xFFFF8000 )
+	if (tmp && tmp != 0xFFFF8000)
 		array72_a3[0] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 
 	dss2_normalize(array72_a3, -normalize_bits, size);
@@ -647,7 +654,7 @@ void g_unc_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
 	tmp = (v23 + 32358 * dword_3D0498) >> 15;
 	local_rw_array_v41[0] = tmp;
 	tmp &= 0xFFFF8000;
-	if ( tmp && tmp != 0xFFFF8000 )
+	if (tmp && tmp != 0xFFFF8000)
 		local_rw_array_v41[0] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 
 	if (size > 1) {
@@ -655,7 +662,7 @@ void g_unc_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
 			tmp = (v23 + 32358 * local_rw_array_v41[i - 1]) >> 15;
 			local_rw_array_v41[i] = tmp;
 			tmp &= 0xFFFF8000;
-			if ( tmp && tmp != 0xFFFF8000 )
+			if (tmp && tmp != 0xFFFF8000)
 				local_rw_array_v41[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 		}
 	}
@@ -666,8 +673,278 @@ void g_unc_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
 			tmp = (array72_a3[i] * local_rw_array_v41[i]) >> 11;
 			array72_a4[i] = tmp;
 			tmp &= 0xFFFF8000;
-			if (tmp && tmp != 0xFFFF8000 )
+			if (tmp && tmp != 0xFFFF8000)
 				array72_a4[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 		}
 	}
+}
+
+int16_t dss2_sub_3BA000(int16_t *a1) {
+	int16_t tmp;
+
+	tmp = *a1 + ((*a1 << 6) + *a1) * 8 + 0x103;
+	*a1 = tmp;
+	return tmp;
+}
+
+int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
+		int **abuff, int param_a5, struc_4 *a6, int *a7, int a8, float *a9,
+		signed int *a10, unsigned int a11) {
+	int v11; // eax@2
+	__int8 *v13; // edx@3
+	struc_1 *v14; // ecx@3
+	int v15; // eax@4
+	__int16 v16; // ax@8
+	bool v17; // zf@8
+	bool v18; // sf@8
+	int32_t *local_rw_array72_v101_ptr; // ebx@14
+	char *v21; // ebp@14
+	__int16 v22; // cx@16
+	int32_t *v23; // esi@17
+	signed int v24; // edi@17
+	int v25; // ebx@17
+	int32_t *v26; // ecx@20
+	int32_t *v27; // eax@20
+	signed int v28; // edx@20
+	int32_t v29; // esi@21
+	int v30; // edx@22
+	int32_t *v31; // ecx@22
+	signed int v32; // esi@22
+	int v33; // eax@23
+	int v34; // eax@23
+	__int16 v35; // dx@25
+	int *v36; // edx@33
+	__int16 v37; // bp@33
+	int v38; // eax@33
+	signed __int64
+	v39; // qcx@35
+	signed int *v40; // esi@35
+	int *v41; // eax@37
+	double v42; // st7@38
+	signed int v43; // eax@49
+	__int16 v44; // ax@50
+	int v45; // eax@57
+	struc_1 struc_1_v45; // [sp-C4h] [bp-620h]@16
+	struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
+	int v48; // [sp-24h] [bp-580h]@50
+	int v49; // [sp-20h] [bp-57Ch]@52
+	int v50; // [sp-18h] [bp-574h]@3
+	int v51; // [sp-14h] [bp-570h]@3
+	int v52; // [sp-10h] [bp-56Ch]@3
+	int *v53; // [sp-Ch] [bp-568h]@50
+	void *v54; // [sp-8h] [bp-564h]@5
+	void *abuff_swap_v94; // [sp-4h] [bp-560h]@5
+	__int64 v56; // [sp+10h] [bp-54Ch]@14
+	int v57; // [sp+18h] [bp-544h]@14
+	struct struc_1 struc_1_v96; // [sp+1Ch] [bp-540h]@5
+	int32_t local_rw_array72_v101[72]; // [sp+DCh] [bp-480h]@14
+	int i;
+
+	if (*dec_flag & 0x10) {
+		g_unc_sub_3B9F80(param_a5, (int) &some_ptr_a2[132 * param_a5],
+				(int) &unk_3D04A0, 264);
+		*dec_flag &= ~0x10;
+		return 0;
+	}
+
+	memcpy(&v50, &a6, 24u);
+
+	dss2_byte_swap(abuff_swap, abuff, dec_flag);
+
+	if (*dec_flag & 0x1) {
+		g_unc_clean_array_3B9060();
+		*dec_flag &= ~0x1;
+		word_3D0C26 = 1;
+	}
+
+	abuff_swap_v94 = abuff_swap;
+	v54 = &struc_1_v96;
+	dss2_unpack_coeffs(v14, v13);
+
+	if (word_3D041C) {
+		if (word_3D1264)
+			g_unc_rw_array14_stg1_3D0D64.field_38 = 0;
+		else {
+			if (g_unc_rw_array14_stg1_3D0D64.field_38++ <= 60) {
+				if (g_unc_rw_array14_stg1_3D0D64.field_38 == 1) {
+					memcpy(struc_1_v96.array14_stage0, &array14_3D0DA4,
+							sizeof(struc_1_v96.array14_stage0));
+				} else
+					g_unc_rw_array14_stg1_3D0D64.field_38 = 60;
+			}
+		}
+	}
+
+	memcpy(&struc_1_v46, &struc_1_v96, 192u);
+	dss2_sub_3B8740(&g_unc_rw_array14_stg1_3D0D64, struc_1_v46);
+
+	if (g_unc_rw_array14_stg1_3D0D64.field_38 == 1)
+		word_3D9B7E = struc_1_v96.array14_stage0[0];
+
+	dss2_sub_3B8410(&g_unc_rw_array14_stg1_3D0D64,
+			&g_unc_rw_array15_stg2_3D08C0);
+	v57 = 1;
+	local_rw_array72_v101_ptr = local_rw_array72_v101;
+	v21 = struc_1_v96.subframe_something; //copy pointer
+	v56 = local_rw_array72_v101; // copy pointer
+	do {
+		if (word_3D1264) {
+			dss2_sub_3B9080(g_unc_rw_array72_3D0C44, g_unc_rw_arrayXX_3D08FC,
+					struc_1_v96.filed_1e, g_unc_array_3C88F8[*v21]);
+
+			abuff_swap_v94 = v57 - 1;
+			memcpy(&struc_1_v45, &struc_1_v96, sizeof(struc_1_v45));
+
+			dss2_add_pulses(g_unc_rw_array72_3D0C44, struc_1_v45);
+		} else {
+			for (i = 0; i < 72; i++)
+				g_unc_rw_array72_3D0C44[i] = (g_unc_array_3C8938[*v21]
+						* dss2_sub_3BA000(&word_3D9B7E)) >> 14;
+
+			local_rw_array72_v101_ptr = (int32_t *) v56;
+		}
+		dss2_sub_3B9FB0(g_unc_rw_array72_3D0C44, g_unc_rw_arrayXX_3D08FC);
+
+		/* swap and copy buffer */
+		for (i = 0; i < 72; i++)
+			g_unc_rw_array72_3D0C44[i] = g_unc_rw_arrayXX_3D08FC[71 - i];
+
+		dss2_shift_sq_sub(
+				(const int32_t *) &g_unc_rw_array15_stg2_3D08C0.field_0,
+				&array1, g_unc_rw_array72_3D0C44);
+		v30 = dword_3D0DA0;
+		v31 = g_unc_rw_array72_3D0C44;
+		v32 = 72;
+		do {
+			v33 = (8191 * v30 + (*v31 << 15) + 16384) >> 15;
+			*v31 = v33;
+			v34 = v33 & 0xFFFF8000;
+			if (v34 && v34 != 0xFFFF8000) {
+				v35 = v34 < 0;
+				LOBYTE (v35) = v34 <= 0;
+				v30 = ((v35 - 1) & 0xFFFE) - 0x7FFF;
+				*v31 = v30;
+			}
+			++v31;
+			--v32;
+		} while (v32);
+		dword_3D0DA0 = v30;
+		if (*dec_flag & 0x20000)
+			dss2_sub_3B80F0(g_unc_rw_array14_stg1_3D0D64.array14_stage1[0],
+					(int32_t *) &g_unc_rw_array15_stg2_3D08C0.field_0,
+					g_unc_rw_array72_3D0C44, local_rw_array72_v101_ptr, 72);
+		else
+			memcpy(local_rw_array72_v101_ptr, g_unc_rw_array72_3D0C44, 0x120u);
+		v21 += 2;
+		local_rw_array72_v101_ptr += 72;
+		v19 = __OFSUB__(v57 + 1, 4);
+		v17 = (_WORD) v57 == 3;
+		v18 = (signed __int16)(v57++ - 3) < 0;
+		LODWORD (v56) = local_rw_array72_v101_ptr;
+	} while ((unsigned __int8)(v18 ^ v19) | v17 );
+
+	if (!(*dec_flag & 0x40000))
+		g_unc_sub_3B98D0(local_rw_array72_v101);
+	v36 = dec_flag;
+	v37 = 0;
+	v38 = *dec_flag;
+	if (!(*dec_flag & 0x20)) {
+		if (!(v38 & 0x40000)) {
+			v39 = a11;
+			v40 = a10;
+			if (!*(_DWORD *) a11 && *a10 != (v38 & 0xFF00)) {
+				v41 = a7;
+				switch ((*a10 >> 11) & 0x1F) {
+				case 0:
+					LODWORD (v39) = *a7;
+					v56 = v39;
+					v42 = (double) v39 * 24.0;
+					goto LABEL_47;
+				case 1:
+					v56 = (unsigned int) *a7;
+					v42 = (double) v56 * 30.0;
+					goto LABEL_47;
+				case 2:
+					LODWORD (v39) = *a7;
+					v56 = v39;
+					v42 = (double) v39 * 31.92;
+					goto LABEL_47;
+				case 3:
+					v56 = (unsigned int) *a7;
+					v42 = (double) v56 * 36.0;
+					goto LABEL_47;
+				case 4:
+					LODWORD (v39) = *a7;
+					v56 = v39;
+					v42 = (double) v39 * 48.0;
+					goto LABEL_47;
+				case 0x11:
+					v56 = (unsigned int) *a7;
+					v42 = (double) v56 * 19.200001;
+					goto LABEL_47;
+				case 0x12:
+					LODWORD (v39) = *a7;
+					v56 = v39;
+					v42 = (double) v39 * 18.0;
+					goto LABEL_47;
+				case 0x13:
+					v56 = (unsigned int) *a7;
+					v42 = (double) v56 * 15.84;
+					goto LABEL_47;
+				case 0x14:
+					LODWORD (v39) = *a7;
+					v56 = v39;
+					v42 = (double) v39 * 12.0;
+					LABEL_47: *a9 = v42 + *a9;
+					break;
+				default:
+					break;
+				}
+				v36 = dec_flag;
+				*v41 = 0;
+				*v40 = *dec_flag & 0xFF00;
+			}
+			v43 = *v40;
+			if (BYTE1(v43) & 0x80) {
+				memcpy(&v50, &a6, 24u);
+				v48 = (v43 >> 11) & 7;
+				v44 = g_unc_sub_3B9CA0(v48, local_rw_array72_v101, v36, v50,
+						v51, v52, v53, v54, abuff_swap_v94);
+			} else {
+				if (!(BYTE1(v43) & 0x38))
+					goto LABEL_54;
+				v49 = (v43 >> 11) & 7;
+				memcpy(&v50, &a6, 24u);
+				v44 = g_unc_sub_3B9990(v49, (int) local_rw_array72_v101, v50,
+						v51, v52, (int) v53, (int) v54,
+						(signed int *) abuff_swap_v94);
+			}
+			v37 = v44;
+			if (v44) {
+				LABEL_55: memcpy(&array14_3D0DA4, struc_1_v96.array14_stage0,
+						28u);
+				return v37;
+			}
+			LABEL_54: v53 = &some_ptr_a2[132 * param_a5];
+			g_unc_sub_3B9F80(param_a5, (int) v53, (int) local_rw_array72_v101,
+					264);
+			goto LABEL_55;
+		}
+		goto LABEL_58;
+	}
+	if (v38 & 0x40000) {
+		LABEL_58: abuff_swap_v94 = (__int8 *) 288;
+		v54 = local_rw_array72_v101;
+		v45 = (int) &some_ptr_a2[144 * param_a5];
+		v53 = &some_ptr_a2[144 * param_a5];
+		goto LABEL_59;
+	}
+	v45 = param_a5;
+	abuff_swap_v94 = (__int8 *) 264;
+	v54 = local_rw_array72_v101;
+	v53 = &some_ptr_a2[132 * param_a5];
+	LABEL_59: g_unc_sub_3B9F80(v45, (int) v53, (int) v54,
+			(__int16) abuff_swap_v94);
+	memcpy(&array14_3D0DA4, struc_1_v96.array14_stage0, 28u);
+	return 0;
 }
