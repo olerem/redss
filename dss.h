@@ -8,7 +8,7 @@
 #ifndef DSS__
 #define DSS__
 
-
+#define SUBFRAMES		4
 #define PULSE_MAX		8
 
 struct dss2_subframe {
@@ -23,11 +23,11 @@ struct struc_1 {
 	int16_t	field_0;
 	int16_t	array14_stage0[14];
 
-	int16_t subframe_something[4];
+	int16_t subframe_something[SUBFRAMES];
 	int16_t filed_1e;
 	int16_t array_20[3];
 
-	struct dss2_subframe sf[4];
+	struct dss2_subframe sf[SUBFRAMES];
 };
 
 struct struc_6 {
