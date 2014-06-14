@@ -30,6 +30,7 @@ int32_t g_unc_rw_arrayXX_3D08FC[186];
 int word_3D9B7E;
 int dword_3D0DA0;
 struct struc_8 g_unc_rw_array15_3D0BE8;
+int32_t g_unc_rw_array288_3D0DC0[288 + 6];
 
 void dss2_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag) {
 	uint8_t *abuff_tmp;
@@ -689,73 +690,46 @@ int16_t dss2_sub_3BA000(int16_t *a1) {
 	return tmp;
 }
 
-void dss2_sub_3B98D0(__int32 *array72_a1)
+void dss2_sub_3B98D0(int32_t *array72_a1)
 {
-  int v1; // edx@1
-  __int32 *array288_ptr; // eax@1
-  signed int size6; // ecx@1
-  __int32 *array72_a1a; // ebp@3
-  __int32 *v5; // eax@3
-  unsigned int size72; // esi@3
-  unsigned int v7; // esi@5
-  signed int size6_v8; // edi@6
-  int *v9; // ecx@6
-  signed int v10; // eax@6
-  int v11; // ebx@7
-  __int32 v12; // eax@8
-  int v13; // eax@8
-  int v14; // ecx@11
-  unsigned __int64 v15; // kr08_8@11
+  int v1;
 
-  LOWORD(v1) = 0;
-  array288_ptr = g_unc_rw_array288_3D0DC0;
-  size6 = 6;
+  signed int v10;
+
+  int v12;
+  int i, offset, counter;
+
+  v1 = 0;
+
+  for (i = 0; i < 6; i++)
+	  g_unc_rw_array288_3D0DC0[i] = g_unc_rw_array288_3D0DC0[288 + i];
+
+  for (i = 0; i < 72; i++)
+    g_unc_rw_array288_3D0DC0[6 + i] = array72_a1[i];
+
+  offset = 6;
+  counter = 0;
   do
   {
-    *array288_ptr = array288_ptr[288];
-    ++array288_ptr;
-    --size6;
-  }
-  while ( size6 );
-  array72_a1a = array72_a1;
-  v5 = &g_unc_rw_array288_3D0DC0[6];
-  size72 = 0x120u;
-  do
-  {
-    *v5 = *(__int32 *)((char *)v5 + (char *)array72_a1 - (char *)&g_unc_rw_array288_3D0DC0[6]);
-    ++v5;
-    --size72;
-  }
-  while ( size72 );
-  v7 = (unsigned int)&g_unc_rw_array288_3D0DC0[6];
-  do
-  {
-    size6_v8 = 6;
-    v9 = &g_unc_array_3C9288[(signed __int16)v1];
     v10 = 0;
-    do
-    {
-      v11 = *v9;
-      v9 += 11;
-      v10 += *(_DWORD *)v7 * v11;
-      v7 -= 4;
-      --size6_v8;
-    }
-    while ( size6_v8 );
+    for (i = 0; i < 6; i++)
+      v10 += g_unc_rw_array288_3D0DC0[offset--] * g_unc_array_3C9288[v1 + i * 11];
+
+    offset += 7;
+
     v12 = v10 >> 15;
-    v7 += 28;
-    *array72_a1a = v12;
-    v13 = v12 & 0xFFFF8000;
-    if ( v13 && v13 != -32768 )
-      *array72_a1a = (unsigned __int16)(((v13 <= 0) - 1) & 0xFFFE) - 0x7FFF;
-    ++array72_a1a;
-    v15 = __PAIR__(11, (signed __int16)(v1 + 1) % 11);
-    v14 = v15 >> 32;
-    v1 = v15;
-    if ( !(_WORD)v1 )
-      v7 += 4;
+    array72_a1[counter] = v12;
+    v12 &= 0xFFFF8000;
+    if ( v12 && v12 != 0xFFFF8000 )
+      array72_a1[counter] = (((v12 <= 0) - 1) & 0xFFFE) - 0x7FFF;
+
+    counter++;
+
+    v1 = (v1 + 1) % 11;
+    if ( !v1 )
+      offset++;
   }
-  while ( v7 < (unsigned int)&g_unc_array_size_3D1258 );
+  while ( offset < sizeof(g_unc_rw_array288_3D0DC0) / sizeof(int32_t) );
 }
 
 
