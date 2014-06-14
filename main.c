@@ -690,48 +690,45 @@ int16_t dss2_sub_3BA000(int16_t *a1) {
 	return tmp;
 }
 
-void dss2_sub_3B98D0(int32_t *array72_a1)
-{
-  int v1;
+void dss2_sub_3B98D0(int32_t *array72_a1) {
+	int v1;
 
-  signed int v10;
+	signed int v10;
 
-  int v12;
-  int i, offset, counter;
+	int v12;
+	int i, offset, counter;
 
-  v1 = 0;
+	v1 = 0;
 
-  for (i = 0; i < 6; i++)
-	  g_unc_rw_array288_3D0DC0[i] = g_unc_rw_array288_3D0DC0[288 + i];
+	for (i = 0; i < 6; i++)
+		g_unc_rw_array288_3D0DC0[i] = g_unc_rw_array288_3D0DC0[288 + i];
 
-  for (i = 0; i < 72; i++)
-    g_unc_rw_array288_3D0DC0[6 + i] = array72_a1[i];
+	for (i = 0; i < 72; i++)
+		g_unc_rw_array288_3D0DC0[6 + i] = array72_a1[i];
 
-  offset = 6;
-  counter = 0;
-  do
-  {
-    v10 = 0;
-    for (i = 0; i < 6; i++)
-      v10 += g_unc_rw_array288_3D0DC0[offset--] * g_unc_array_3C9288[v1 + i * 11];
+	offset = 6;
+	counter = 0;
+	do {
+		v10 = 0;
+		for (i = 0; i < 6; i++)
+			v10 += g_unc_rw_array288_3D0DC0[offset--]
+					* g_unc_array_3C9288[v1 + i * 11];
 
-    offset += 7;
+		offset += 7;
 
-    v12 = v10 >> 15;
-    array72_a1[counter] = v12;
-    v12 &= 0xFFFF8000;
-    if ( v12 && v12 != 0xFFFF8000 )
-      array72_a1[counter] = (((v12 <= 0) - 1) & 0xFFFE) - 0x7FFF;
+		v12 = v10 >> 15;
+		array72_a1[counter] = v12;
+		v12 &= 0xFFFF8000;
+		if (v12 && v12 != 0xFFFF8000)
+			array72_a1[counter] = (((v12 <= 0) - 1) & 0xFFFE) - 0x7FFF;
 
-    counter++;
+		counter++;
 
-    v1 = (v1 + 1) % 11;
-    if ( !v1 )
-      offset++;
-  }
-  while ( offset < sizeof(g_unc_rw_array288_3D0DC0) / sizeof(int32_t) );
+		v1 = (v1 + 1) % 11;
+		if (!v1)
+			offset++;
+	} while (offset < sizeof(g_unc_rw_array288_3D0DC0) / sizeof(int32_t));
 }
-
 
 int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 		int **abuff, int param_a5, struc_4 *a6, int *a7, int a8, float *a9,
@@ -847,7 +844,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 			for (i = 0; i < 72; i++)
 				g_unc_rw_array72_3D0C44[i] =
 						(g_unc_array_3C8938[struc_1_v96.subframe_something[sf_idx]]
-						                    * dss2_sub_3BA000(&word_3D9B7E)) >> 14;
+								* dss2_sub_3BA000(&word_3D9B7E)) >> 14;
 
 		}
 		dss2_sub_3B9FB0(g_unc_rw_array72_3D0C44, g_unc_rw_arrayXX_3D08FC);
@@ -857,12 +854,12 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 			g_unc_rw_array72_3D0C44[i] = g_unc_rw_arrayXX_3D08FC[71 - i];
 
 		/* TODO: find what happens with g_unc_rw_array15_3D0BE8 */
-		dss2_shift_sq_sub(
-				&g_unc_rw_array15_stg2_3D08C0,
+		dss2_shift_sq_sub(&g_unc_rw_array15_stg2_3D08C0,
 				&g_unc_rw_array15_3D0BE8, g_unc_rw_array72_3D0C44);
 
 		for (i = 0; i < 72; i++) {
-			tmp = (((dword_3D0DA0 << 13) - dword_3D0DA0) + (g_unc_rw_array72_3D0C44[i] << 15) + 0x4000) >> 15;
+			tmp = (((dword_3D0DA0 << 13) - dword_3D0DA0)
+					+ (g_unc_rw_array72_3D0C44[i] << 15) + 0x4000) >> 15;
 			g_unc_rw_array72_3D0C44[i] = tmp;
 			tmp &= 0xFFFF8000;
 			if (tmp && tmp != 0xFFFF8000) {
@@ -873,14 +870,14 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 
 		if (*dec_flag & 0x20000)
 			dss2_sub_3B80F0(g_unc_rw_array14_stg1_3D0D64.array14_stage1[0],
-					&g_unc_rw_array15_stg2_3D08C0,
-					g_unc_rw_array72_3D0C44, &local_rw_array72_v101[sf_idx][0], 72);
+					&g_unc_rw_array15_stg2_3D08C0, g_unc_rw_array72_3D0C44,
+					&local_rw_array72_v101[sf_idx][0], 72);
 		else
-			memcpy(&local_rw_array72_v101[sf_idx][0], g_unc_rw_array72_3D0C44, 72 * sizeof(int32_t));
+			memcpy(&local_rw_array72_v101[sf_idx][0], g_unc_rw_array72_3D0C44,
+					72 * sizeof(int32_t));
 
 	};
 ////////
-
 
 	if (!(*dec_flag & 0x40000))
 		dss2_sub_3B98D0(local_rw_array72_v101);
