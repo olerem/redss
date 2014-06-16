@@ -29,6 +29,7 @@ int word_3D9B7E;
 int dword_3D0DA0;
 struct struc_8 g_unc_rw_array15_3D0BE8;
 int32_t g_unc_rw_array288_3D0DC0[288 + 6];
+int32_t g_unc_rw_array_3D04A0[264];
 
 void dss2_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag) {
 	uint8_t *abuff_tmp;
@@ -741,39 +742,19 @@ static void dss2_32to16bit(int16_t *dst, int32_t *src, int size) {
 int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 		int **abuff, int param_a5, struct struc_4 *a6, int *a7, int a8,
 		float *a9, signed int *a10, unsigned int a11) {
-	int v11; // eax@2
 	__int8 *v13; // edx@3
 	struct struc_1 *v14; // ecx@3
-	int v15; // eax@4
-	__int16 v16; // ax@8
-	int v17; // zf@8
-	int v18; // sf@8
-	int32_t *local_rw_array72_v101_ptr; // ebx@14
-	char *v21; // ebp@14
-	__int16 v22; // cx@16
-	int32_t *v23; // esi@17
-	signed int v24; // edi@17
-	int v25; // ebx@17
-	int32_t *v26; // ecx@20
-	int32_t *v27; // eax@20
-	signed int v28; // edx@20
-	int32_t v29; // esi@21
-	int v30; // edx@22
-	int32_t *v31; // ecx@22
-	signed int v32; // esi@22
-	int v33; // eax@23
-	int v34; // eax@23
-	__int16 v35; // dx@25
+
 	int *v36; // edx@33
 	__int16 v37; // bp@33
 	int v38; // eax@33
-	signed int v39; // qcx@35
+
 	signed int *v40; // esi@35
 	int *v41; // eax@37
 	double v42; // st7@38
 	signed int v43; // eax@49
 	__int16 v44; // ax@50
-	int v45; // eax@57
+
 	struct struc_1 struc_1_v45; // [sp-C4h] [bp-620h]@16
 	struct struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
 	int v48; // [sp-24h] [bp-580h]@50
@@ -785,14 +766,13 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 	void *v54; // [sp-8h] [bp-564h]@5
 	void *abuff_swap_v94; // [sp-4h] [bp-560h]@5
 	int64_t v56; // [sp+10h] [bp-54Ch]@14
-	int v57; // [sp+18h] [bp-544h]@14
+
 	struct struc_1 struc_1_v96; // [sp+1Ch] [bp-540h]@5
 	int32_t local_rw_array72_v101[SUBFRAMES][72];
 	int i, tmp, sf_idx;
-	int var_544;
 
 	if (*dec_flag & 0x10) {
-		dss2_32to16bit(&some_ptr_a2[132 * param_a5], &unk_3D04A0, 264);
+		dss2_32to16bit(&some_ptr_a2[132 * param_a5], g_unc_rw_array_3D04A0, 264);
 		*dec_flag &= ~0x10;
 		return 0;
 	}
