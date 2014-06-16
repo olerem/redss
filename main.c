@@ -11,8 +11,6 @@
 #define __int8 int8_t
 #define __int16 int16_t
 
-#define DSS_CBUF_SIZE 21
-
 unsigned int word_3D1264;
 unsigned int word_3D1266;
 unsigned int word_3D041C;
@@ -730,16 +728,26 @@ void dss2_sub_3B98D0(int32_t *array72_a1) {
 	} while (offset < sizeof(g_unc_rw_array288_3D0DC0) / sizeof(int32_t));
 }
 
+static void dss2_32to16bit(int16_t *dst, int32_t *src, int size) {
+	int i;
+
+	if (!size)
+		return;
+
+	for (i = 0; i < size; i++)
+		dst[i] = src[i];
+}
+
 int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
-		int **abuff, int param_a5, struc_4 *a6, int *a7, int a8, float *a9,
-		signed int *a10, unsigned int a11) {
+		int **abuff, int param_a5, struct struc_4 *a6, int *a7, int a8,
+		float *a9, signed int *a10, unsigned int a11) {
 	int v11; // eax@2
 	__int8 *v13; // edx@3
-	struc_1 *v14; // ecx@3
+	struct struc_1 *v14; // ecx@3
 	int v15; // eax@4
 	__int16 v16; // ax@8
-	bool v17; // zf@8
-	bool v18; // sf@8
+	int v17; // zf@8
+	int v18; // sf@8
 	int32_t *local_rw_array72_v101_ptr; // ebx@14
 	char *v21; // ebp@14
 	__int16 v22; // cx@16
@@ -759,16 +767,15 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 	int *v36; // edx@33
 	__int16 v37; // bp@33
 	int v38; // eax@33
-	signed __int64
-	v39; // qcx@35
+	signed int v39; // qcx@35
 	signed int *v40; // esi@35
 	int *v41; // eax@37
 	double v42; // st7@38
 	signed int v43; // eax@49
 	__int16 v44; // ax@50
 	int v45; // eax@57
-	struc_1 struc_1_v45; // [sp-C4h] [bp-620h]@16
-	struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
+	struct struc_1 struc_1_v45; // [sp-C4h] [bp-620h]@16
+	struct struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
 	int v48; // [sp-24h] [bp-580h]@50
 	int v49; // [sp-20h] [bp-57Ch]@52
 	int v50; // [sp-18h] [bp-574h]@3
@@ -777,7 +784,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 	int *v53; // [sp-Ch] [bp-568h]@50
 	void *v54; // [sp-8h] [bp-564h]@5
 	void *abuff_swap_v94; // [sp-4h] [bp-560h]@5
-	__int64 v56; // [sp+10h] [bp-54Ch]@14
+	int64_t v56; // [sp+10h] [bp-54Ch]@14
 	int v57; // [sp+18h] [bp-544h]@14
 	struct struc_1 struc_1_v96; // [sp+1Ch] [bp-540h]@5
 	int32_t local_rw_array72_v101[SUBFRAMES][72];
@@ -785,8 +792,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 	int var_544;
 
 	if (*dec_flag & 0x10) {
-		g_unc_sub_3B9F80(param_a5, (int) &some_ptr_a2[132 * param_a5],
-				(int) &unk_3D04A0, 264);
+		dss2_32to16bit(&some_ptr_a2[132 * param_a5], &unk_3D04A0, 264);
 		*dec_flag &= ~0x10;
 		return 0;
 	}
@@ -878,21 +884,21 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 
 	};
 ////////
-
+	int v39;
 	if (!(*dec_flag & 0x40000))
 		dss2_sub_3B98D0(local_rw_array72_v101);
 	v36 = dec_flag;
 	v37 = 0;
 	v38 = *dec_flag;
 	if (!(*dec_flag & 0x20)) {
-		if (!(v38 & 0x40000)) {
+		if (!(*dec_flag & 0x40000)) {
 			v39 = a11;
 			v40 = a10;
-			if (!*(_DWORD *) a11 && *a10 != (v38 & 0xFF00)) {
+			if (!*a11 && *a10 != (v38 & 0xFF00)) {
 				v41 = a7;
 				switch ((*a10 >> 11) & 0x1F) {
 				case 0:
-					LODWORD (v39) = *a7;
+					v39 = *a7;
 					v56 = v39;
 					v42 = (double) v39 * 24.0;
 					goto LABEL_47;
@@ -901,7 +907,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 					v42 = (double) v56 * 30.0;
 					goto LABEL_47;
 				case 2:
-					LODWORD (v39) = *a7;
+					v39 = *a7;
 					v56 = v39;
 					v42 = (double) v39 * 31.92;
 					goto LABEL_47;
@@ -910,7 +916,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 					v42 = (double) v56 * 36.0;
 					goto LABEL_47;
 				case 4:
-					LODWORD (v39) = *a7;
+					v39 = *a7;
 					v56 = v39;
 					v42 = (double) v39 * 48.0;
 					goto LABEL_47;
@@ -919,7 +925,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 					v42 = (double) v56 * 19.200001;
 					goto LABEL_47;
 				case 0x12:
-					LODWORD (v39) = *a7;
+					v39 = *a7;
 					v56 = v39;
 					v42 = (double) v39 * 18.0;
 					goto LABEL_47;
@@ -928,7 +934,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 					v42 = (double) v56 * 15.84;
 					goto LABEL_47;
 				case 0x14:
-					LODWORD (v39) = *a7;
+					v39 = *a7;
 					v56 = v39;
 					v42 = (double) v39 * 12.0;
 					LABEL_47: *a9 = v42 + *a9;
@@ -961,26 +967,20 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 						28u);
 				return v37;
 			}
-			LABEL_54: v53 = &some_ptr_a2[132 * param_a5];
-			g_unc_sub_3B9F80(param_a5, (int) v53, (int) local_rw_array72_v101,
-					264);
+			LABEL_54: dss2_32to16bit(&some_ptr_a2[132 * param_a5],
+					local_rw_array72_v101, 264);
 			goto LABEL_55;
 		}
 		goto LABEL_58;
 	}
+
 	if (v38 & 0x40000) {
-		LABEL_58: abuff_swap_v94 = (__int8 *) 288;
-		v54 = local_rw_array72_v101;
-		v45 = (int) &some_ptr_a2[144 * param_a5];
-		v53 = &some_ptr_a2[144 * param_a5];
-		goto LABEL_59;
-	}
-	v45 = param_a5;
-	abuff_swap_v94 = (__int8 *) 264;
-	v54 = local_rw_array72_v101;
-	v53 = &some_ptr_a2[132 * param_a5];
-	LABEL_59: g_unc_sub_3B9F80(v45, (int) v53, (int) v54,
-			(__int16) abuff_swap_v94);
+		LABEL_58: dss2_32to16bit(&some_ptr_a2[144 * param_a5],
+				local_rw_array72_v101, 288);
+	} else
+		dss2_32to16bit(&some_ptr_a2[132 * param_a5], local_rw_array72_v101,
+				264);
+
 	memcpy(&array14_3D0DA4, struc_1_v96.array14_stage0, 28u);
 	return 0;
 }

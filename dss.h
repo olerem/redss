@@ -10,6 +10,7 @@
 
 #define SUBFRAMES		4
 #define PULSE_MAX		8
+#define DSS_CBUF_SIZE	21
 
 struct dss2_subframe {
 	int16_t gain;
