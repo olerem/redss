@@ -554,413 +554,447 @@ void dss2_shift_sq_sub(const int32_t *array_a1, int32_t *array_a2,
 	}
 }
 
+void dss2_shift_sq_add(const int32_t *array_a1, int32_t *array_a2,
+		int32_t *array_a3_dst) {
+	int a, shift;
+
+	shift = 13 - word_3D9B7C;
+	for (a = 0; a < 72; a++) {
+		int i, tmp;
+
+		array_a2[0] = array_a3_dst[a];
+
+		for (i = 14; i >= 0; i--)
+			tmp += array_a2[i] * array_a1[i];
+
+		for (i = 14; i > 0; i--)
+			array_a2[i] = array_a2[i - 1];
+
+		tmp = (tmp + 4096) >> shift;
+
+		array_a3_dst[a] = tmp;
+		tmp &= 0xFFFF8000;
+		if (tmp && tmp != 0xFFFF8000)
+				array_a3_dst[a] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
+	}
+}
+
 void dss2_vec_mult(const int32_t *array15_ro_src, int32_t *array15_dst,
-		const int32_t *array15_ro_a3) {
-	int i;
+	const int32_t *array15_ro_a3) {
+int i;
 
-	array15_dst[0] = array15_ro_src[0];
+array15_dst[0] = array15_ro_src[0];
 
-	/* TODO: pseudocode and my result are too different. May be my version is wrong */
-	for (i = 1; i < 14; i++)
-		array15_dst[i] = (array15_ro_src[i] * array15_ro_a3[i] + 0x4000) >> 15;
+/* TODO: pseudocode and my result are too different. May be my version is wrong */
+for (i = 1; i < 14; i++)
+	array15_dst[i] = (array15_ro_src[i] * array15_ro_a3[i] + 0x4000) >> 15;
 }
 
 int dss2_get_normalize_bits(int32_t *array_var, int16_t size) {
-	unsigned int val;
-	int max_val;
-	int i;
+unsigned int val;
+int max_val;
+int i;
 
-	val = 1;
-	if (size)
-		for (i = 0; i < size; i++)
-			val |= abs(array_var[i]);
+val = 1;
+if (size)
+	for (i = 0; i < size; i++)
+		val |= abs(array_var[i]);
 
-	for (max_val = 0;
-			(val & 0xFFFFC000) == 0 | (val & 0xFFFFC000) == 0xFFFFC000;
-			++max_val)
-		val *= 2;
-	return max_val;
+for (max_val = 0; (val & 0xFFFFC000) == 0 | (val & 0xFFFFC000) == 0xFFFFC000;
+		++max_val)
+	val *= 2;
+return max_val;
 }
 
 void dss2_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
-		int32_t *array72_a4, int size) {
+	int32_t *array72_a4, int size) {
 
-	int32_t local_rw_array15_v1a[15];
-	int32_t local_rw_array15_v39[15];
-	int32_t local_rw_array_v41[73];
-	int v11, v22, v23, v18, v34, v36, normalize_bits;
-	int i, tmp;
+int32_t local_rw_array15_v1a[15];
+int32_t local_rw_array15_v39[15];
+int32_t local_rw_array_v41[73];
+int v11, v22, v23, v18, v34, v36, normalize_bits;
+int i, tmp;
 
-	v34 = 0;
-	if (size > 0) {
-		for (i = 0; i < size; i++)
-			v34 += abs(array72_a3[i]);
+v34 = 0;
+if (size > 0) {
+	for (i = 0; i < size; i++)
+		v34 += abs(array72_a3[i]);
 
-		if (v34 > 0xFFFFF)
-			v34 = 0xFFFFF;
+	if (v34 > 0xFFFFF)
+		v34 = 0xFFFFF;
+}
+
+normalize_bits = dss2_get_normalize_bits(array72_a3, size);
+
+dss2_normalize(array72_a3, normalize_bits - 3, size);
+dss2_normalize(g_unc_rw_array15_3D0420, normalize_bits, 15);
+dss2_normalize(g_unc_rw_array15_3D045C, normalize_bits, 15);
+
+v36 = g_unc_rw_array15_3D045C[1];
+
+dss2_vec_mult(array15_a1, local_rw_array15_v39, g_unc_ro_array37_3C845C);
+dss2_shift_sq_add(local_rw_array15_v39, g_unc_rw_array15_3D0420, array72_a3);
+
+dss2_vec_mult(array15_a1, local_rw_array15_v1a, g_unc_ro_array15_3C8420);
+dss2_shift_sq_sub(local_rw_array15_v1a, g_unc_rw_array15_3D045C, array72_a3);
+
+/* a0 can be negative */
+v11 = a0 >> 1;
+if (v11 >= 0)
+	v11 = 0;
+
+if (size > 1) {
+	for (i = size - 1; i > 0; i--) {
+		tmp = ((v11 * array72_a3[i - 1] + (array72_a3[i] << 15)) + 0x4000)
+				>> 15;
+		array72_a3[i] = tmp;
+		tmp &= 0xFFFF8000;
+		if (tmp && tmp != 0xFFFF8000)
+			array72_a3[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 	}
+}
 
-	normalize_bits = dss2_get_normalize_bits(array72_a3, size);
+tmp = (v36 * v11 + (array72_a3[0] << 15) + 16384) >> 15;
+array72_a3[0] = tmp;
+tmp &= 0xFFFF8000;
+if (tmp && tmp != 0xFFFF8000)
+	array72_a3[0] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 
-	dss2_normalize(array72_a3, normalize_bits - 3, size);
-	dss2_normalize(g_unc_rw_array15_3D0420, normalize_bits, 15);
-	dss2_normalize(g_unc_rw_array15_3D045C, normalize_bits, 15);
+dss2_normalize(array72_a3, -normalize_bits, size);
+dss2_normalize(g_unc_rw_array15_3D0420, -normalize_bits, 15);
+dss2_normalize(g_unc_rw_array15_3D045C, -normalize_bits, 15);
 
-	v36 = g_unc_rw_array15_3D045C[1];
+v18 = 0;
+if (size > 0)
+	for (i = 0; i < size; i++)
+		v18 += abs(array72_a3[i]);
 
-	dss2_vec_mult(array15_a1, local_rw_array15_v39, g_unc_ro_array37_3C845C);
-	g_unc_shift_sq_add(local_rw_array15_v39, g_unc_rw_array15_3D0420,
-			array72_a3);
+if (v18 & 0xFFFFFFC0)
+	v22 = (v34 << 11) / v18;
+else
+	v22 = 1;
 
-	dss2_vec_mult(array15_a1, local_rw_array15_v1a, g_unc_ro_array15_3C8420);
-	dss2_shift_sq_sub(local_rw_array15_v1a, g_unc_rw_array15_3D045C,
-			array72_a3);
+v23 = 409 * v22 >> 15 << 15;
+tmp = (v23 + 32358 * dword_3D0498) >> 15;
+local_rw_array_v41[0] = tmp;
+tmp &= 0xFFFF8000;
+if (tmp && tmp != 0xFFFF8000)
+	local_rw_array_v41[0] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 
-	/* a0 can be negative */
-	v11 = a0 >> 1;
-	if (v11 >= 0)
-		v11 = 0;
-
-	if (size > 1) {
-		for (i = size - 1; i > 0; i--) {
-			tmp = ((v11 * array72_a3[i - 1] + (array72_a3[i] << 15)) + 0x4000)
-					>> 15;
-			array72_a3[i] = tmp;
-			tmp &= 0xFFFF8000;
-			if (tmp && tmp != 0xFFFF8000)
-				array72_a3[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
-		}
+if (size > 1) {
+	for (i = 1; i < size - 1; i++) {
+		tmp = (v23 + 32358 * local_rw_array_v41[i - 1]) >> 15;
+		local_rw_array_v41[i] = tmp;
+		tmp &= 0xFFFF8000;
+		if (tmp && tmp != 0xFFFF8000)
+			local_rw_array_v41[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 	}
+}
 
-	tmp = (v36 * v11 + (array72_a3[0] << 15) + 16384) >> 15;
-	array72_a3[0] = tmp;
-	tmp &= 0xFFFF8000;
-	if (tmp && tmp != 0xFFFF8000)
-		array72_a3[0] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
-
-	dss2_normalize(array72_a3, -normalize_bits, size);
-	dss2_normalize(g_unc_rw_array15_3D0420, -normalize_bits, 15);
-	dss2_normalize(g_unc_rw_array15_3D045C, -normalize_bits, 15);
-
-	v18 = 0;
-	if (size > 0)
-		for (i = 0; i < size; i++)
-			v18 += abs(array72_a3[i]);
-
-	if (v18 & 0xFFFFFFC0)
-		v22 = (v34 << 11) / v18;
-	else
-		v22 = 1;
-
-	v23 = 409 * v22 >> 15 << 15;
-	tmp = (v23 + 32358 * dword_3D0498) >> 15;
-	local_rw_array_v41[0] = tmp;
-	tmp &= 0xFFFF8000;
-	if (tmp && tmp != 0xFFFF8000)
-		local_rw_array_v41[0] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
-
-	if (size > 1) {
-		for (i = 1; i < size - 1; i++) {
-			tmp = (v23 + 32358 * local_rw_array_v41[i - 1]) >> 15;
-			local_rw_array_v41[i] = tmp;
-			tmp &= 0xFFFF8000;
-			if (tmp && tmp != 0xFFFF8000)
-				local_rw_array_v41[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
-		}
+dword_3D0498 = local_rw_array_v41[size];
+if (size > 0) {
+	for (i = 0; i < size; i++) {
+		tmp = (array72_a3[i] * local_rw_array_v41[i]) >> 11;
+		array72_a4[i] = tmp;
+		tmp &= 0xFFFF8000;
+		if (tmp && tmp != 0xFFFF8000)
+			array72_a4[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 	}
-
-	dword_3D0498 = local_rw_array_v41[size];
-	if (size > 0) {
-		for (i = 0; i < size; i++) {
-			tmp = (array72_a3[i] * local_rw_array_v41[i]) >> 11;
-			array72_a4[i] = tmp;
-			tmp &= 0xFFFF8000;
-			if (tmp && tmp != 0xFFFF8000)
-				array72_a4[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
-		}
-	}
+}
 }
 
 int16_t dss2_sub_3BA000(int16_t *a1) {
-	int16_t tmp;
+int16_t tmp;
 
-	tmp = *a1 + ((*a1 << 6) + *a1) * 8 + 0x103;
-	*a1 = tmp;
-	return tmp;
+tmp = *a1 + ((*a1 << 6) + *a1) * 8 + 0x103;
+*a1 = tmp;
+return tmp;
 }
 
 void dss2_sub_3B98D0(int32_t *array72_a1) {
-	int v1;
+int v1;
 
-	signed int v10;
+signed int v10;
 
-	int v12;
-	int i, offset, counter;
+int v12;
+int i, offset, counter;
 
-	v1 = 0;
+v1 = 0;
 
+for (i = 0; i < 6; i++)
+	g_unc_rw_array288_3D0DC0[i] = g_unc_rw_array288_3D0DC0[288 + i];
+
+for (i = 0; i < 72; i++)
+	g_unc_rw_array288_3D0DC0[6 + i] = array72_a1[i];
+
+offset = 6;
+counter = 0;
+do {
+	v10 = 0;
 	for (i = 0; i < 6; i++)
-		g_unc_rw_array288_3D0DC0[i] = g_unc_rw_array288_3D0DC0[288 + i];
+		v10 += g_unc_rw_array288_3D0DC0[offset--]
+				* g_unc_array_3C9288[v1 + i * 11];
 
-	for (i = 0; i < 72; i++)
-		g_unc_rw_array288_3D0DC0[6 + i] = array72_a1[i];
+	offset += 7;
 
-	offset = 6;
-	counter = 0;
-	do {
-		v10 = 0;
-		for (i = 0; i < 6; i++)
-			v10 += g_unc_rw_array288_3D0DC0[offset--]
-					* g_unc_array_3C9288[v1 + i * 11];
+	v12 = v10 >> 15;
+	array72_a1[counter] = v12;
+	v12 &= 0xFFFF8000;
+	if (v12 && v12 != 0xFFFF8000)
+		array72_a1[counter] = (((v12 <= 0) - 1) & 0xFFFE) - 0x7FFF;
 
-		offset += 7;
+	counter++;
 
-		v12 = v10 >> 15;
-		array72_a1[counter] = v12;
-		v12 &= 0xFFFF8000;
-		if (v12 && v12 != 0xFFFF8000)
-			array72_a1[counter] = (((v12 <= 0) - 1) & 0xFFFE) - 0x7FFF;
-
-		counter++;
-
-		v1 = (v1 + 1) % 11;
-		if (!v1)
-			offset++;
-	} while (offset < sizeof(g_unc_rw_array288_3D0DC0) / sizeof(int32_t));
+	v1 = (v1 + 1) % 11;
+	if (!v1)
+		offset++;
+} while (offset < sizeof(g_unc_rw_array288_3D0DC0) / sizeof(int32_t));
 }
 
 static void dss2_32to16bit(int16_t *dst, int32_t *src, int size) {
-	int i;
+int i;
 
-	if (!size)
-		return;
+if (!size)
+	return;
 
-	for (i = 0; i < size; i++)
-		dst[i] = src[i];
+for (i = 0; i < size; i++)
+	dst[i] = src[i];
 }
 
 int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
-		int **abuff, int param_a5, struct struc_4 *a6, int *a7, int a8,
-		float *a9, signed int *a10, unsigned int a11) {
-	__int8 *v13; // edx@3
-	struct struc_1 *v14; // ecx@3
+	int **abuff, int param_a5, struct struc_4 *a6, int *a7, int a8, float *a9,
+	signed int *a10, unsigned int a11) {
+__int8 *v13; // edx@3
+struct struc_1 *v14; // ecx@3
 
-	int *v36; // edx@33
-	__int16 v37; // bp@33
-	int v38; // eax@33
+int *v36; // edx@33
+__int16 v37; // bp@33
+int v38; // eax@33
 
-	signed int *v40; // esi@35
-	int *v41; // eax@37
-	double v42; // st7@38
-	signed int v43; // eax@49
-	__int16 v44; // ax@50
+signed int *v40; // esi@35
+int *v41; // eax@37
+double v42; // st7@38
+signed int v43; // eax@49
+__int16 v44; // ax@50
 
-	struct struc_1 struc_1_v45; // [sp-C4h] [bp-620h]@16
-	struct struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
-	int v48; // [sp-24h] [bp-580h]@50
-	int v49; // [sp-20h] [bp-57Ch]@52
-	int v50; // [sp-18h] [bp-574h]@3
-	int v51; // [sp-14h] [bp-570h]@3
-	int v52; // [sp-10h] [bp-56Ch]@3
-	int *v53; // [sp-Ch] [bp-568h]@50
-	void *v54; // [sp-8h] [bp-564h]@5
-	void *abuff_swap_v94; // [sp-4h] [bp-560h]@5
-	int64_t v56; // [sp+10h] [bp-54Ch]@14
+struct struc_1 struc_1_v45; // [sp-C4h] [bp-620h]@16
+struct struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
+int v48; // [sp-24h] [bp-580h]@50
+int v49; // [sp-20h] [bp-57Ch]@52
+int v50; // [sp-18h] [bp-574h]@3
+int v51; // [sp-14h] [bp-570h]@3
+int v52; // [sp-10h] [bp-56Ch]@3
+int *v53; // [sp-Ch] [bp-568h]@50
+void *v54; // [sp-8h] [bp-564h]@5
+void *abuff_swap_v94; // [sp-4h] [bp-560h]@5
+int64_t v56; // [sp+10h] [bp-54Ch]@14
 
-	struct struc_1 struc_1_v96; // [sp+1Ch] [bp-540h]@5
-	int32_t local_rw_array72_v101[SUBFRAMES][72];
-	int i, tmp, sf_idx;
+struct struc_1 struc_1_v96; // [sp+1Ch] [bp-540h]@5
+int32_t local_rw_array72_v101[SUBFRAMES][72];
+int i, tmp, sf_idx;
 
-	if (*dec_flag & 0x10) {
-		dss2_32to16bit(&some_ptr_a2[132 * param_a5], g_unc_rw_array_3D04A0, 264);
-		*dec_flag &= ~0x10;
-		return 0;
-	}
-
-	memcpy(&v50, &a6, 24u);
-
-	dss2_byte_swap(abuff_swap, abuff, dec_flag);
-
-	if (*dec_flag & 0x1) {
-		g_unc_clean_array_3B9060();
-		*dec_flag &= ~0x1;
-		word_3D0C26 = 1;
-	}
-
-	abuff_swap_v94 = abuff_swap;
-	v54 = &struc_1_v96;
-	dss2_unpack_coeffs(v14, v13);
-
-	if (word_3D041C) {
-		if (word_3D1264)
-			g_unc_rw_array14_stg1_3D0D64.field_38 = 0;
-		else {
-			if (g_unc_rw_array14_stg1_3D0D64.field_38++ <= 60) {
-				if (g_unc_rw_array14_stg1_3D0D64.field_38 == 1) {
-					memcpy(struc_1_v96.array14_stage0, &array14_3D0DA4,
-							sizeof(struc_1_v96.array14_stage0));
-				} else
-					g_unc_rw_array14_stg1_3D0D64.field_38 = 60;
-			}
-		}
-	}
-
-	memcpy(&struc_1_v46, &struc_1_v96, 192u);
-	dss2_sub_3B8740(&g_unc_rw_array14_stg1_3D0D64, struc_1_v46);
-
-	if (g_unc_rw_array14_stg1_3D0D64.field_38 == 1)
-		word_3D9B7E = struc_1_v96.array14_stage0[0];
-
-	dss2_sub_3B8410(&g_unc_rw_array14_stg1_3D0D64,
-			&g_unc_rw_array15_stg2_3D08C0);
-
-////////
-	for (sf_idx = 0; i < SUBFRAMES; i++) {
-		if (word_3D1264) {
-			dss2_sub_3B9080(g_unc_rw_array72_3D0C44, g_unc_rw_arrayXX_3D08FC,
-					struc_1_v96.filed_1e,
-					g_unc_array_3C88F8[struc_1_v96.subframe_something[sf_idx]]);
-
-			abuff_swap_v94 = sf_idx;
-			memcpy(&struc_1_v45, &struc_1_v96, sizeof(struc_1_v45));
-
-			/* TODO: some thing is wrong here, struc_1_v4 should be subframe */
-			dss2_add_pulses(g_unc_rw_array72_3D0C44, struc_1_v45);
-		} else {
-			for (i = 0; i < 72; i++)
-				g_unc_rw_array72_3D0C44[i] =
-						(g_unc_array_3C8938[struc_1_v96.subframe_something[sf_idx]]
-								* dss2_sub_3BA000(&word_3D9B7E)) >> 14;
-
-		}
-		dss2_sub_3B9FB0(g_unc_rw_array72_3D0C44, g_unc_rw_arrayXX_3D08FC);
-
-		/* swap and copy buffer */
-		for (i = 0; i < 72; i++)
-			g_unc_rw_array72_3D0C44[i] = g_unc_rw_arrayXX_3D08FC[71 - i];
-
-		/* TODO: find what happens with g_unc_rw_array15_3D0BE8 */
-		dss2_shift_sq_sub(&g_unc_rw_array15_stg2_3D08C0,
-				&g_unc_rw_array15_3D0BE8, g_unc_rw_array72_3D0C44);
-
-		for (i = 0; i < 72; i++) {
-			tmp = (((dword_3D0DA0 << 13) - dword_3D0DA0)
-					+ (g_unc_rw_array72_3D0C44[i] << 15) + 0x4000) >> 15;
-			g_unc_rw_array72_3D0C44[i] = tmp;
-			tmp &= 0xFFFF8000;
-			if (tmp && tmp != 0xFFFF8000) {
-				dword_3D0DA0 = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
-				g_unc_rw_array72_3D0C44[i] = dword_3D0DA0;
-			}
-		}
-
-		if (*dec_flag & 0x20000)
-			dss2_sub_3B80F0(g_unc_rw_array14_stg1_3D0D64.array14_stage1[0],
-					&g_unc_rw_array15_stg2_3D08C0, g_unc_rw_array72_3D0C44,
-					&local_rw_array72_v101[sf_idx][0], 72);
-		else
-			memcpy(&local_rw_array72_v101[sf_idx][0], g_unc_rw_array72_3D0C44,
-					72 * sizeof(int32_t));
-
-	};
-////////
-	int v39;
-	if (!(*dec_flag & 0x40000))
-		dss2_sub_3B98D0(local_rw_array72_v101);
-	v36 = dec_flag;
-	v37 = 0;
-	v38 = *dec_flag;
-	if (!(*dec_flag & 0x20)) {
-		if (!(*dec_flag & 0x40000)) {
-			v39 = a11;
-			v40 = a10;
-			if (!*a11 && *a10 != (v38 & 0xFF00)) {
-				v41 = a7;
-				switch ((*a10 >> 11) & 0x1F) {
-				case 0:
-					v39 = *a7;
-					v56 = v39;
-					v42 = (double) v39 * 24.0;
-					goto LABEL_47;
-				case 1:
-					v56 = (unsigned int) *a7;
-					v42 = (double) v56 * 30.0;
-					goto LABEL_47;
-				case 2:
-					v39 = *a7;
-					v56 = v39;
-					v42 = (double) v39 * 31.92;
-					goto LABEL_47;
-				case 3:
-					v56 = (unsigned int) *a7;
-					v42 = (double) v56 * 36.0;
-					goto LABEL_47;
-				case 4:
-					v39 = *a7;
-					v56 = v39;
-					v42 = (double) v39 * 48.0;
-					goto LABEL_47;
-				case 0x11:
-					v56 = (unsigned int) *a7;
-					v42 = (double) v56 * 19.200001;
-					goto LABEL_47;
-				case 0x12:
-					v39 = *a7;
-					v56 = v39;
-					v42 = (double) v39 * 18.0;
-					goto LABEL_47;
-				case 0x13:
-					v56 = (unsigned int) *a7;
-					v42 = (double) v56 * 15.84;
-					goto LABEL_47;
-				case 0x14:
-					v39 = *a7;
-					v56 = v39;
-					v42 = (double) v39 * 12.0;
-					LABEL_47: *a9 = v42 + *a9;
-					break;
-				default:
-					break;
-				}
-				v36 = dec_flag;
-				*v41 = 0;
-				*v40 = *dec_flag & 0xFF00;
-			}
-			v43 = *v40;
-			if (BYTE1(v43) & 0x80) {
-				memcpy(&v50, &a6, 24u);
-				v48 = (v43 >> 11) & 7;
-				v44 = g_unc_sub_3B9CA0(v48, local_rw_array72_v101, v36, v50,
-						v51, v52, v53, v54, abuff_swap_v94);
-			} else {
-				if (!(BYTE1(v43) & 0x38))
-					goto LABEL_54;
-				v49 = (v43 >> 11) & 7;
-				memcpy(&v50, &a6, 24u);
-				v44 = g_unc_sub_3B9990(v49, (int) local_rw_array72_v101, v50,
-						v51, v52, (int) v53, (int) v54,
-						(signed int *) abuff_swap_v94);
-			}
-			v37 = v44;
-			if (v44) {
-				LABEL_55: memcpy(&array14_3D0DA4, struc_1_v96.array14_stage0,
-						28u);
-				return v37;
-			}
-			LABEL_54: dss2_32to16bit(&some_ptr_a2[132 * param_a5],
-					local_rw_array72_v101, 264);
-			goto LABEL_55;
-		}
-		goto LABEL_58;
-	}
-
-	if (v38 & 0x40000) {
-		LABEL_58: dss2_32to16bit(&some_ptr_a2[144 * param_a5],
-				local_rw_array72_v101, 288);
-	} else
-		dss2_32to16bit(&some_ptr_a2[132 * param_a5], local_rw_array72_v101,
-				264);
-
-	memcpy(&array14_3D0DA4, struc_1_v96.array14_stage0, 28u);
+if (*dec_flag & 0x10) {
+	dss2_32to16bit(&some_ptr_a2[132 * param_a5], g_unc_rw_array_3D04A0, 264);
+	*dec_flag &= ~0x10;
 	return 0;
+}
+
+memcpy(&v50, &a6, 24u);
+
+dss2_byte_swap(abuff_swap, abuff, dec_flag);
+
+if (*dec_flag & 0x1) {
+	g_unc_clean_array_3B9060();
+	*dec_flag &= ~0x1;
+	word_3D0C26 = 1;
+}
+
+abuff_swap_v94 = abuff_swap;
+v54 = &struc_1_v96;
+dss2_unpack_coeffs(v14, v13);
+
+if (word_3D041C) {
+	if (word_3D1264)
+		g_unc_rw_array14_stg1_3D0D64.field_38 = 0;
+	else {
+		if (g_unc_rw_array14_stg1_3D0D64.field_38++ <= 60) {
+			if (g_unc_rw_array14_stg1_3D0D64.field_38 == 1) {
+				memcpy(struc_1_v96.array14_stage0, &array14_3D0DA4,
+						sizeof(struc_1_v96.array14_stage0));
+			} else
+				g_unc_rw_array14_stg1_3D0D64.field_38 = 60;
+		}
+	}
+}
+
+memcpy(&struc_1_v46, &struc_1_v96, 192u);
+dss2_sub_3B8740(&g_unc_rw_array14_stg1_3D0D64, struc_1_v46);
+
+if (g_unc_rw_array14_stg1_3D0D64.field_38 == 1)
+	word_3D9B7E = struc_1_v96.array14_stage0[0];
+
+dss2_sub_3B8410(&g_unc_rw_array14_stg1_3D0D64, &g_unc_rw_array15_stg2_3D08C0);
+
+////////
+for (sf_idx = 0; sf_idx < SUBFRAMES; sf_idx++) {
+	if (word_3D1264) {
+		dss2_sub_3B9080(g_unc_rw_array72_3D0C44, g_unc_rw_arrayXX_3D08FC,
+				struc_1_v96.filed_1e,
+				g_unc_array_3C88F8[struc_1_v96.subframe_something[sf_idx]]);
+
+		abuff_swap_v94 = sf_idx;
+
+		dss2_add_pulses(g_unc_rw_array72_3D0C44, &struc_1_v96.sf[sf_idx]);
+	} else {
+		for (i = 0; i < 72; i++)
+			g_unc_rw_array72_3D0C44[i] =
+					(g_unc_array_3C8938[struc_1_v96.subframe_something[sf_idx]]
+							* dss2_sub_3BA000(&word_3D9B7E)) >> 14;
+
+	}
+	dss2_sub_3B9FB0(g_unc_rw_array72_3D0C44, g_unc_rw_arrayXX_3D08FC);
+
+	/* swap and copy buffer */
+	for (i = 0; i < 72; i++)
+		g_unc_rw_array72_3D0C44[i] = g_unc_rw_arrayXX_3D08FC[71 - i];
+
+	/* TODO: find what happens with g_unc_rw_array15_3D0BE8 */
+	dss2_shift_sq_sub(&g_unc_rw_array15_stg2_3D08C0, &g_unc_rw_array15_3D0BE8,
+			g_unc_rw_array72_3D0C44);
+
+	for (i = 0; i < 72; i++) {
+		tmp = (((dword_3D0DA0 << 13) - dword_3D0DA0)
+				+ (g_unc_rw_array72_3D0C44[i] << 15) + 0x4000) >> 15;
+		g_unc_rw_array72_3D0C44[i] = tmp;
+		tmp &= 0xFFFF8000;
+		if (tmp && tmp != 0xFFFF8000) {
+			dword_3D0DA0 = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
+			g_unc_rw_array72_3D0C44[i] = dword_3D0DA0;
+		}
+	}
+
+	if (*dec_flag & 0x20000)
+		dss2_sub_3B80F0(g_unc_rw_array14_stg1_3D0D64.array14_stage1[0],
+				&g_unc_rw_array15_stg2_3D08C0, g_unc_rw_array72_3D0C44,
+				&local_rw_array72_v101[sf_idx][0], 72);
+	else
+		memcpy(&local_rw_array72_v101[sf_idx][0], g_unc_rw_array72_3D0C44,
+				72 * sizeof(int32_t));
+
+};
+////////
+int v39;
+if (!(*dec_flag & 0x40000))
+	dss2_sub_3B98D0(local_rw_array72_v101);
+v36 = dec_flag;
+v37 = 0;
+v38 = *dec_flag;
+if (!(*dec_flag & 0x20)) {
+	if (!(*dec_flag & 0x40000)) {
+		v39 = a11;
+		v40 = a10;
+		if (!a11 && *a10 != (v38 & 0xFF00)) {
+			v41 = a7;
+			switch ((*a10 >> 11) & 0x1F) {
+			case 0:
+				v39 = *a7;
+				v56 = v39;
+				v42 = (double) v39 * 24.0;
+				goto LABEL_47;
+			case 1:
+				v56 = (unsigned int) *a7;
+				v42 = (double) v56 * 30.0;
+				goto LABEL_47;
+			case 2:
+				v39 = *a7;
+				v56 = v39;
+				v42 = (double) v39 * 31.92;
+				goto LABEL_47;
+			case 3:
+				v56 = (unsigned int) *a7;
+				v42 = (double) v56 * 36.0;
+				goto LABEL_47;
+			case 4:
+				v39 = *a7;
+				v56 = v39;
+				v42 = (double) v39 * 48.0;
+				goto LABEL_47;
+			case 0x11:
+				v56 = (unsigned int) *a7;
+				v42 = (double) v56 * 19.200001;
+				goto LABEL_47;
+			case 0x12:
+				v39 = *a7;
+				v56 = v39;
+				v42 = (double) v39 * 18.0;
+				goto LABEL_47;
+			case 0x13:
+				v56 = (unsigned int) *a7;
+				v42 = (double) v56 * 15.84;
+				goto LABEL_47;
+			case 0x14:
+				v39 = *a7;
+				v56 = v39;
+				v42 = (double) v39 * 12.0;
+				LABEL_47: *a9 = v42 + *a9;
+				break;
+			default:
+				break;
+			}
+			v36 = dec_flag;
+			*v41 = 0;
+			*v40 = *dec_flag & 0xFF00;
+		}
+		v43 = *v40;
+		if (v43 & 0x80) {
+			memcpy(&v50, &a6, 24u);
+			v48 = (v43 >> 11) & 7;
+			v44 = g_unc_sub_3B9CA0(v48, local_rw_array72_v101, v36, v50, v51,
+					v52, v53, v54, abuff_swap_v94);
+		} else {
+			if (!(v43 & 0x38))
+				goto LABEL_54;
+			v49 = (v43 >> 11) & 7;
+			memcpy(&v50, &a6, 24u);
+			v44 = g_unc_sub_3B9990(v49, (int) local_rw_array72_v101, v50, v51,
+					v52, (int) v53, (int) v54, (signed int *) abuff_swap_v94);
+		}
+		v37 = v44;
+		if (v44) {
+			LABEL_55: memcpy(&array14_3D0DA4, struc_1_v96.array14_stage0, 28u);
+			return v37;
+		}
+		LABEL_54: dss2_32to16bit(&some_ptr_a2[132 * param_a5],
+				local_rw_array72_v101, 264);
+		goto LABEL_55;
+	}
+	goto LABEL_58;
+}
+
+if (v38 & 0x40000) {
+	LABEL_58: dss2_32to16bit(&some_ptr_a2[144 * param_a5],
+			local_rw_array72_v101, 288);
+} else
+	dss2_32to16bit(&some_ptr_a2[132 * param_a5], local_rw_array72_v101, 264);
+
+memcpy(&array14_3D0DA4, struc_1_v96.array14_stage0, 28u);
+return 0;
+}
+
+int main(void) {
+int8_t *abuff_swap;
+int *some_ptr_a2;
+int *dec_flag;
+int *abuff;
+int param_a5;
+struct struc_4 *a6;
+int *a7;
+int a8;
+float *a9;
+signed int *a10;
+unsigned int a11;
+
+dss2_2_sub_3B8790(abuff_swap, some_ptr_a2, dec_flag, &abuff, param_a5, a6, a7,
+		a8, a9, a10, a11);
+return 0;
 }
