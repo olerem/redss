@@ -5,6 +5,7 @@
  *      Autor: lex
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 #include "dss.h"
@@ -90,136 +91,136 @@ void dss2_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag) {
 }
 
 void dss2_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2) {
-	int16_t *abuff_swap_ptr; // eax@2
+
 	int v12; // edx@2
 	int i;
 
 	if (word_3D041C) {
 
-		word_3D1264 = reconstr_abuff->field_0 = (abuff_swap_ptr[0] >> 15) & 1;
+		word_3D1264 = reconstr_abuff->field_0 = (abuff_swap_a2[0] >> 15) & 1;
 
-		reconstr_abuff->array14_stage0[0] = (abuff_swap_ptr[0] >> 10) & 0x1F;
-		reconstr_abuff->array14_stage0[1] = (abuff_swap_ptr[0] >> 5) & 0x1F;
-		reconstr_abuff->array14_stage0[2] = (abuff_swap_ptr[0] >> 1) & 0xF;
-		reconstr_abuff->array14_stage0[3] = ((abuff_swap_ptr[1] >> 13) & 7)
-				+ 8 * (abuff_swap_ptr[0] & 1);
+		reconstr_abuff->array14_stage0[0] = (abuff_swap_a2[0] >> 10) & 0x1F;
+		reconstr_abuff->array14_stage0[1] = (abuff_swap_a2[0] >> 5) & 0x1F;
+		reconstr_abuff->array14_stage0[2] = (abuff_swap_a2[0] >> 1) & 0xF;
+		reconstr_abuff->array14_stage0[3] = ((abuff_swap_a2[1] >> 13) & 7)
+				+ 8 * (abuff_swap_a2[0] & 1);
 
-		reconstr_abuff->array14_stage0[4] = (abuff_swap_ptr[1] >> 9) & 0xF;
-		reconstr_abuff->array14_stage0[5] = (abuff_swap_ptr[1] >> 5) & 0xF;
-		reconstr_abuff->array14_stage0[6] = (abuff_swap_ptr[1] >> 1) & 0xF;
-		reconstr_abuff->array14_stage0[7] = ((abuff_swap_ptr[2] >> 13) & 7)
-				+ 8 * (abuff_swap_ptr[1] & 1);
+		reconstr_abuff->array14_stage0[4] = (abuff_swap_a2[1] >> 9) & 0xF;
+		reconstr_abuff->array14_stage0[5] = (abuff_swap_a2[1] >> 5) & 0xF;
+		reconstr_abuff->array14_stage0[6] = (abuff_swap_a2[1] >> 1) & 0xF;
+		reconstr_abuff->array14_stage0[7] = ((abuff_swap_a2[2] >> 13) & 7)
+				+ 8 * (abuff_swap_a2[1] & 1);
 
-		reconstr_abuff->array14_stage0[8] = (abuff_swap_ptr[2] >> 10) & 7;
-		reconstr_abuff->array14_stage0[9] = (abuff_swap_ptr[2] >> 7) & 7;
-		reconstr_abuff->array14_stage0[10] = (abuff_swap_ptr[2] >> 4) & 7;
-		reconstr_abuff->array14_stage0[11] = (abuff_swap_ptr[2] >> 1) & 7;
-		reconstr_abuff->array14_stage0[12] = ((abuff_swap_ptr[3] >> 14) & 3)
-				+ 4 * (abuff_swap_ptr[2] & 1);
+		reconstr_abuff->array14_stage0[8] = (abuff_swap_a2[2] >> 10) & 7;
+		reconstr_abuff->array14_stage0[9] = (abuff_swap_a2[2] >> 7) & 7;
+		reconstr_abuff->array14_stage0[10] = (abuff_swap_a2[2] >> 4) & 7;
+		reconstr_abuff->array14_stage0[11] = (abuff_swap_a2[2] >> 1) & 7;
+		reconstr_abuff->array14_stage0[12] = ((abuff_swap_a2[3] >> 14) & 3)
+				+ 4 * (abuff_swap_a2[2] & 1);
 
-		v12 = (abuff_swap_ptr[3] >> 12) & 3;
+		v12 = (abuff_swap_a2[3] >> 12) & 3;
 	} else {
 		word_3D1264 = 1;
 
-		reconstr_abuff->array14_stage0[0] = (abuff_swap_ptr[0] >> 11) & 0x1F;
-		reconstr_abuff->array14_stage0[1] = (abuff_swap_ptr[0] >> 6) & 0x1F;
-		reconstr_abuff->array14_stage0[2] = (abuff_swap_ptr[0] >> 2) & 0xF;
-		reconstr_abuff->array14_stage0[3] = ((abuff_swap_ptr[1] >> 14) & 3)
-				+ 4 * (abuff_swap_ptr[0] & 3);
+		reconstr_abuff->array14_stage0[0] = (abuff_swap_a2[0] >> 11) & 0x1F;
+		reconstr_abuff->array14_stage0[1] = (abuff_swap_a2[0] >> 6) & 0x1F;
+		reconstr_abuff->array14_stage0[2] = (abuff_swap_a2[0] >> 2) & 0xF;
+		reconstr_abuff->array14_stage0[3] = ((abuff_swap_a2[1] >> 14) & 3)
+				+ 4 * (abuff_swap_a2[0] & 3);
 
-		reconstr_abuff->array14_stage0[4] = (abuff_swap_ptr[1] >> 10) & 0xF;
-		reconstr_abuff->array14_stage0[5] = (abuff_swap_ptr[1] >> 6) & 0xF;
-		reconstr_abuff->array14_stage0[6] = (abuff_swap_ptr[1] >> 2) & 0xF;
-		reconstr_abuff->array14_stage0[7] = ((abuff_swap_ptr[2] >> 14) & 3)
-				+ 4 * (abuff_swap_ptr[1] & 3);
+		reconstr_abuff->array14_stage0[4] = (abuff_swap_a2[1] >> 10) & 0xF;
+		reconstr_abuff->array14_stage0[5] = (abuff_swap_a2[1] >> 6) & 0xF;
+		reconstr_abuff->array14_stage0[6] = (abuff_swap_a2[1] >> 2) & 0xF;
+		reconstr_abuff->array14_stage0[7] = ((abuff_swap_a2[2] >> 14) & 3)
+				+ 4 * (abuff_swap_a2[1] & 3);
 
-		reconstr_abuff->array14_stage0[8] = (abuff_swap_ptr[2] >> 11) & 7;
-		reconstr_abuff->array14_stage0[9] = (abuff_swap_ptr[2] >> 8) & 7;
-		reconstr_abuff->array14_stage0[10] = (abuff_swap_ptr[2] >> 5) & 7;
-		reconstr_abuff->array14_stage0[11] = (abuff_swap_ptr[2] >> 2) & 7;
-		reconstr_abuff->array14_stage0[12] = ((abuff_swap_ptr[3] >> 15) & 1)
-				+ 2 * (abuff_swap_ptr[2] & 3);
+		reconstr_abuff->array14_stage0[8] = (abuff_swap_a2[2] >> 11) & 7;
+		reconstr_abuff->array14_stage0[9] = (abuff_swap_a2[2] >> 8) & 7;
+		reconstr_abuff->array14_stage0[10] = (abuff_swap_a2[2] >> 5) & 7;
+		reconstr_abuff->array14_stage0[11] = (abuff_swap_a2[2] >> 2) & 7;
+		reconstr_abuff->array14_stage0[12] = ((abuff_swap_a2[3] >> 15) & 1)
+				+ 2 * (abuff_swap_a2[2] & 3);
 
-		v12 = (abuff_swap_ptr[3] >> 12) & 7;
+		v12 = (abuff_swap_a2[3] >> 12) & 7;
 	}
 
 	reconstr_abuff->array14_stage0[13] = v12;
 
 	if (word_3D041C && !word_3D1264) {
-		reconstr_abuff->subframe_something[0] = (abuff_swap_ptr[3] >> 7) & 0x1F;
-		reconstr_abuff->subframe_something[1] = (abuff_swap_ptr[3] >> 2) & 0x1F;
-		reconstr_abuff->subframe_something[2] = (abuff_swap_ptr[4] >> 13) & 7;
-		reconstr_abuff->subframe_something[3] = (abuff_swap_ptr[4] >> 8) & 0x1F;
+		reconstr_abuff->subframe_something[0] = (abuff_swap_a2[3] >> 7) & 0x1F;
+		reconstr_abuff->subframe_something[1] = (abuff_swap_a2[3] >> 2) & 0x1F;
+		reconstr_abuff->subframe_something[2] = (abuff_swap_a2[4] >> 13) & 7;
+		reconstr_abuff->subframe_something[3] = (abuff_swap_a2[4] >> 8) & 0x1F;
 		return;
 	}
 
-	reconstr_abuff->subframe_something[0] = (abuff_swap_ptr[3] >> 7) & 0x1F;
+	reconstr_abuff->subframe_something[0] = (abuff_swap_a2[3] >> 7) & 0x1F;
 
 	// instead of "*((uint8_t *)abuff_swap_ptr + 11)" can be "(abuff_swap_ptr[5] >> 8) & 0xf"
 	reconstr_abuff->sf[0].combined_pulse_pos =
-			*((uint8_t *) abuff_swap_ptr + 11)
-					+ ((abuff_swap_ptr[4] + ((abuff_swap_ptr[3] & 0x7F) << 16))
+			*((uint8_t *) abuff_swap_a2 + 11)
+					+ ((abuff_swap_a2[4] + ((abuff_swap_a2[3] & 0x7F) << 16))
 							<< 8);
-	reconstr_abuff->sf[0].gain = (abuff_swap_ptr[5] >> 2) & 0x3F;
+	reconstr_abuff->sf[0].gain = (abuff_swap_a2[5] >> 2) & 0x3F;
 
-	reconstr_abuff->sf[0].pulse_val[0] = ((abuff_swap_ptr[6] >> 15) & 1)
-			+ 2 * (abuff_swap_ptr[5] & 3);
-	reconstr_abuff->sf[0].pulse_val[1] = (abuff_swap_ptr[6] >> 12) & 7;
-	reconstr_abuff->sf[0].pulse_val[2] = (abuff_swap_ptr[6] >> 9) & 7;
-	reconstr_abuff->sf[0].pulse_val[3] = (abuff_swap_ptr[6] >> 6) & 7;
-	reconstr_abuff->sf[0].pulse_val[4] = (abuff_swap_ptr[6] >> 3) & 7;
-	reconstr_abuff->sf[0].pulse_val[5] = abuff_swap_ptr[6] & 7;
-	reconstr_abuff->sf[0].pulse_val[6] = (abuff_swap_ptr[7] >> 13) & 7;
+	reconstr_abuff->sf[0].pulse_val[0] = ((abuff_swap_a2[6] >> 15) & 1)
+			+ 2 * (abuff_swap_a2[5] & 3);
+	reconstr_abuff->sf[0].pulse_val[1] = (abuff_swap_a2[6] >> 12) & 7;
+	reconstr_abuff->sf[0].pulse_val[2] = (abuff_swap_a2[6] >> 9) & 7;
+	reconstr_abuff->sf[0].pulse_val[3] = (abuff_swap_a2[6] >> 6) & 7;
+	reconstr_abuff->sf[0].pulse_val[4] = (abuff_swap_a2[6] >> 3) & 7;
+	reconstr_abuff->sf[0].pulse_val[5] = abuff_swap_a2[6] & 7;
+	reconstr_abuff->sf[0].pulse_val[6] = (abuff_swap_a2[7] >> 13) & 7;
 
-	reconstr_abuff->subframe_something[1] = (abuff_swap_ptr[7] >> 8) & 0x1F;
+	reconstr_abuff->subframe_something[1] = (abuff_swap_a2[7] >> 8) & 0x1F;
 
-	reconstr_abuff->sf[1].combined_pulse_pos = ((abuff_swap_ptr[9] >> 9) & 0x7F)
-			+ ((abuff_swap_ptr[8] + (abuff_swap_ptr[7] << 16)) << 7);
-	reconstr_abuff->sf[1].gain = (abuff_swap_ptr[9] >> 3) & 0x3F;
+	reconstr_abuff->sf[1].combined_pulse_pos = ((abuff_swap_a2[9] >> 9) & 0x7F)
+			+ ((abuff_swap_a2[8] + (abuff_swap_a2[7] << 16)) << 7);
+	reconstr_abuff->sf[1].gain = (abuff_swap_a2[9] >> 3) & 0x3F;
 
-	reconstr_abuff->sf[1].pulse_val[0] = abuff_swap_ptr[9] & 7;
-	reconstr_abuff->sf[1].pulse_val[1] = (abuff_swap_ptr[10] >> 13) & 7;
-	reconstr_abuff->sf[1].pulse_val[2] = (abuff_swap_ptr[10] >> 10) & 7;
-	reconstr_abuff->sf[1].pulse_val[3] = (abuff_swap_ptr[10] >> 7) & 7;
-	reconstr_abuff->sf[1].pulse_val[4] = (abuff_swap_ptr[10] >> 4) & 7;
-	reconstr_abuff->sf[1].pulse_val[5] = (abuff_swap_ptr[10] >> 1) & 7;
-	reconstr_abuff->sf[1].pulse_val[6] = ((abuff_swap_ptr[11] >> 14) & 3)
-			+ 4 * (abuff_swap_ptr[10] & 1);
+	reconstr_abuff->sf[1].pulse_val[0] = abuff_swap_a2[9] & 7;
+	reconstr_abuff->sf[1].pulse_val[1] = (abuff_swap_a2[10] >> 13) & 7;
+	reconstr_abuff->sf[1].pulse_val[2] = (abuff_swap_a2[10] >> 10) & 7;
+	reconstr_abuff->sf[1].pulse_val[3] = (abuff_swap_a2[10] >> 7) & 7;
+	reconstr_abuff->sf[1].pulse_val[4] = (abuff_swap_a2[10] >> 4) & 7;
+	reconstr_abuff->sf[1].pulse_val[5] = (abuff_swap_a2[10] >> 1) & 7;
+	reconstr_abuff->sf[1].pulse_val[6] = ((abuff_swap_a2[11] >> 14) & 3)
+			+ 4 * (abuff_swap_a2[10] & 1);
 
-	reconstr_abuff->subframe_something[2] = (abuff_swap_ptr[11] >> 9) & 0x1F;
+	reconstr_abuff->subframe_something[2] = (abuff_swap_a2[11] >> 9) & 0x1F;
 
 	reconstr_abuff->sf[2].combined_pulse_pos =
-			((abuff_swap_ptr[13] >> 10) & 0x3F)
-					+ ((abuff_swap_ptr[12]
-							+ ((abuff_swap_ptr[11] & 0x1FF) << 16)) << 6);
+			((abuff_swap_a2[13] >> 10) & 0x3F)
+					+ ((abuff_swap_a2[12]
+							+ ((abuff_swap_a2[11] & 0x1FF) << 16)) << 6);
 
-	reconstr_abuff->sf[2].gain = (abuff_swap_ptr[13] >> 4) & 0x3F;
+	reconstr_abuff->sf[2].gain = (abuff_swap_a2[13] >> 4) & 0x3F;
 
-	reconstr_abuff->sf[2].pulse_val[0] = (abuff_swap_ptr[13] >> 1) & 7;
-	reconstr_abuff->sf[2].pulse_val[1] = ((abuff_swap_ptr[14] >> 14) & 3)
-			+ 4 * (abuff_swap_ptr[14] & 1);
-	reconstr_abuff->sf[2].pulse_val[2] = (abuff_swap_ptr[14] >> 11) & 7;
-	reconstr_abuff->sf[2].pulse_val[3] = (abuff_swap_ptr[14] >> 8) & 7;
-	reconstr_abuff->sf[2].pulse_val[4] = (abuff_swap_ptr[14] >> 5) & 7;
-	reconstr_abuff->sf[2].pulse_val[5] = (abuff_swap_ptr[14] >> 2) & 7;
-	reconstr_abuff->sf[2].pulse_val[6] = ((abuff_swap_ptr[15] >> 15) & 1)
-			+ 2 * (abuff_swap_ptr[14] & 3);
+	reconstr_abuff->sf[2].pulse_val[0] = (abuff_swap_a2[13] >> 1) & 7;
+	reconstr_abuff->sf[2].pulse_val[1] = ((abuff_swap_a2[14] >> 14) & 3)
+			+ 4 * (abuff_swap_a2[14] & 1);
+	reconstr_abuff->sf[2].pulse_val[2] = (abuff_swap_a2[14] >> 11) & 7;
+	reconstr_abuff->sf[2].pulse_val[3] = (abuff_swap_a2[14] >> 8) & 7;
+	reconstr_abuff->sf[2].pulse_val[4] = (abuff_swap_a2[14] >> 5) & 7;
+	reconstr_abuff->sf[2].pulse_val[5] = (abuff_swap_a2[14] >> 2) & 7;
+	reconstr_abuff->sf[2].pulse_val[6] = ((abuff_swap_a2[15] >> 15) & 1)
+			+ 2 * (abuff_swap_a2[14] & 3);
 
-	reconstr_abuff->subframe_something[3] = (abuff_swap_ptr[15] >> 10) & 0x1F;
+	reconstr_abuff->subframe_something[3] = (abuff_swap_a2[15] >> 10) & 0x1F;
 
-	reconstr_abuff->sf[3].combined_pulse_pos = ((abuff_swap_ptr[17] >> 11)
+	reconstr_abuff->sf[3].combined_pulse_pos = ((abuff_swap_a2[17] >> 11)
 			& 0x1F)
-			+ 32 * (abuff_swap_ptr[16] + ((abuff_swap_ptr[15] & 0x3FF) << 16));
-	reconstr_abuff->sf[3].gain = (abuff_swap_ptr[17] >> 5) & 0x3F;
+			+ 32 * (abuff_swap_a2[16] + ((abuff_swap_a2[15] & 0x3FF) << 16));
+	reconstr_abuff->sf[3].gain = (abuff_swap_a2[17] >> 5) & 0x3F;
 
-	reconstr_abuff->sf[3].pulse_val[0] = (abuff_swap_ptr[17] >> 2) & 7;
-	reconstr_abuff->sf[3].pulse_val[1] = ((abuff_swap_ptr[18] >> 15) & 1)
-			+ 2 * (abuff_swap_ptr[17] & 3);
-	reconstr_abuff->sf[3].pulse_val[2] = (abuff_swap_ptr[18] >> 12) & 7;
-	reconstr_abuff->sf[3].pulse_val[3] = (abuff_swap_ptr[18] >> 9) & 7;
-	reconstr_abuff->sf[3].pulse_val[4] = (abuff_swap_ptr[18] >> 6) & 7;
-	reconstr_abuff->sf[3].pulse_val[5] = (abuff_swap_ptr[18] >> 3) & 7;
-	reconstr_abuff->sf[3].pulse_val[6] = abuff_swap_ptr[18] & 7;
+	reconstr_abuff->sf[3].pulse_val[0] = (abuff_swap_a2[17] >> 2) & 7;
+	reconstr_abuff->sf[3].pulse_val[1] = ((abuff_swap_a2[18] >> 15) & 1)
+			+ 2 * (abuff_swap_a2[17] & 3);
+	reconstr_abuff->sf[3].pulse_val[2] = (abuff_swap_a2[18] >> 12) & 7;
+	reconstr_abuff->sf[3].pulse_val[3] = (abuff_swap_a2[18] >> 9) & 7;
+	reconstr_abuff->sf[3].pulse_val[4] = (abuff_swap_a2[18] >> 6) & 7;
+	reconstr_abuff->sf[3].pulse_val[5] = (abuff_swap_a2[18] >> 3) & 7;
+	reconstr_abuff->sf[3].pulse_val[6] = abuff_swap_a2[18] & 7;
 
 ////////////////////////////////////////////////////////////////////
 	int subframe_idx;
@@ -230,11 +231,12 @@ void dss2_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2) 
 				reconstr_abuff->sf[subframe_idx].combined_pulse_pos;
 		int index = 6;
 
-		if (combined_pulse_pos < C72_binomials[PULSE_MAX - 1])
+		if (combined_pulse_pos < C72_binomials[PULSE_MAX - 1]) {
 			if (word_3D0C26 != 0)
 				goto LABEL_22;
 			else
 				word_3D0C26 = 0;
+		}
 
 		/* why do we need this? */
 		reconstr_abuff->sf[subframe_idx].pulse_pos[6] = 0;
@@ -286,12 +288,12 @@ void dss2_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2) 
 	int16_t v43;
 	int v46;
 
-	v43 = abuff_swap_ptr[19];
+	v43 = abuff_swap_a2[19];
 
-	v46 = ((v43 << 8) + *((int8_t *) abuff_swap_ptr + 0x29)) / 151;
+	v46 = ((v43 << 8) + *((int8_t *) abuff_swap_a2 + 0x29)) / 151;
 	// TODO, is filed_1e part of array_20?
 	reconstr_abuff->filed_1e =
-			((v43 << 8) + *((int8_t *) abuff_swap_ptr + 0x29)) % 151 + 36;
+			((v43 << 8) + *((int8_t *) abuff_swap_a2 + 0x29)) % 151 + 36;
 	for (i = 0; i < 3; i++) {
 		int v47 = v46;
 		v46 /= 48;
@@ -336,6 +338,7 @@ void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 	signed int v6; // eax@2
 	int v7; // esi@3
 	int v8; // edi@3
+#if 0
 	int v9; // edx@3
 	int v10; // edx@3
 	int v11; // edx@5
@@ -359,8 +362,10 @@ void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 	int v29; // [sp+1Ch] [bp-8h]@12
 	int v30; // [sp+20h] [bp-4h]@12
 	int32_t *array14a; // [sp+28h] [bp+4h]@11
-	int counter; // [sp+2Ch] [bp+8h]@2
 	signed int struc_6_a2b; // [sp+2Ch] [bp+8h]@12
+#endif
+	int counter; // [sp+2Ch] [bp+8h]@2
+
 	int tmp;
 
 	struc_6_v2 = struc_6_stg2_a2;
@@ -764,7 +769,12 @@ static void dss2_32to16bit(int16_t *dst, int32_t *src, int size) {
 		dst[i] = src[i];
 }
 
-int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
+void dss2_clean_array_3B9060()
+{
+  memset(g_unc_rw_arrayXX_3D08FC, 0, 0x2ECu);
+}
+
+int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 		int **abuff, int param_a5, struct struc_4 *a6, int *a7, int a8,
 		float *a9, signed int *a10, unsigned int a11) {
 	__int8 *v13; // edx@3
@@ -780,16 +790,12 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 	signed int v43; // eax@49
 	__int16 v44; // ax@50
 
-	struct struc_1 struc_1_v45; // [sp-C4h] [bp-620h]@16
+
 	struct struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
-	int v48; // [sp-24h] [bp-580h]@50
-	int v49; // [sp-20h] [bp-57Ch]@52
+
+
 	int v50; // [sp-18h] [bp-574h]@3
-	int v51; // [sp-14h] [bp-570h]@3
-	int v52; // [sp-10h] [bp-56Ch]@3
-	int *v53; // [sp-Ch] [bp-568h]@50
-	void *v54; // [sp-8h] [bp-564h]@5
-	void *abuff_swap_v94; // [sp-4h] [bp-560h]@5
+
 	int64_t v56; // [sp+10h] [bp-54Ch]@14
 
 	struct struc_1 struc_1_v96; // [sp+1Ch] [bp-540h]@5
@@ -797,7 +803,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 	int i, tmp, sf_idx;
 
 	if (*dec_flag & 0x10) {
-		dss2_32to16bit(&some_ptr_a2[132 * param_a5], g_unc_rw_array_3D04A0,
+		dss2_32to16bit(&abuf_dst[132 * param_a5], g_unc_rw_array_3D04A0,
 				264);
 		*dec_flag &= ~0x10;
 		return 0;
@@ -805,16 +811,14 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 
 	memcpy(&v50, &a6, 24u);
 
-	dss2_byte_swap(abuff_swap, abuff, dec_flag);
+	dss2_byte_swap(abuff_swap, abuff, *dec_flag);
 
 	if (*dec_flag & 0x1) {
-		g_unc_clean_array_3B9060();
+		dss2_clean_array_3B9060();
 		*dec_flag &= ~0x1;
 		word_3D0C26 = 1;
 	}
 
-	abuff_swap_v94 = abuff_swap;
-	v54 = &struc_1_v96;
 	dss2_unpack_coeffs(v14, v13);
 
 	if (word_3D041C) {
@@ -832,7 +836,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 	}
 
 	memcpy(&struc_1_v46, &struc_1_v96, 192u);
-	dss2_sub_3B8740(&g_unc_rw_array14_stg1_3D0D64, struc_1_v46);
+	dss2_sub_3B8740(g_unc_rw_array14_stg1_3D0D64.array14_stage1, struc_1_v46);
 
 	if (g_unc_rw_array14_stg1_3D0D64.field_38 == 1)
 		word_3D9B7E = struc_1_v96.array14_stage0[0];
@@ -846,8 +850,6 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 			dss2_sub_3B9080(g_unc_rw_array72_3D0C44, g_unc_rw_arrayXX_3D08FC,
 					struc_1_v96.filed_1e,
 					g_unc_array_3C88F8[struc_1_v96.subframe_something[sf_idx]]);
-
-			abuff_swap_v94 = sf_idx;
 
 			dss2_add_pulses(g_unc_rw_array72_3D0C44, &struc_1_v96.sf[sf_idx]);
 		} else {
@@ -952,18 +954,23 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 			}
 			v43 = *v40;
 			if (v43 & 0x80) {
+// never triggered
+#if 0
 				memcpy(&v50, &a6, 24u);
 				v48 = (v43 >> 11) & 7;
 				v44 = g_unc_sub_3B9CA0(v48, local_rw_array72_v101, v36, v50,
 						v51, v52, v53, v54, abuff_swap_v94);
+#endif
 			} else {
 				if (!(v43 & 0x38))
 					goto LABEL_54;
+#if 0
 				v49 = (v43 >> 11) & 7;
 				memcpy(&v50, &a6, 24u);
 				v44 = g_unc_sub_3B9990(v49, (int) local_rw_array72_v101, v50,
 						v51, v52, (int) v53, (int) v54,
 						(signed int *) abuff_swap_v94);
+#endif
 			}
 			v37 = v44;
 			if (v44) {
@@ -971,7 +978,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 						28u);
 				return v37;
 			}
-			LABEL_54: dss2_32to16bit(&some_ptr_a2[132 * param_a5],
+			LABEL_54: dss2_32to16bit(&abuf_dst[132 * param_a5],
 					local_rw_array72_v101, 264);
 			goto LABEL_55;
 		}
@@ -979,10 +986,10 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int *some_ptr_a2, int *dec_flag,
 	}
 
 	if (v38 & 0x40000) {
-		LABEL_58: dss2_32to16bit(&some_ptr_a2[144 * param_a5],
+		LABEL_58: dss2_32to16bit(&abuf_dst[144 * param_a5],
 				local_rw_array72_v101, 288);
 	} else
-		dss2_32to16bit(&some_ptr_a2[132 * param_a5], local_rw_array72_v101,
+		dss2_32to16bit(&abuf_dst[132 * param_a5], local_rw_array72_v101,
 				264);
 
 	memcpy(&array14_3D0DA4, struc_1_v96.array14_stage0, 28u);
