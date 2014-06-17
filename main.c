@@ -10,10 +10,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "dss.h"
-#define __int8 int8_t
-#define __int16 int16_t
 
-unsigned int word_3D1264;
 unsigned int word_3D1266;
 
 unsigned int word_3D0C26;
@@ -37,7 +34,6 @@ static void dss2_byte_swap(int8_t *abuff_swap, int8_t **abuff_src, int dec_flag)
 	int size; // si@1
 	int i;
 
-	word_3D1264 = 1;
 	abuff_tmp = *abuff_src;
 	size = DSS_CBUF_SIZE;
 	if (flip) {
@@ -80,8 +76,6 @@ static void dss2_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_sw
 
 	int v12; // edx@2
 	int i;
-
-	word_3D1264 = 1;
 
 	reconstr_abuff->array14_stage0[0] = (abuff_swap_a2[0] >> 11) & 0x1F;
 	reconstr_abuff->array14_stage0[1] = (abuff_swap_a2[0] >> 6) & 0x1F;
@@ -564,14 +558,6 @@ static void dss2_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3
 				array72_a4[i] = (((tmp <= 0) - 1) & 0xFFFE) - 0x7FFF;
 		}
 	}
-}
-
-static int16_t dss2_sub_3BA000(int16_t *a1) {
-	int16_t tmp;
-
-	tmp = *a1 + ((*a1 << 6) + *a1) * 8 + 0x103;
-	*a1 = tmp;
-	return tmp;
 }
 
 static void dss2_sub_3B98D0(int32_t *array72_a1) {
