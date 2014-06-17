@@ -15,7 +15,7 @@
 
 unsigned int word_3D1264;
 unsigned int word_3D1266;
-unsigned int word_3D041C;
+
 unsigned int word_3D0C26;
 unsigned int word_3D9B7C;
 int dword_3D0498;
@@ -275,9 +275,6 @@ void dss2_sub_3B8740(int32_t *array14_stage1, const struct struc_1 *a2) {
 
 	for (i = 0; i < 14; i++)
 		array14_stage1[i] = g_unc_array_3C84F0[i][a2->array14_stage0[i]];
-
-	if (word_3D041C)
-		array14_stage1[13] = g_unc_array_3C8870[a2->array14_stage0[13]];
 }
 
 void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
