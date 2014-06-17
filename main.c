@@ -774,8 +774,7 @@ void dss2_clean_array_3B9060()
 }
 
 int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
-		int8_t **abuff, int param_a5, struct struc_4 *a6, int *a7, int a8,
-		float a9, signed int a10, unsigned int a11) {
+		int8_t **abuff) {
 
 	//int *v36; // edx@33
 	__int16 v37; // bp@33
@@ -786,6 +785,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 	double v42; // st7@38
 	signed int v43; // eax@49
 	int16_t v44 = 0; // ax@50
+	int param_a5 = 0;
 
 
 	struct struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
@@ -806,7 +806,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 		return 0;
 	}
 
-	memcpy(&v50, &a6, 24u);
+	//memcpy(&v50, &a6, 24u);
 
 	dss2_byte_swap(abuff_swap, abuff, *dec_flag);
 
@@ -895,8 +895,8 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 	v38 = *dec_flag;
 	if (!(*dec_flag & 0x20)) {
 		if (!(*dec_flag & 0x40000)) {
-			v39 = a11;
-			v40 = a10;
+//			v39 = a11;
+//			v40 = a10;
 #if 0
 			if (!a11 && *a10 != (v38 & 0xFF00)) {
 				v41 = a7;
@@ -951,8 +951,8 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 				*v40 = *dec_flag & 0xFF00;
 			}
 #endif
-			v43 = v40;
-			if (v43 & 0x80) {
+		//	v43 = v40;
+			if (0) {
 // never triggered
 #if 0
 				memcpy(&v50, &a6, 24u);
@@ -1000,14 +1000,8 @@ int main(void) {
 	int *some_ptr_a2;
 	int *dec_flag;
 	int *abuff;
-	int param_a5;
-	struct struc_4 *a6;
-	int *a7;
-	int a8;
-	float *a9;
-	signed int *a10;
 
-	dss2_2_sub_3B8790(abuff_swap, some_ptr_a2, dec_flag, &abuff, param_a5, a6,
-			a7, a8, 0, 0, 0);
+
+	dss2_2_sub_3B8790(abuff_swap, some_ptr_a2, dec_flag, &abuff);
 	return 0;
 }
