@@ -608,10 +608,12 @@ static void dss2_32to16bit(int16_t *dst, int32_t *src, int size) {
 		dst[i] = src[i];
 }
 
+#if 0
 static void dss2_clean_array_3B9060()
 {
   memset(g_unc_rw_arrayXX_3D08FC, 0, 0x2ECu);
 }
+#endif
 
 static int dss2_2_sub_3B8790(int16_t *abuf_dst, int8_t *abuff_src) {
 
@@ -690,12 +692,10 @@ static int dss2_2_sub_3B8790(int16_t *abuf_dst, int8_t *abuff_src) {
 }
 
 int main(void) {
-	int8_t *abuff_swap;
-	int *some_ptr_a2;
-	int *dec_flag;
-	int *abuff;
+	int8_t *abuff_src;
+	int16_t *abuff_dst;
 
 
-	dss2_2_sub_3B8790(abuff_swap, some_ptr_a2, dec_flag, &abuff);
+	dss2_2_sub_3B8790(abuff_dst, abuff_src);
 	return 0;
 }
