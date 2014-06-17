@@ -29,12 +29,12 @@ struct struc_8 g_unc_rw_array15_3D0BE8;
 int32_t g_unc_rw_array288_3D0DC0[288 + 6];
 int32_t g_unc_rw_array_3D04A0[264];
 
-static void dss2_byte_swap(int8_t *abuff_swap, int8_t **abuff_src, int dec_flag) {
+static void dss2_byte_swap(int8_t *abuff_swap, int8_t *abuff_src) {
 	uint8_t *abuff_tmp;
 	int size; // si@1
 	int i;
 
-	abuff_tmp = *abuff_src;
+	abuff_tmp = abuff_src;
 	size = DSS_CBUF_SIZE;
 	if (flip) {
 		unsigned int tmp = abuff_tmp[0];
@@ -51,7 +51,6 @@ static void dss2_byte_swap(int8_t *abuff_swap, int8_t **abuff_src, int dec_flag)
 		word_3D1266 = tmp;
 		abuff_swap[0] = 0;
 		abuff_swap[1] = abuff_tmp[0];
-		*abuff_src = abuff_tmp;
 		flip ^= 1;
 	} else {
 		abuff_swap[0] = abuff_tmp[2];
@@ -67,7 +66,6 @@ static void dss2_byte_swap(int8_t *abuff_swap, int8_t **abuff_src, int dec_flag)
 		}
 
 		abuff_swap[1] = abuff_tmp[0];
-		*abuff_src = abuff_tmp + 2;
 		flip ^= 1;
 	}
 }
@@ -615,24 +613,27 @@ static void dss2_clean_array_3B9060()
   memset(g_unc_rw_arrayXX_3D08FC, 0, 0x2ECu);
 }
 
-static int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
-		int8_t **abuff) {
+static int dss2_2_sub_3B8790(int16_t *abuf_dst, int8_t *abuff_src) {
 
 	struct struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
 
 	struct struc_1 struc_1_v96; // [sp+1Ch] [bp-540h]@5
 	int32_t local_rw_array72_v101[SUBFRAMES][72];
 	int i, tmp, sf_idx;
+	int8_t abuff_swap[42];
+
 
 	//memcpy(&v50, &a6, 24u);
 
-	dss2_byte_swap(abuff_swap, abuff, *dec_flag);
+	dss2_byte_swap(abuff_swap, abuff_src);
 
+#if 0
 	if (*dec_flag & 0x1) {
 		dss2_clean_array_3B9060();
 		*dec_flag &= ~0x1;
 		word_3D0C26 = 1;
 	}
+#endif
 
 	dss2_unpack_coeffs(&struc_1_v96, (int16_t *)abuff_swap);
 
