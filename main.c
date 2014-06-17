@@ -17,7 +17,6 @@ unsigned int word_3D1264;
 unsigned int word_3D1266;
 
 unsigned int word_3D0C26;
-unsigned int word_3D9B7C;
 int dword_3D0498;
 unsigned int flip;
 int32_t g_unc_rw_array15_3D0420[15];
@@ -284,38 +283,12 @@ void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 	signed int v6; // eax@2
 	int v7; // esi@3
 	int v8; // edi@3
-#if 0
-	int v9; // edx@3
-	int v10; // edx@3
-	int v11; // edx@5
-	int v12; // edx@5
-	struct struc_6 *struc_6_v14; // ebx@11
-	int v14; // ebp@11
-	int v15; // esi@12
-	signed int v16; // esi@13
-	int v17; // ebp@15
-	int v18; // eax@15
-	int v19; // edi@15
-	int v20; // edx@15
-	int v21; // edx@15
-	int v22; // edx@18
-	int v23; // edx@18
-	int v24; // zf@25
-	int v25; // [sp+10h] [bp-14h]@1
-	int v26; // [sp+10h] [bp-14h]@11
-	struct struc_6 *struc_6_v29; // [sp+14h] [bp-10h]@11
-	signed int v28; // [sp+18h] [bp-Ch]@11
-	int v29; // [sp+1Ch] [bp-8h]@12
-	int v30; // [sp+20h] [bp-4h]@12
-	int32_t *array14a; // [sp+28h] [bp+4h]@11
-	signed int struc_6_a2b; // [sp+2Ch] [bp+8h]@12
-#endif
+
 	int counter; // [sp+2Ch] [bp+8h]@2
 
 	int tmp;
 
 	v3 = 0;
-	word_3D9B7C = 0;
 	struc_6_stg2_a2->array14_stage2[0] = 0x2000u;
 	while (1) {
 		v5 = v3;
@@ -351,67 +324,7 @@ void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 		if (counter > v6 / 2)
 			goto LABEL_9;
 	}
-	//////////////////////////////////
-	// looks like sort of cleanup part. In case "tmp != 0xFFFF8000" check will fail.
-	// or may be not used at all. With my test file it was never triggered
-#if 0
-	struc_6_v14 = struc_6_a1;
-	v14 = 0;
-	word_3D9B7C = 1;
-	struc_6_stg2_a2->gain = 0x1000;
-	v26 = 0;
-	struc_6_v29 = struc_6_a1;
-	array14a = struc_6_stg2_a2->array14_stage2;
-	v28 = 14;
-	do
-	{
-		v15 = v14 + 1;
-		*array14a = struc_6_v14->array14_stage1[0] >> 3;
-		counter = 1;
-		v30 = v14 + 1;
-		v29 = (v14 + 1) / 2;
-		if ( (v14 + 1) / 2 >= 1 )
-		{
-			v16 = 1;
-			while ( 1 )
-			{
-				v17 = v14 - v16;
-				v18 = struc_6_stg2_a2->array14_stage2[v16 - 1];
-				v19 = struc_6_stg2_a2->array14_stage2[v17];
-				v20 = (v19 * struc_6_v14->array14_stage1[0] + (struc_6_stg2_a2->array14_stage2[v16 - 1] << 15) + 0x4000) >> 15;
-				struc_6_stg2_a2->array14_stage2[v16 - 1] = v20;
-				v21 = v20 & 0xFFFF8000;
-				if ( v21 && v21 != 0xFFFF8000 )
-				struc_6_stg2_a2->array14_stage2[v16 - 1] = ((v21 <= 0) - 1) - 0x8000;
-				struc_6_v14 = struc_6_v29;
-				v22 = (v18 * struc_6_v29->array14_stage1[0] + (v19 << 15) + 0x4000) >> 15;
-				struc_6_stg2_a2->array14_stage2[v17] = v22;
-				v23 = v22 & 0xFFFF8000;
-				if ( v23 && v23 != 0xFFFF8000 )
-				{
-					if ( v23 <= 0 )
-					struc_6_stg2_a2->array14_stage2[v17] = 0xFFFF8000;
-					else
-					struc_6_stg2_a2->array14_stage2[v17] = 0x7FFF;
-				}
-				++counter;
-				v16 = counter;
-				if ( counter > v29 )
-				break;
-				v14 = v26;
-			}
-			v15 = v30;
-		}
-		v14 = v15;
-		struc_6_v14 = (struct struc_6 *)((char *)struc_6_v14 + 4);
-		v24 = v28 == 1;
-		v26 = v15;
-		array14a++;
-		struc_6_v29 = struc_6_v14;
-		--v28;
-	}
-	while ( !v24 );
-#endif
+	printf("%s should never be here\n", __func__);
 }
 
 /* this function will get pointer to one of 4 subframes */
@@ -473,9 +386,7 @@ void dss2_sub_3B9FB0(int32_t *array72, int32_t *arrayXX) {
 
 void dss2_shift_sq_sub(const int32_t *array_a1, int32_t *array_a2,
 		int32_t *array_a3_dst) {
-	int a, shift;
-
-	shift = 13 - word_3D9B7C;
+	int a;
 
 	for (a = 0; a < 72; a++) {
 		int i, tmp;
@@ -489,7 +400,7 @@ void dss2_shift_sq_sub(const int32_t *array_a1, int32_t *array_a2,
 		for (i = 14; i > 1; i--)
 			array_a2[i] = array_a2[i - 1];
 
-		tmp = (tmp + 4096) >> shift;
+		tmp = (tmp + 4096) >> 13;
 
 		array_a2[1] = tmp;
 
@@ -506,9 +417,8 @@ void dss2_shift_sq_sub(const int32_t *array_a1, int32_t *array_a2,
 
 void dss2_shift_sq_add(const int32_t *array_a1, int32_t *array_a2,
 		int32_t *array_a3_dst) {
-	int a, shift;
+	int a;
 
-	shift = 13 - word_3D9B7C;
 	for (a = 0; a < 72; a++) {
 		int i, tmp;
 
@@ -520,7 +430,7 @@ void dss2_shift_sq_add(const int32_t *array_a1, int32_t *array_a2,
 		for (i = 14; i > 0; i--)
 			array_a2[i] = array_a2[i - 1];
 
-		tmp = (tmp + 4096) >> shift;
+		tmp = (tmp + 4096) >> 13;
 
 		array_a3_dst[a] = tmp;
 		tmp &= 0xFFFF8000;
@@ -722,8 +632,6 @@ void dss2_clean_array_3B9060()
 int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 		int8_t **abuff) {
 
-	int param_a5 = 0;
-
 	struct struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
 
 	struct struc_1 struc_1_v96; // [sp+1Ch] [bp-540h]@5
@@ -787,7 +695,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 
 	dss2_sub_3B98D0(&local_rw_array72_v101[0][0]);
 
-	dss2_32to16bit(&abuf_dst[132 * param_a5],
+	dss2_32to16bit(abuf_dst,
 					&local_rw_array72_v101[0][0], 264);
 	memcpy(&array14_3D0DA4, struc_1_v96.array14_stage0, 28u);
 	return 0;
