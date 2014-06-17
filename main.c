@@ -5,6 +5,7 @@
  *      Autor: lex
  */
 
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -26,13 +27,13 @@ struct struc_8 g_unc_rw_array15_stg2_3D08C0;
 int16_t array14_3D0DA4[14];
 int32_t g_unc_rw_array72_3D0C44[72];
 int32_t g_unc_rw_arrayXX_3D08FC[186];
-int word_3D9B7E;
+int16_t word_3D9B7E;
 int dword_3D0DA0;
 struct struc_8 g_unc_rw_array15_3D0BE8;
 int32_t g_unc_rw_array288_3D0DC0[288 + 6];
 int32_t g_unc_rw_array_3D04A0[264];
 
-void dss2_byte_swap(__int8 *abuff_swap, __int8 **abuff_src, int dec_flag) {
+void dss2_byte_swap(int8_t *abuff_swap, int8_t **abuff_src, int dec_flag) {
 	uint8_t *abuff_tmp;
 	int size; // si@1
 	int i;
@@ -332,7 +333,6 @@ void dss2_sub_3B8740(int32_t *array14_stage1, const struct struc_1 *a2) {
 
 void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 		struct struc_8 *struc_6_stg2_a2) {
-	struct struc_8 *struc_6_v2; // ecx@1
 	int v3; // esi@1
 	int v5; // ebx@2
 	signed int v6; // eax@2
@@ -368,14 +368,13 @@ void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 
 	int tmp;
 
-	struc_6_v2 = struc_6_stg2_a2;
 	v3 = 0;
 	word_3D9B7C = 0;
-	struc_6_stg2_a2->field_0 = 0x2000u;
+	struc_6_stg2_a2->array14_stage2[0] = 0x2000u;
 	while (1) {
 		v5 = v3;
 		v6 = v3 + 1;
-		struc_6_v2->array14_stage2[v3] = struc_6_a1->array14_stage1[v3] >> 2;
+		struc_6_stg2_a2->array14_stage2[v3] = struc_6_a1->array14_stage1[v3] >> 2;
 		if (v6 / 2 >= 1)
 			break;
 		LABEL_9: ++v3;
@@ -386,18 +385,18 @@ void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 	/////////////////////////////
 	counter = 1;
 	while (1) {
-		v7 = struc_6_v2->array14_stage2[counter - 1];
+		v7 = struc_6_stg2_a2->array14_stage2[counter - 1];
 		// 4, 4, 4
-		v8 = struc_6_v2->array14_stage2[v5 - counter];
+		v8 = struc_6_stg2_a2->array14_stage2[v5 - counter];
 		// 8, 8, c
 		tmp = (struc_6_a1->array14_stage1[v5] * v8 + (v7 << 15) + 0x4000) >> 15;
-		struc_6_v2->array14_stage2[counter - 1] = tmp;
+		struc_6_stg2_a2->array14_stage2[counter - 1] = tmp;
 		tmp &= 0xFFFF8000;
 		if (tmp && tmp != 0xFFFF8000)
 			break;
 
 		tmp = (struc_6_a1->array14_stage1[v5] * v7 + (v8 << 15) + 0x4000) >> 15;
-		struc_6_v2->array14_stage2[v5 - counter] = tmp;
+		struc_6_stg2_a2->array14_stage2[v5 - counter] = tmp;
 		tmp &= 0xFFFF8000;
 		if (tmp && tmp != 0xFFFF8000)
 			break;
@@ -413,10 +412,10 @@ void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 	struc_6_v14 = struc_6_a1;
 	v14 = 0;
 	word_3D9B7C = 1;
-	struc_6_v2->gain = 0x1000;
+	struc_6_stg2_a2->gain = 0x1000;
 	v26 = 0;
 	struc_6_v29 = struc_6_a1;
-	array14a = struc_6_v2->array14_stage2;
+	array14a = struc_6_stg2_a2->array14_stage2;
 	v28 = 14;
 	do
 	{
@@ -431,23 +430,23 @@ void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 			while ( 1 )
 			{
 				v17 = v14 - v16;
-				v18 = struc_6_v2->array14_stage2[v16 - 1];
-				v19 = struc_6_v2->array14_stage2[v17];
-				v20 = (v19 * struc_6_v14->array14_stage1[0] + (struc_6_v2->array14_stage2[v16 - 1] << 15) + 0x4000) >> 15;
-				struc_6_v2->array14_stage2[v16 - 1] = v20;
+				v18 = struc_6_stg2_a2->array14_stage2[v16 - 1];
+				v19 = struc_6_stg2_a2->array14_stage2[v17];
+				v20 = (v19 * struc_6_v14->array14_stage1[0] + (struc_6_stg2_a2->array14_stage2[v16 - 1] << 15) + 0x4000) >> 15;
+				struc_6_stg2_a2->array14_stage2[v16 - 1] = v20;
 				v21 = v20 & 0xFFFF8000;
 				if ( v21 && v21 != 0xFFFF8000 )
-				struc_6_v2->array14_stage2[v16 - 1] = ((v21 <= 0) - 1) - 0x8000;
+				struc_6_stg2_a2->array14_stage2[v16 - 1] = ((v21 <= 0) - 1) - 0x8000;
 				struc_6_v14 = struc_6_v29;
 				v22 = (v18 * struc_6_v29->array14_stage1[0] + (v19 << 15) + 0x4000) >> 15;
-				struc_6_v2->array14_stage2[v17] = v22;
+				struc_6_stg2_a2->array14_stage2[v17] = v22;
 				v23 = v22 & 0xFFFF8000;
 				if ( v23 && v23 != 0xFFFF8000 )
 				{
 					if ( v23 <= 0 )
-					struc_6_v2->array14_stage2[v17] = 0xFFFF8000;
+					struc_6_stg2_a2->array14_stage2[v17] = 0xFFFF8000;
 					else
-					struc_6_v2->array14_stage2[v17] = 0x7FFF;
+					struc_6_stg2_a2->array14_stage2[v17] = 0x7FFF;
 				}
 				++counter;
 				v16 = counter;
@@ -606,7 +605,7 @@ int dss2_get_normalize_bits(int32_t *array_var, int16_t size) {
 			val |= abs(array_var[i]);
 
 	for (max_val = 0;
-			(val & 0xFFFFC000) == 0 | (val & 0xFFFFC000) == 0xFFFFC000;
+			((val & 0xFFFFC000) == 0) | ((val & 0xFFFFC000) == 0xFFFFC000);
 			++max_val)
 		val *= 2;
 	return max_val;
@@ -775,12 +774,10 @@ void dss2_clean_array_3B9060()
 }
 
 int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
-		int **abuff, int param_a5, struct struc_4 *a6, int *a7, int a8,
-		float *a9, signed int *a10, unsigned int a11) {
-	__int8 *v13; // edx@3
-	struct struc_1 *v14; // ecx@3
+		int8_t **abuff, int param_a5, struct struc_4 *a6, int *a7, int a8,
+		float a9, signed int a10, unsigned int a11) {
 
-	int *v36; // edx@33
+	//int *v36; // edx@33
 	__int16 v37; // bp@33
 	int v38; // eax@33
 
@@ -788,7 +785,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 	int *v41; // eax@37
 	double v42; // st7@38
 	signed int v43; // eax@49
-	__int16 v44; // ax@50
+	int16_t v44 = 0; // ax@50
 
 
 	struct struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
@@ -819,7 +816,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 		word_3D0C26 = 1;
 	}
 
-	dss2_unpack_coeffs(v14, v13);
+	dss2_unpack_coeffs(&struc_1_v96, (int16_t *)abuff_swap);
 
 	if (word_3D041C) {
 		if (word_3D1264)
@@ -866,8 +863,8 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 			g_unc_rw_array72_3D0C44[i] = g_unc_rw_arrayXX_3D08FC[71 - i];
 
 		/* TODO: find what happens with g_unc_rw_array15_3D0BE8 */
-		dss2_shift_sq_sub(&g_unc_rw_array15_stg2_3D08C0,
-				&g_unc_rw_array15_3D0BE8, g_unc_rw_array72_3D0C44);
+		dss2_shift_sq_sub(g_unc_rw_array15_stg2_3D08C0.array14_stage2,
+				g_unc_rw_array15_3D0BE8.array14_stage2, g_unc_rw_array72_3D0C44);
 
 		for (i = 0; i < 72; i++) {
 			tmp = (((dword_3D0DA0 << 13) - dword_3D0DA0)
@@ -882,7 +879,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 
 		if (*dec_flag & 0x20000)
 			dss2_sub_3B80F0(g_unc_rw_array14_stg1_3D0D64.array14_stage1[0],
-					&g_unc_rw_array15_stg2_3D08C0, g_unc_rw_array72_3D0C44,
+					g_unc_rw_array15_stg2_3D08C0.array14_stage2, g_unc_rw_array72_3D0C44,
 					&local_rw_array72_v101[sf_idx][0], 72);
 		else
 			memcpy(&local_rw_array72_v101[sf_idx][0], g_unc_rw_array72_3D0C44,
@@ -892,14 +889,15 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 ////////
 	int v39;
 	if (!(*dec_flag & 0x40000))
-		dss2_sub_3B98D0(local_rw_array72_v101);
-	v36 = dec_flag;
+		dss2_sub_3B98D0(&local_rw_array72_v101[0][0]);
+	//v36 = dec_flag;
 	v37 = 0;
 	v38 = *dec_flag;
 	if (!(*dec_flag & 0x20)) {
 		if (!(*dec_flag & 0x40000)) {
 			v39 = a11;
 			v40 = a10;
+#if 0
 			if (!a11 && *a10 != (v38 & 0xFF00)) {
 				v41 = a7;
 				switch ((*a10 >> 11) & 0x1F) {
@@ -948,11 +946,12 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 				default:
 					break;
 				}
-				v36 = dec_flag;
+			//	v36 = dec_flag;
 				*v41 = 0;
 				*v40 = *dec_flag & 0xFF00;
 			}
-			v43 = *v40;
+#endif
+			v43 = v40;
 			if (v43 & 0x80) {
 // never triggered
 #if 0
@@ -979,7 +978,7 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 				return v37;
 			}
 			LABEL_54: dss2_32to16bit(&abuf_dst[132 * param_a5],
-					local_rw_array72_v101, 264);
+					&local_rw_array72_v101[0][0], 264);
 			goto LABEL_55;
 		}
 		goto LABEL_58;
@@ -987,9 +986,9 @@ int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 
 	if (v38 & 0x40000) {
 		LABEL_58: dss2_32to16bit(&abuf_dst[144 * param_a5],
-				local_rw_array72_v101, 288);
+				&local_rw_array72_v101[0][0], 288);
 	} else
-		dss2_32to16bit(&abuf_dst[132 * param_a5], local_rw_array72_v101,
+		dss2_32to16bit(&abuf_dst[132 * param_a5], &local_rw_array72_v101[0][0],
 				264);
 
 	memcpy(&array14_3D0DA4, struc_1_v96.array14_stage0, 28u);
@@ -1007,9 +1006,8 @@ int main(void) {
 	int a8;
 	float *a9;
 	signed int *a10;
-	unsigned int a11;
 
 	dss2_2_sub_3B8790(abuff_swap, some_ptr_a2, dec_flag, &abuff, param_a5, a6,
-			a7, a8, a9, a10, a11);
+			a7, a8, 0, 0, 0);
 	return 0;
 }
