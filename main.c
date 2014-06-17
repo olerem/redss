@@ -32,7 +32,7 @@ struct struc_8 g_unc_rw_array15_3D0BE8;
 int32_t g_unc_rw_array288_3D0DC0[288 + 6];
 int32_t g_unc_rw_array_3D04A0[264];
 
-void dss2_byte_swap(int8_t *abuff_swap, int8_t **abuff_src, int dec_flag) {
+static void dss2_byte_swap(int8_t *abuff_swap, int8_t **abuff_src, int dec_flag) {
 	uint8_t *abuff_tmp;
 	int size; // si@1
 	int i;
@@ -76,7 +76,7 @@ void dss2_byte_swap(int8_t *abuff_swap, int8_t **abuff_src, int dec_flag) {
 	}
 }
 
-void dss2_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2) {
+static void dss2_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2) {
 
 	int v12; // edx@2
 	int i;
@@ -269,14 +269,14 @@ void dss2_unpack_coeffs(struct struc_1 *reconstr_abuff, int16_t *abuff_swap_a2) 
 }
 
 /* create stage 1 array14_stage0 based on stage0 and some kind of pulse table */
-void dss2_sub_3B8740(int32_t *array14_stage1, const struct struc_1 *a2) {
+static void dss2_sub_3B8740(int32_t *array14_stage1, const struct struc_1 *a2) {
 	int i;
 
 	for (i = 0; i < 14; i++)
 		array14_stage1[i] = g_unc_array_3C84F0[i][a2->array14_stage0[i]];
 }
 
-void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
+static void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 		struct struc_8 *struc_6_stg2_a2) {
 	int v3; // esi@1
 	int v5; // ebx@2
@@ -328,7 +328,7 @@ void dss2_sub_3B8410(struct struc_6 *struc_6_a1,
 }
 
 /* this function will get pointer to one of 4 subframes */
-void dss2_add_pulses(int32_t *array72_a1, const struct dss2_subframe *sf) {
+static void dss2_add_pulses(int32_t *array72_a1, const struct dss2_subframe *sf) {
 	int i;
 
 	//looks like "output[sf->pulse_pos[i]] += g_gains[sf->gain] * g_pulse_val[sf->pulse_val[i]] + 0x4000 >> 15;"
@@ -338,7 +338,7 @@ void dss2_add_pulses(int32_t *array72_a1, const struct dss2_subframe *sf) {
 
 }
 
-void dss2_sub_3B9080(int32_t *array72, int32_t *array36, int a3, int a4) {
+static void dss2_sub_3B9080(int32_t *array72, int32_t *array36, int a3, int a4) {
 
 	int i;
 
@@ -360,7 +360,7 @@ void dss2_sub_3B9080(int32_t *array72, int32_t *array36, int a3, int a4) {
 	};
 }
 
-void dss2_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size) {
+static void dss2_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size) {
 	int i;
 
 	if (array_a1_size <= 0)
@@ -374,7 +374,7 @@ void dss2_normalize(int32_t *array_a1, int normalize_bits, int array_a1_size) {
 			array_a1[i] = array_a1[i] << normalize_bits;
 }
 
-void dss2_sub_3B9FB0(int32_t *array72, int32_t *arrayXX) {
+static void dss2_sub_3B9FB0(int32_t *array72, int32_t *arrayXX) {
 	int i;
 
 	for (i = 0; i < 114; i++)
@@ -384,7 +384,7 @@ void dss2_sub_3B9FB0(int32_t *array72, int32_t *arrayXX) {
 		arrayXX[72 - i] = array72[i];
 }
 
-void dss2_shift_sq_sub(const int32_t *array_a1, int32_t *array_a2,
+static void dss2_shift_sq_sub(const int32_t *array_a1, int32_t *array_a2,
 		int32_t *array_a3_dst) {
 	int a;
 
@@ -415,7 +415,7 @@ void dss2_shift_sq_sub(const int32_t *array_a1, int32_t *array_a2,
 	}
 }
 
-void dss2_shift_sq_add(const int32_t *array_a1, int32_t *array_a2,
+static void dss2_shift_sq_add(const int32_t *array_a1, int32_t *array_a2,
 		int32_t *array_a3_dst) {
 	int a;
 
@@ -439,7 +439,7 @@ void dss2_shift_sq_add(const int32_t *array_a1, int32_t *array_a2,
 	}
 }
 
-void dss2_vec_mult(const int32_t *array15_ro_src, int32_t *array15_dst,
+static void dss2_vec_mult(const int32_t *array15_ro_src, int32_t *array15_dst,
 		const int32_t *array15_ro_a3) {
 	int i;
 
@@ -450,7 +450,7 @@ void dss2_vec_mult(const int32_t *array15_ro_src, int32_t *array15_dst,
 		array15_dst[i] = (array15_ro_src[i] * array15_ro_a3[i] + 0x4000) >> 15;
 }
 
-int dss2_get_normalize_bits(int32_t *array_var, int16_t size) {
+static int dss2_get_normalize_bits(int32_t *array_var, int16_t size) {
 	unsigned int val;
 	int max_val;
 	int i;
@@ -467,7 +467,7 @@ int dss2_get_normalize_bits(int32_t *array_var, int16_t size) {
 	return max_val;
 }
 
-void dss2_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
+static void dss2_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
 		int32_t *array72_a4, int size) {
 
 	int32_t local_rw_array15_v1a[15];
@@ -566,7 +566,7 @@ void dss2_sub_3B80F0(int32_t a0, int32_t *array15_a1, int32_t *array72_a3,
 	}
 }
 
-int16_t dss2_sub_3BA000(int16_t *a1) {
+static int16_t dss2_sub_3BA000(int16_t *a1) {
 	int16_t tmp;
 
 	tmp = *a1 + ((*a1 << 6) + *a1) * 8 + 0x103;
@@ -574,7 +574,7 @@ int16_t dss2_sub_3BA000(int16_t *a1) {
 	return tmp;
 }
 
-void dss2_sub_3B98D0(int32_t *array72_a1) {
+static void dss2_sub_3B98D0(int32_t *array72_a1) {
 	int v1;
 
 	signed int v10;
@@ -624,12 +624,12 @@ static void dss2_32to16bit(int16_t *dst, int32_t *src, int size) {
 		dst[i] = src[i];
 }
 
-void dss2_clean_array_3B9060()
+static void dss2_clean_array_3B9060()
 {
   memset(g_unc_rw_arrayXX_3D08FC, 0, 0x2ECu);
 }
 
-int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
+static int dss2_2_sub_3B8790(int8_t *abuff_swap, int16_t *abuf_dst, int *dec_flag,
 		int8_t **abuff) {
 
 	struct struc_1 *struc_1_v46; // [sp-C0h] [bp-61Ch]@12
